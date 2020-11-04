@@ -25,7 +25,7 @@ position:absolute;
 width:100%; */
   align-items: center;
   color: ${(props) => props.theme.pureWhite};
-  background: ${(props) => props.theme.blues[2]};
+  background: black;
 `;
 
 const Footer = () => {

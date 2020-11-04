@@ -1,14 +1,13 @@
-
-import React from 'react'
-import Link from 'next/link'
-import styled from 'styled-components'
+import React from "react";
+import Link from "next/link";
+import styled from "styled-components";
 
 const HamNav = styled.div`
 /* [ON BIG SCREEN] */
 /* Wrapper */
     margin:0;
     font-size:3rem;
-    background: ${props => props.theme.blues[2]};
+    background: ${(props) => black};
     align-content:center;
     width: 100%;
     padding-left: 10rem;
@@ -22,7 +21,7 @@ const HamNav = styled.div`
 /* [ON BIG SCREEN] */
 /* Wrapper */
 /* #hamnav {
-    background: ${props => props.theme.blues[2]};
+    background: ${(props) => black};
    Optional
     height:4rem;
     position: fixed;
@@ -50,7 +49,7 @@ const HamNav = styled.div`
     align-items: top;
   }
   #hamitems a:hover {
-    background: ${props => props.theme.britishRed};
+    background: ${(props) => props.theme.britishRed};
   }
   
   /* [ON SMALL SCREENS] */
@@ -61,7 +60,7 @@ const HamNav = styled.div`
      /* border-radius:0.5rem; */
       display: inline-block; 
       color: white;
-     background:${props => props.theme.britishRed};
+     background:${(props) => props.theme.britishRed};
       font-style: normal;
       font-size: 2.5rem;
       padding: 0.3rem;
@@ -74,7 +73,7 @@ const HamNav = styled.div`
       width: 70%;
       border-top: 0.2rem solid #333;
       font-size: 1.4rem;
-      background:${props => props.theme.blues[2]};
+      background:${(props) => black};
     }
   
     /* Toggle Show/Hide Menu */
@@ -98,11 +97,9 @@ const HamNav = styled.div`
   }
 `;
 
-
 const Responsive = () => {
   return (
     <HamNav>
-
       <nav id="hamnav">
         {/* <!-- [THE HAMBURGER] --> */}
         <label htmlFor="hamburger">&#9776;</label>
@@ -111,17 +108,39 @@ const Responsive = () => {
         {/* <!-- [MENU ITEMS] --> */}
 
         <ul id="hamitems">
-          <div className="divLinks"> <Link href="/creates/newCand"  ><a>Candidat</a></Link></div>
-          <div className="divLinks"> <Link href="/creates/newExaminer"  ><a>Prof</a></Link></div>
-          <div className="divLinks"> <Link href="/Login"><a>Nouveau</a></Link></div>
-          <div className="divLinks">  <Link href="creates/newCenter"  ><a>Centre</a></Link></div>
-          <div className="divLinks"> <Link href="/creates/newRegion"  ><a>Admin</a></Link></div>
+          <div className="divLinks">
+            {" "}
+            <Link href="/creates/newCand">
+              <a>Candidat</a>
+            </Link>
+          </div>
+          <div className="divLinks">
+            {" "}
+            <Link href="/creates/newExaminer">
+              <a>Prof</a>
+            </Link>
+          </div>
+          <div className="divLinks">
+            {" "}
+            <Link href="/Login">
+              <a>Nouveau</a>
+            </Link>
+          </div>
+          <div className="divLinks">
+            {" "}
+            <Link href="creates/newCenter">
+              <a>Centre</a>
+            </Link>
+          </div>
+          <div className="divLinks">
+            {" "}
+            <Link href="/creates/newRegion">
+              <a>Admin</a>
+            </Link>
+          </div>
         </ul>
-
       </nav>
-
     </HamNav>
-  )
-}
-export default Responsive
-
+  );
+};
+export default Responsive;

@@ -1,17 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { MinimStyledPage } from "../styles/StyledPage";
 import Error from "../ErrorMessage.js";
-import { Formik, Form } from "formik";
-import {
-  SygefexSelect,
-  SygexInput,
-  StyledForm,
-  ButtonStyled,
-  StyledButton,
-} from "../utils/FormInputs";
+import { Formik, Form, Field } from "formik";
+import { Box, MenuItem, Button } from "@material-ui/core";
+import { TextField } from "formik-material-ui";
+import { StyledForm } from "../utils/FormInputs";
 import styled from "styled-components";
 import * as Yup from "yup";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import { getAllRegionsQuery } from "../queries&Mutations&Functions/Queries";
 import { getObjectFromID } from "../queries&Mutations&Functions/Functions";
 import { createDivisionMutation } from "../queries&Mutations&Functions/Mutations";
@@ -33,29 +29,32 @@ const validationSchema = Yup.object().shape({
 });
 
 const NewDivision = () => {
-  const { data: dataRegions, loading: loadingReg, error: errorReg } = useQuery(
-    getAllRegionsQuery
-  );
+  const client = useApolloClient();
+  const [regions, setRegions] = useState([]);
 
-  const getRegions = dataRegions && dataRegions.regions;
-  console.log(getRegions);
-  const getRegionsOptions =
-    getRegions &&
-    getRegions.map((item) => ({
-      value: item.id,
-      label: item.regName,
-    }));
+  const initialValues = {
+    divName: "",
+    divCode: "",
+    region: "",
+  };
+  const loadRegionData = async () => {
+    const { error, data } = await client.query({ query: getAllRegionsQuery });
+    console.log(data.regions);
+    setRegions(data.regions);
+  };
+
+  useEffect(() => {
+    loadRegionData();
+  }, []);
+
   const [createDivision, { loading, error }] = useMutation(
-    createDivisionMutation,
-    {
-      refetchQueries: ["getAllDivisionsQuery"],
-    }
+    createDivisionMutation
   );
 
   return (
     <Formik
       method="POST"
-      initialValues={{ divName: "", divCode: "", region: "" }}
+      initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
         const res = await createDivision({
@@ -72,41 +71,67 @@ const NewDivision = () => {
         }, 400);
       }}
     >
-      {({ setFieldValue, isSubmitting }) => {
+      {({ submitForm, setFieldValue, isSubmitting }) => {
         return (
           <MinimStyledPage>
             <h4>Nouveau Département</h4>
-            <Error error={error || errorReg} />
+            <Error error={error} />
             <StyledForm
-              disabled={isSubmitting || loading || loadingReg}
-              aria-busy={isSubmitting || loading || loadingReg}
+              disabled={isSubmitting || loading}
+              aria-busy={isSubmitting || loading}
             >
               <Form>
                 <AllControls>
-                  <InputGroup>
-                    <SygefexSelect
-                      options={getRegionsOptions}
-                      name="region"
-                      onChange={(value) => setFieldValue("region", value)}
-                      placeholder="la Région"
+                  <Box margin={0.5}>
+                    <Field
+                      component={TextField}
+                      name="divName"
+                      type="text"
+                      label="Nom Département"
                       disabled={isSubmitting}
                     />
-                    <SygexInput
-                      name="divName"
-                      type="number"
-                      label="Nom Département"
-                    />
-                    <SygexInput
+                  </Box>
+                  <Box margin={0.5}>
+                    <Field
+                      component={TextField}
                       name="divCode"
                       type="text"
                       label="Code Département"
+                      disabled={isSubmitting}
                     />
-                  </InputGroup>
-                  <ButtonStyled>
-                    <StyledButton type="submit">
-                      Valid{loading || isSubmitting ? "ation en cours" : "er"}
-                    </StyledButton>
-                  </ButtonStyled>
+                  </Box>
+                  <Box margin={0.5}>
+                    <Field
+                      select
+                      type="text"
+                      component={TextField}
+                      name="region"
+                      margin="normal"
+                      onChange={(value) =>
+                        setFieldValue("region", value.target)
+                      }
+                      placeholder="la Région"
+                      disabled={isSubmitting}
+                    >
+                      {regions &&
+                        regions.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.regName}
+                          </MenuItem>
+                        ))}
+                    </Field>
+                  </Box>
+
+                  <Box margin={0.5}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      disabled={isSubmitting}
+                      onClick={submitForm}
+                    >
+                      Valid{isSubmitting ? "ation en cours" : "er"}
+                    </Button>
+                  </Box>
                 </AllControls>
               </Form>
             </StyledForm>

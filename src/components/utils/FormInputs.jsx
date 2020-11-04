@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import Select from "react-select";
 import { useField, Field } from "formik";
 
@@ -54,7 +54,7 @@ const StyledInput = styled.input`
   border-style: none;
   width: 100%;
   outline: none;
-  border-bottom: 0.09rem solid ${(props) => props.theme.blues[2]};
+  border-bottom: 0.09rem solid black;
   z-index: 10;
   font-family: "Roboto Slab";
 
@@ -95,7 +95,7 @@ const StyledLabel = styled.label`
   position: absolute;
   left: 1rem;
   top: 1.5rem;
-  color: ${(props) => props.theme.greys[2]};
+  color: grey;
   pointer-events: none;
   transition: all 1s ease-out;
   font-family: "Roboto Slab";
@@ -108,7 +108,7 @@ const StyledSelect = styled.select`
   margin-top: 1rem;
   font-size: 1.2rem;
   border-style: none;
-  border-bottom: 0.09rem solid ${(props) => props.theme.blues[2]};
+  border-bottom: 0.09rem solid black;
   option {
     background: white;
     font-weight: 400;
@@ -116,7 +116,7 @@ const StyledSelect = styled.select`
     white-space: pre;
     min-height: 20px;
     padding: 0px 2px 1px;
-    background: ${(props) => props.theme.blues[0]};
+    background: black;
     border-radius: 0.5rem;
   }
   &:focus {
@@ -137,7 +137,7 @@ const RadioStyled = styled.div`
   input,
   label :hover {
     cursor: pointer;
-    background: ${(props) => props.theme.lightBlues[2]};
+    background: black;
   }
 
   input[type="radio"] {
@@ -147,18 +147,18 @@ const RadioStyled = styled.div`
     height: 2rem;
     margin: 0 0.7rem;
 
-    background: ${(props) => props.theme.lightBlues[2]};
+    background: black;
   }
 `;
 
 const StyledButton = styled.button`
-  color: ${(props) => props.theme.blues[2]};
+  color: black;
   border: 0;
   border-radius: 0.5rem;
   font-size: 2.5rem;
   font-weight: 300;
   line-height: 1.5rem;
-  box-shadow: ${(props) => props.theme.bs2};
+  /* box-shadow: ${(props) => props.theme.bs2}; */
   cursor: pointer;
 `;
 
@@ -170,14 +170,14 @@ const ButtonStyled = styled.div`
     font-size: 1.5rem;
     font-weight: bold;
     box-shadow: ${(props) => props.theme.formBS};
-    border: 0.05rem solid ${(props) => props.theme.blues[2]};
-    color: ${(props) => props.theme.blues[2]};
+    border: 0.05rem solid black;
+    color: black;
     background: ${(props) => props.theme.pureWhite};
     cursor: pointer;
     padding: 0.8rem;
     outline: none;
     &:hover {
-      color: ${(props) => props.theme.blues[2]};
+      color: black;
       background-color: ${(props) => props.theme.pureWhite};
     }
   }
@@ -192,8 +192,8 @@ const StyledForm = styled.div`
   padding: 0.6rem;
   font-size: 1.7rem;
   border-radius: 0.9rem;
-  border: 0.001rem solid ${(props) => props.theme.blues[2]};
-  border-top: 1rem solid ${(props) => props.theme.blues[2]};
+  border: 0.001rem solid black;
+  border-top: 1rem solid black;
   border-bottom: 1rem solid ${(props) => props.theme.tableRed};
   box-shadow: ${(props) => props.theme.formBS};
 

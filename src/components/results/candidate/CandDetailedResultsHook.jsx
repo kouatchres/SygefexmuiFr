@@ -5,9 +5,8 @@ import { format } from "date-fns";
 import ResultDetails from "./ResultDetails";
 import { Formik, Form } from "formik";
 import useForm from "../../utils/useForm";
-import { StyledForm } from "../../utils/FormInputs";
+import { ButtonStyled, StyledButton, StyledForm } from "../../utils/FormInputs";
 import { getCandidateResultsQuery } from "../../queries&Mutations&Functions/Queries";
-import Error from "../../ErrorMessage";
 import styled from "styled-components";
 import {
   roundFloatNumber,

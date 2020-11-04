@@ -37,7 +37,7 @@ const SubjectTitles = styled.div`
   color: white;
   font-size: 1.5rem;
   justify-content: left;
-  background: ${(props) => props.theme.blues[2]};
+  background: black;
 `;
 
 const TitleItem = styled.div`
@@ -76,7 +76,7 @@ const SchoolInfoBlock = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-auto-flow: colums;
-  background: ${(props) => props.theme.blues[2]};
+  background: black;
   color: ${(props) => props.theme.pureWhite};
   justify-content: center;
   align-items: center;
@@ -275,10 +275,7 @@ const CandDetailedResults = (props) => {
               </SubjectTitles>
               {scores &&
                 scores.map((item) => (
-                  <ResultDetails
-                    key={item.subjectSpecialty.id}
-                    score={item}
-                  />
+                  <ResultDetails key={item.subjectSpecialty.id} score={item} />
                 ))}
               <AveTotals>
                 <span>

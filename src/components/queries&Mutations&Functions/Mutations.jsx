@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import axios from "axios";
 
 //************create mutations  */
 const signInCandidate = gql`
@@ -778,24 +779,13 @@ const enterMarksMutation = gql`
   }
 `;
 
-// const createUserMutation = gql`
-//   mutation createUserMutation(
-//     $email: String!
-//     $name: String!
-//     $password: String!
-//     ) {
-//     createUser(
-//                email: $email!
-//                name: $name!
-//                password: $password!
-//                ) {
-//       id
-//       name
-//       email
-//       password
-//     }
-//   }
-// `
+// const getPDFFileBuffer = gql`
+// mutation getPDFFileBuffer ($url:String!){
+// printPDF(url: $url){
+
+// }
+// }
+// `;
 
 const updateCandidateMutation = gql`
   mutation updateCandidateMutation(

@@ -3,12 +3,10 @@ import styled from "styled-components";
 
 const TableStyled = styled.table`
   margin: 0 auto;
-  width: 60%;
+  width: 90%;
   box-sizing: border-box;
   box-shadow: ${(props) => props.theme.formBS2};
-  justify-items: center;
   border-radius: 0.9rem;
-  align-self: center;
   border: 0;
   margin-bottom: 2rem;
   border-collapse: collapse;
@@ -90,29 +88,13 @@ const FigureTable = styled.figure`
   overflow-x: scroll;
 `;
 
-// @media (max-width: 25rem) {
-//   table, caption, tbody, tr, th, td {
-//     display: block;
-//     text-align: left;
-//   }
-//   thead, th:empty, td:empty {
-//     display: none;
-//     visibility: hidden;
-//   }
-//   th[data-title]:before, td[data-title]:before {
-//     content: attr(data-title) ": ";
-//     display: inline-block;
-//     width: 3.5em;
-//   }
-// }
-
 const DataTable = ({ items, renderHead, renderRow, loadMore }) => {
   const ref = useRef(null);
 
   const handleScroll = (e) => {
     const cY = window.scrollY;
     const tbh = ref.current.offsetHeight;
-    const thresh = 1000;
+    const thresh = 20;
     if (tbh - cY - thresh < 0) loadMore();
   };
 
@@ -122,7 +104,7 @@ const DataTable = ({ items, renderHead, renderRow, loadMore }) => {
       document.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
+  // console.dir(state.data);
   return (
     <FigureTable>
       <TableStyled cellPadding={0} cellSpacing={0}>

@@ -23,7 +23,7 @@ body {
   padding: 0;
 }
 nav {
-  background: ${(props) => props.theme.blues[2]};
+  background: black;
   margin: 0;
   padding: 0 2rem;
   height: 3.5rem;
@@ -100,7 +100,7 @@ nav li:hover .menu-sub {
   .menu-sub-user {
   width: 70 %;
   position: absolute;
-  background: ${(props) => props.theme.blues[2]};
+  background: black;
   color: ${(props) => props.theme.pureWhite};
   display: none;
   padding: 1rem;
@@ -166,7 +166,7 @@ hr {
     right:0;
     height:90vh;
     top:3.5rem;
-    background: ${(props) => props.theme.blues[2]};
+    background: black;
     display:flex;
     flex-direction:column;
     align-items:center;

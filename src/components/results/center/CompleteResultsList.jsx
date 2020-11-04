@@ -9,13 +9,13 @@ import { centerExamSessionForResultsQuery } from "../../queries&Mutations&Functi
 
 const HeaderStyled = styled.tr`
   display: grid;
-  grid-template-columns: 2fr 0.5fr 1fr 1fr 1fr 1fr 0.5fr;
+  grid-template-columns: 3.1fr 2fr 1.2fr 1.2fr 1.2fr 1.2fr 1fr;
   td:nth-child(1) {
-    min-width: 8rem;
+    min-width: 11rem;
   }
 
   td:nth-child(2) {
-    min-width: 2rem;
+    min-width: 8rem;
   }
   td:nth-child(3) {
     min-width: 5rem;
@@ -36,11 +36,11 @@ const HeaderStyled = styled.tr`
 
 const RowStyled = styled.tr`
   td:nth-child(1) {
-    min-width: 8rem;
+    min-width: 11rem;
   }
 
   td:nth-child(2) {
-    min-width: 2rem;
+    min-width: 8rem;
   }
   td:nth-child(3) {
     min-width: 5rem;
@@ -58,19 +58,19 @@ const RowStyled = styled.tr`
     min-width: 2rem;
   }
   display: grid;
-  grid-template-columns: 2fr 0.5fr 1fr 1fr 1fr 1fr 0.5fr;
+  grid-template-columns: 3.1fr 2fr 1.2fr 1.2fr 1.2fr 1.2fr 1fr;
 `;
 
 const TablePresentation = styled.div`
-  margin: 0 auto;
   display: grid;
-  min-width: 80rem;
+  min-width: 90vw;
+  grid-row-gap: 0;
   grid-auto-flow: row;
 `;
 
-function pageData({ data, per = 2, page = 1 }) {
+const pageData = ({ data, per = 10, page = 1 }) => {
   return data.slice(per * (page - 1), per * page);
-}
+};
 
 const searchableColumns = [
   "cand1stName",
@@ -81,29 +81,30 @@ const searchableColumns = [
   "candRegistrationNumber",
 ];
 
-const DivisionList = ({ id }) => {
+const CompleteResultsList = ({ id }) => {
   const client = useApolloClient();
 
   const [cand, setCand] = useState([]);
   const [state, setState] = useState({
-    data: pageData({ data: cand && cand }),
+    data: pageData({ data: [] }),
     loading: false,
     page: 1,
     sortedBy: null,
   });
   const [query, setQuery] = useState("");
+  const [title, setTitle] = useState("");
   const [additionalData, setAdditionalData] = useState([]);
 
-  // const loadTitleData = async () => {
-  //   const { error, data } = await client.query({
-  //     query: centerExamSessionForResultsQuery,
-  //     variables: { id },
-  //   });
-  //   console.log(data);
-  //   const { centerExamSession } = { ...data };
+  const loadTitleData = async () => {
+    const { error, data } = await client.query({
+      query: centerExamSessionForResultsQuery,
+      variables: { id },
+    });
+    console.log(data);
+    const { centerExamSession } = { ...data };
 
-  //   setTitle({ centerExamSession });
-  // };
+    setTitle({ centerExamSession });
+  };
 
   const loadCandScoreData = async () => {
     const { error, data } = await client.query({
@@ -122,16 +123,18 @@ const DivisionList = ({ id }) => {
         aptitude: item.aptitude,
         EPF1: item.EPF1,
         EPF2: item.EPF2,
+        registrationId: item.id,
         ...item.candidate,
       }));
     console.log({ registration });
-    console.log({ getCand });
+    console.log(getCand);
+    setCand(getCand);
     setState((prev) => ({ ...prev, data: getCand }));
   };
 
   useEffect(() => {
     loadCandScoreData();
-    // loadTitleData();
+    loadTitleData();
   }, []);
 
   useEffect(() => {
@@ -151,7 +154,7 @@ const DivisionList = ({ id }) => {
   useEffect(() => {
     setState((prev) => ({
       ...prev,
-      data: search(state.data),
+      data: search(cand),
     }));
   }, [query]);
 
@@ -176,12 +179,14 @@ const DivisionList = ({ id }) => {
     }));
 
     setState((prev) => ({
-      data: [...prev.data, ...pageData({ data: data, page: prev.page + 1 })],
+      data: [...prev.data, ...pageData({ data: cand, page: prev.page + 1 })],
       loading: false,
       page: prev.page + 1,
     }));
   };
 
+  console.log(cand);
+  console.log(state.data);
   const toggleAdditionalData = (row) => {
     setAdditionalData((prev) =>
       additionalData.includes(row.id)
@@ -189,11 +194,12 @@ const DivisionList = ({ id }) => {
         : [...prev, row.id]
     );
   };
+  console.dir(state.data);
 
   return (
     <TablePresentation>
       <SygefexText
-        placeholder="Type here to filter results"
+        placeholder="Search text"
         value={query}
         onChange={(val) => setQuery(val)}
       />
@@ -246,7 +252,7 @@ const DivisionList = ({ id }) => {
               <Link
                 href={{
                   pathname: "/show/results/candResults",
-                  query: {id:row.id },
+                  query: { id: row.registrationId },
                 }}
               >
                 <a target="_blank">{row.candRegistrationNumber.substring(6)}</a>
@@ -266,4 +272,4 @@ const DivisionList = ({ id }) => {
     </TablePresentation>
   );
 };
-export default DivisionList;
+export default CompleteResultsList;

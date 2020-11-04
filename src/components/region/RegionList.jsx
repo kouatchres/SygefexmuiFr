@@ -43,24 +43,15 @@ const TablePresentation = styled.div`
   grid-auto-flow: row;
 `;
 
-function pageData({ data, per = 2, page = 1 }) {
+const pageData = ({ data, per = 20, page = 1 }) => {
   return data.slice(per * (page - 1), per * page);
-}
+};
 
 const searchableColumns = ["regName", "regCode", "id"];
 
 const RegionList = ({}) => {
   const client = useApolloClient();
   const [regions, setRegions] = useState([]);
-
-  const [state, setState] = useState({
-    data: pageData({ data: regions }),
-    loading: false,
-    page: 1,
-    sortedBy: null,
-  });
-  const [query, setQuery] = useState("");
-  const [additionalData, setAdditionalData] = useState([]);
 
   const loadRegionData = async () => {
     const { error, data } = await client.query({
@@ -73,14 +64,25 @@ const RegionList = ({}) => {
     console.log(regions);
     setRegions(regions);
     console.log(regions);
-    return regions;
+    setRegions(regions);
+    setState((prev) => ({ ...prev, data: pageData({ data: regions }) }));
   };
-
-  console.log(regions);
 
   useEffect(() => {
     loadRegionData();
+    console.dir(state.data);
   }, []);
+
+  const [state, setState] = useState({
+    data: pageData({ data: [] }),
+    loading: false,
+    page: 1,
+    sortedBy: null,
+  });
+  const [query, setQuery] = useState("");
+  const [additionalData, setAdditionalData] = useState([]);
+
+  console.dir(pageData({ data: regions }));
 
   useEffect(() => {
     if (!state.sortedBy) return;
@@ -118,6 +120,7 @@ const RegionList = ({}) => {
   };
 
   const loadMore = () => {
+    console.log("loading more data");
     if (state.loading) return;
     setState((prev) => ({
       ...prev,
@@ -138,7 +141,7 @@ const RegionList = ({}) => {
         : [...prev, row.id]
     );
   };
-
+  console.dir(state.data);
   return (
     <TablePresentation>
       <SygefexText
@@ -180,3 +183,5 @@ const RegionList = ({}) => {
   );
 };
 export default RegionList;
+
+// url: "http://localhost:10000/show/results/candResults?id=ckfzupb6z8e2t0a35hr13yvq3",

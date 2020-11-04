@@ -6,7 +6,7 @@ import { signoutMutation } from "../queries&Mutations&Functions/Mutations";
 
 const SingoutButton = styled.div`
   color: white;
-  background: ${(props) => props.theme.blues[2]};
+  background: black;
 
   padding-left: 5rem;
   padding-right: 2rem;

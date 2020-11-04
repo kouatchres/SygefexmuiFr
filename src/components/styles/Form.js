@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
 const loading = keyframes`
   from {
@@ -41,29 +41,29 @@ const Form = styled.form`
     }
   }
   button,
-  input[type='submit'] {
+  input[type="submit"] {
     width: auto;
-    background: ${(props) => props.theme.blues[2]};
+    background: black;
     color: white;
     border: 0;
     height: 2.5rem;
-    width:auto;
+    width: auto;
     font-size: 1.5rem;
     font-weight: 500;
-    border-radius:.6rem;
+    border-radius: 0.6rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
     padding: 1rem, 1rem 1rem 1rem;
   }
   fieldset {
     max-width: 80vw;
-    margin: 20px ;
+    margin: 20px;
     /* height: 60vh; */
-    border: 0.1rem solid ${(props) => props.theme.blues[2]};
-    padding:1.2rem;
+    border: 0.1rem solid black;
+    padding: 1.2rem;
     display: flex;
     flex-direction: row;
-    border-radius:.9rem;
+    border-radius: 0.9rem;
     justify-items: center;
     box-shadow: ${(props) => props.theme.formBS};
 
@@ -72,12 +72,17 @@ const Form = styled.form`
     }
     &::before {
       height: 0.5rem;
-      content: '';
+      content: "";
       display: block;
-      background-image: linear-gradient(to right, #359 0%, #e2b04a 20%, #359 100%);
+      background-image: linear-gradient(
+        to right,
+        #359 0%,
+        #e2b04a 20%,
+        #359 100%
+      );
       /* background-image: linear-gradient(to right, #ff3019 0%, #e2b04a 50%, #ff3019 100%); */
     }
-    &[aria-busy='true']::before {
+    &[aria-busy="true"]::before {
       background-size: 50% auto;
       animation: ${loading} 0.5s linear infinite;
     }

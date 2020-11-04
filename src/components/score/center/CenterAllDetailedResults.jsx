@@ -16,7 +16,7 @@ const SeriesHeadings = styled.div`
   color: white;
   font-size: 1.7rem;
   justify-content: left;
-  background: ${(props) => props.theme.blues[2]};
+  background: black;
 `;
 
 const TitleItem = styled.div`

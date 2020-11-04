@@ -8,44 +8,45 @@ import { useApolloClient } from "@apollo/react-hooks";
 
 const HeaderStyled = styled.tr`
   display: grid;
-  grid-template-columns: 2.3fr 1.5fr 2.3fr 1.5fr;
+  grid-template-columns: 2.6fr 1.5fr 2.6fr 1fr;
   td:nth-child(1) {
     min-width: 8rem;
   }
 
   td:nth-child(2) {
-    min-width: 6rem;
+    min-width: 5rem;
   }
   td:nth-child(3) {
     min-width: 8rem;
   }
   td:nth-child(4) {
-    min-width: 6rem;
+    min-width: 3rem;
   }
 `;
 
 const RowStyled = styled.tr`
+  display: grid;
+  grid-template-columns: 2.6fr 1.5fr 2.6fr 1fr;
   td:nth-child(1) {
-    min-width: 6rem;
-  }
-  td:nth-child(2) {
-    min-width: 6rem;
+    min-width: 8rem;
   }
 
+  td:nth-child(2) {
+    min-width: 5rem;
+  }
   td:nth-child(3) {
-    min-width: 6rem;
+    min-width: 8rem;
   }
   td:nth-child(4) {
-    min-width: 6rem;
+    min-width: 3rem;
   }
-  display: grid;
-  grid-template-columns: 2.5fr 1.5fr 2.5fr 1.5fr;
 `;
 
 const TablePresentation = styled.div`
   margin: 0 auto;
   display: grid;
-  min-width: 80rem;
+  min-width: 75vw;
+  /* max-width: 70vw; */
   grid-auto-flow: row;
 `;
 
@@ -58,10 +59,10 @@ const searchableColumns = ["regName", "regCode", "divName", "divCode"];
 const DivisionList = ({}) => {
   const client = useApolloClient();
 
-  const [regions, setRegions] = useState([]);
+  const [divisions, setDivisions] = useState([]);
 
   const [state, setState] = useState({
-    data: pageData({ data: regions }),
+    data: pageData({ data: divisions }),
     loading: false,
     page: 1,
     sortedBy: null,
@@ -69,29 +70,40 @@ const DivisionList = ({}) => {
   const [query, setQuery] = useState("");
   const [additionalData, setAdditionalData] = useState([]);
 
-  const loadDivisionData = async () => {
+  // const loadDivisionData = async () => {
+  //   const { error, data } = await client.query({
+  //     query: getAllRegionsAndDivisionsQuery,
+  //   });
+  //   const { regions } = { ...data };
+  //   const getDivisions = regions.map((item) => ({
+  //     regName: item.regName,
+  //     regCode: item.regCode,
+  //   }));
+
+  //   setRegions(getDivisions);
+  //   setState((prev) => ({ ...prev, data: getDivisions }));
+  // };
+
+  const loadRegionData = async () => {
     const { error, data } = await client.query({
-      query: getAllRegionsAndDivisionsQuery,
+      query: getAllRegionsQuery,
     });
-    console.log(data);
+    {
+      error && <Error error={error} />;
+    }
     const { regions } = { ...data };
-
-    const getDivisions = regions.map((item) => {
-      const divList = item.division.map((division) => ({
-        regName: item.regName,
-        regCode: item.regCode,
-        ...division,
-      }));
-
-      return divList;
-    });
-
-    setRegions(getDivisions.flat(1));
+    console.log(regions);
+    setRegions(regions);
+    console.log(regions);
+    setRegions(regions);
+    setState((prev) => ({ ...prev, data: regions }));
   };
 
-  useEffect(() => {
-    loadDivisionData();
-  }, []);
+  // useEffect(() => {
+  //   loadDivisionData();
+
+  //   console.log(state.data);
+  // }, []);
 
   useEffect(() => {
     if (!state.sortedBy) return;
@@ -110,7 +122,7 @@ const DivisionList = ({}) => {
   useEffect(() => {
     setState((prev) => ({
       ...prev,
-      data: search(regions),
+      data: search(state.divisions),
     }));
   }, [query]);
 
@@ -135,7 +147,10 @@ const DivisionList = ({}) => {
     }));
 
     setState((prev) => ({
-      data: [...prev.data, ...pageData({ data: regions, page: prev.page + 1 })],
+      data: [
+        ...prev.data,
+        ...pageData({ data: state.data, page: prev.page + 1 }),
+      ],
       loading: false,
       page: prev.page + 1,
     }));
@@ -197,3 +212,11 @@ const DivisionList = ({}) => {
   );
 };
 export default DivisionList;
+
+// const divList = item.division.map((division) => ({
+//   regName: item.regName,
+//   regCode: item.regCode,
+//   ...division,
+// }));
+
+// return divList;

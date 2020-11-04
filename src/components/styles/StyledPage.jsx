@@ -22,7 +22,7 @@ const TableStyledPage = styled.div`
     background: ${(props) => props.theme.pureWhite};
     width: 100%;
     border-radius: 0.5rem;
-    color: ${(props) => props.theme.blues[2]};
+    color: black;
   }
   .Form {
     justify-items: center;
@@ -56,7 +56,7 @@ const StyledPage = styled.div`
     background: ${(props) => props.theme.pureWhite};
     width: 100%;
     border-radius: 0.5rem;
-    color: ${(props) => props.theme.blues[2]};
+    color: black;
   }
   .Form {
     justify-items: center;
@@ -91,7 +91,7 @@ const MiniStyledPage = styled.div`
     background: ${(props) => props.theme.pureWhite};
     width: 100%;
     border-radius: 0.5rem;
-    color: ${(props) => props.theme.blues[2]};
+    color: black;
   }
 `;
 
@@ -117,7 +117,7 @@ const MinimStyledPage = styled.div`
     background: ${(props) => props.theme.pureWhite};
     width: 100%;
     border-radius: 0.5rem;
-    color: ${(props) => props.theme.blues[2]};
+    color: black;
   }
   .Form {
     justify-items: center;
@@ -152,7 +152,7 @@ const BigStyledPage = styled.div`
     background: ${(props) => props.theme.pureWhite};
     width: 100%;
     border-radius: 0.5rem;
-    color: ${(props) => props.theme.blues[2]};
+    color: black;
   }
   .Form {
     justify-items: center;
@@ -186,7 +186,7 @@ const BiggestStyledPage = styled.div`
     background: ${(props) => props.theme.pureWhite};
     width: 100%;
     border-radius: 0.5rem;
-    color: ${(props) => props.theme.blues[2]};
+    color: black;
   }
   .Form {
     justify-items: center;
@@ -220,7 +220,7 @@ const MediumStyledPage = styled.div`
     background: ${(props) => props.theme.pureWhite};
     width: 100%;
     border-radius: 0.5rem;
-    color: ${(props) => props.theme.blues[2]};
+    color: black;
   }
   .Form {
     justify-items: center;

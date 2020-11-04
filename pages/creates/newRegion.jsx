@@ -1,11 +1,11 @@
 import React from "react";
-import NewRegionHooks from "../../src/components/region/NewRegionHooks";
+import NewRegionMui from "../../src/components/region/NewRegionMui";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
 const newRegion = () => {
   return (
     <GatedSignin>
-      <NewRegionHooks />
+      <NewRegionMui />
     </GatedSignin>
   );
 };

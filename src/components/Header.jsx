@@ -1,6 +1,5 @@
 import Link from "next/link";
 import MegaMenu from "./mega-menu/MegaMenu";
-import Burger from "./mega-menu/Burger";
 import styled from "styled-components";
 import NProgress from "nprogress";
 import Router from "next/router";
@@ -41,10 +40,10 @@ const StyledHeader = styled.div`
     font-weight: bold;
     font-family: "Roboto Slab";
     letter-spacing: 0.3rem;
-    background: ${(props) => props.theme.pureWhite};
+    background: white;
     a {
     align-items:center;
-        color: ${(props) => props.theme.blues[2]};
+        color: black;
     padding-bottom:2rem;
     padding:0 2rem;
         /* background: ${(props) => props.theme.pureWhite}; */
@@ -63,8 +62,8 @@ const StyledHeader = styled.div`
     align-items: center;
     text-align: center;
     letter-spacing: 0.15rem;
-    color: ${(props) => props.theme.pureWhite};
-    background: ${(props) => props.theme.blues[2]};
+    color: white;
+    background: black;
         padding:0  2rem;
     }
 
@@ -117,10 +116,6 @@ const Header = () => (
               <Link href="/creates/login">
                 <a>SYGEFEX</a>
               </Link>
-            </div>
-
-            <div className="burger">
-              <Burger />
             </div>
           </div>
           {me && (

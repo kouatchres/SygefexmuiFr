@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import Signout from "../user/Signout";
-import Signup from "../user/Signup";
 
 const ToolBarNavItem = styled.div`
   /* padding: 1.5rem; */
@@ -23,13 +22,13 @@ body {
   padding: 0;
 }
 nav {
-  background: ${(props) => props.theme.blues[2]};
+  background:black;
   margin: 0;
   padding: 0 2rem;
   height: 3.5rem;
   align-items:center;
   width: 100vw;
-  color: ${(props) => props.theme.pureWhite}
+  color:white
 }
 
 nav ul {
@@ -45,10 +44,10 @@ nav li {
 nav a {
   text-decoration: none;
   display: block;
-  color: ${(props) => props.theme.pureWhite};
+  color:white;
   padding:0  0.5rem;
     :hover{
-    color: ${(props) => props.theme.britishLightBlue};
+    /* color: ${(props) => props.theme.britishLightBlue}; */
 
   }
 }
@@ -56,8 +55,8 @@ nav a {
 nav li:hover {
   border-top-right-radius: 0.8rem;
   border-top-left-radius: 0.8rem;
-  background: ${(props) => props.theme.pureWhite};
-  color: ${(props) => props.theme.britishBlue};
+  background:white;
+  color: black;
 
 }
   
@@ -72,13 +71,13 @@ nav li:hover {
   .menu-sub {
   width: 100 %;
   position: absolute;
-  background: ${(props) => props.theme.pureWhite};
-  color: ${(props) => props.theme.britishBlue};
+  background:white;
+  color: black;
   display: none;
   padding: 1rem;
   border-bottom-right-radius: 0.8rem;
   border-bottom-left-radius: 0.8rem;
-  box-shadow:${(props) => props.theme.formBS};
+  /* box-shadow:${(props) => props.theme.formBS}; */
 }
 nav li:hover .menu-sub {
   display: block;
@@ -90,7 +89,7 @@ nav li:hover .menu-sub {
   margin: 0;
   padding: 0;
   font-size: 1.2rem;
-  color: ${(props) => props.theme.britishBlue};
+  color: black;
   /* margin: 0.1rem; */
 }
 
@@ -100,8 +99,8 @@ nav li:hover .menu-sub {
   .menu-sub-user {
   width: 70 %;
   position: absolute;
-  background: ${(props) => props.theme.blues[2]};
-  color: ${(props) => props.theme.pureWhite};
+  background:black;
+  color:white;
   display: none;
   padding: 1rem;
   border-bottom-right-radius: 0.8rem;
@@ -117,7 +116,7 @@ nav li:hover .menu-sub-user {
   margin: 0;
   padding: 0;
   font-size: 1.2rem;
-  color: ${(props) => props.theme.pureWhite};
+  color:white;
   /* margin: 0.1rem; */
 }
 
@@ -127,7 +126,7 @@ nav li:hover .menu-sub-user {
   .menu-category {
   font-size: 1rem;
   margin-top: 0;
-  color: ${(props) => props.theme.blues[2]};
+  color: black;
   margin-bottom: 0.5rem;
   text-align: left;
   text-transform: uppercase;
@@ -166,7 +165,7 @@ hr {
     right:0;
     height:90vh;
     top:3.5rem;
-    background: ${(props) => props.theme.blues[2]};
+    background: black;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -196,10 +195,9 @@ const MegaMenu = () => (
                   <h3 className="menu-category">S'enregistrer</h3>
                   <hr />
                   <Link href="/signup">
-                  <a>Ouverture de compte</a>
+                    <a>Ouverture de compte</a>
                   </Link>
                   <hr />
-                  
                 </ul>
                 <ul>
                   <h3 className="menu-category">Region</h3>
