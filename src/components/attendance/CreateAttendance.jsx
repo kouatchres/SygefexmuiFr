@@ -1,19 +1,21 @@
 import React from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import { MinimStyledPage } from "../styles/StyledPage";
 import Error from "../ErrorMessage.js";
-import styled from "styled-components";
 import useForm from "../utils/useForm";
-import * as Yup from "yup";
-import { Formik, Form } from "formik";
-
+import { TextField } from "formik-material-ui";
+import { Formik, Form, Field } from "formik";
+import SygefexMuiSelect from "../muiComponents/controls/SygefexMuiSelect";
 import {
-  SygefexSelect,
-  SygexInput,
-  StyledForm,
-  ButtonStyled,
-  StyledButton,
-} from "../utils/FormInputs";
+  Grid,
+  Typography,
+  LinearProgress,
+  Paper,
+  MenuItem,
+  Button,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import * as Yup from "yup";
+
 import {
   getObjectFromID,
   getSelectedObject,
@@ -31,69 +33,99 @@ import {
   getRegisteredCandidatesPerSpecialty,
   getSingleCenterQuery,
 } from "../queries&Mutations&Functions/Queries";
-import { FormikRadio } from "@dccs/react-formik-mui";
-import { FormLabel, RadioGroup } from "@material-ui/core";
 
-const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  /* min-width: 13rem; */
-  margin: 0 1rem;
-`;
+// import { FormikRadio } from "@dccs/react-formik-mui";
+// import { FormLabel, RadioGroup } from "@material-ui/core";
 
-const WholeControls = styled.div`
-  display: flex;
-  flex-direction: Column;
-`;
+const useStyles = makeStyles((theme) => ({
+  MuiGrid: {
+    root: {
+      margin: theme.spacing(3),
+      paddingLeft: "1rem",
+      paddingRight: "1rem",
+    },
+  },
+  root: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  typographyStyled: {
+    display: "grid",
+    placeItems: "center",
+    alignItems: "center",
+    justifyItems: "center",
+  },
 
-const RadioControls = styled.div`
-  display: flex;
-  flex-direction: column;
-  /* min-width: 17rem; */
-`;
+  pageStyled: {
+    display: "grid",
+    placeItems: "center",
+    marginTop: "2rem",
+    padding: "1rem",
+    width: "100%",
+    // border: "0.2rem solid #222aa5",
+  },
 
-const RadioButtons = styled.div`
-margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  padding-left: 1rem;
-  label {
-    font-size: 1.3rem;
-  }
- 
-  align-items: center;
-  /* background: ${(props) => props.theme.blues[3]}; */
-  .RadioSet {
-    FormikRadio{
-        font-size:1.5rem
-    }
-    padding: 0 1rem;
+  itemsStyled: {
+    marginTop: "2rem",
+    padding: "1rem",
+    minWidth: "100%",
+    border: "0.2rem solid #212af5",
+  },
 
-    display: flex;
-    flex-direction: row;
-    label {
-    font-size: 1.3rem;
-  }
-  }
-`;
+  formGroupStyled: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyItems: "center",
+  },
+  
+
+  allControls: {
+    paddingTop: "0.1rem",
+    display: "grid",
+    placeItems: "center",
+    border: "0.1rem solid #cbdf24",
+  },
+
+  controlItem: {
+    minWidth: "80%",
+  },
+
+  headerControls: {
+    // width: "100%",
+    // paddingTop: "0.1rem",
+    display: "grid",
+    placeItems: "center",
+    // border: "0.5rem solid #0020e0",
+  },
+
+  MuiInput: {
+    paddingBottom: "1rem",
+    minWidth: "90%",
+  },
+}));
 
 const validationSchema = Yup.object().shape({
-  collected: Yup.string().required(
-    "Indiquer si Le(a) candidat(e) a pris le materiel de composition, est Obligatoire"
-  ),
-  handin: Yup.string().required(
-    "Indiquer si Le(a) candidat(e) a remis sa feuille de composition, est Obligatoire"),
-  })
+  // collected: Yup.string().required(
+  //   "Indiquer si Le(a) candidat(e) a pris le materiel de composition, est Obligatoire"
+  // ),
+  // handin: Yup.string().required(
+  //   "Indiquer si Le(a) candidat(e) a remis sa feuille de composition, est Obligatoire"
+  // ),
+});
 const CreateAttendance = () => {
-  const [state, setState, handleReactSelectChange] = useForm({
-    centerExamSessionSpecialtyID: "",
-    centerNumber: null,
-    examID: "",
-    sessionID: "",
-    educTypeID: "",
-    specialtyID: "",
-    subjectSpecialty: "",
-  });
+  const classes = useStyles();
+  const [state, setState, handleReactSelectChange, handleInputChange] = useForm(
+    {
+      centerExamSessionSpecialtyID: "",
+      centerNumber: null,
+      examID: "",
+      sessionID: "",
+      educTypeID: "",
+      specialtyID: "",
+      subjectSpecialty: "",
+    }
+  );
 
   const initialValues = {
     centerNumber: null,
@@ -104,7 +136,7 @@ const CreateAttendance = () => {
   };
   const handleChange = (e) => {
     const { name, value, type } = e.target;
-    const val = (type === "number") ? parseInt(value) : value;
+    const val = type === "number" ? parseInt(value) : value;
     setState({ [name]: val });
   };
 
@@ -117,12 +149,6 @@ const CreateAttendance = () => {
   const getEducationTypes = dataEducType && dataEducType.educationTypes;
   const refinedEducTypes =
     getEducationTypes && removeTypename(getEducationTypes);
-  const getEducTypeOptions =
-    refinedEducTypes &&
-    refinedEducTypes.map((item) => ({
-      value: item.id,
-      label: item.educationTypeName,
-    }));
 
   const { data: dataExams, loading: loadingExams, error: errExams } = useQuery(
     getAllExamsQuery
@@ -136,10 +162,9 @@ const CreateAttendance = () => {
   const getExamName = refinedExams && {
     ...getSelectedObject(refinedExams, state.examID),
   };
-  const getExamsOptions =
-    getExams &&
-    getExams.map((item) => ({ value: item.id, label: item.examName }));
 
+  console.dir({ getExamName });
+  console.dir({ refinedExams });
   const {
     data: dataSession,
     loading: loadingSession,
@@ -153,12 +178,6 @@ const CreateAttendance = () => {
   const getSessionName = refinedSessions && {
     ...getSelectedObject(refinedSessions, state.sessionID),
   };
-  const getSessionsOptions =
-    refinedSessions &&
-    refinedSessions.map((item) => ({
-      value: item.id,
-      label: item.sessionName,
-    }));
 
   const {
     data: dataExamSessions,
@@ -197,7 +216,7 @@ const CreateAttendance = () => {
       },
     }
   );
-
+  console.dir({ state });
   const getCenterExamSessionsByCode =
     dataCES && dataCES.centerExamSessionsByCode;
   const refinedCenterExamSessions =
@@ -205,6 +224,7 @@ const CreateAttendance = () => {
   // transform the array into a single object
   const getCESID = refinedCenterExamSessions && refinedCenterExamSessions[0];
 
+  console.dir({ getCESID });
   const {
     data: dataSpecialtyCES,
     loading: loadingSpecialtyCES,
@@ -212,7 +232,7 @@ const CreateAttendance = () => {
   } = useQuery(getAllSpecialtiesOfACenterExamSessionQuery, {
     variables: getCESID,
   });
-
+  console.dir({ dataSpecialtyCES });
   const getCenterExamSession =
     dataSpecialtyCES && dataSpecialtyCES.centerExamSession;
   const { centerExamSessionSpecialty } = { ...getCenterExamSession };
@@ -221,42 +241,39 @@ const CreateAttendance = () => {
     centerExamSessionSpecialty &&
     centerExamSessionSpecialty.map((item) => item);
   const refinedCESS = newSpecialty && removeTypename(newSpecialty);
-  const getCESSOptions =
-    refinedCESS &&
-    refinedCESS.map((item) => ({
-      value: item.id.concat("/", item.specialty.id),
-      label: item.specialty.specialtyName,
-    }));
 
-  const getCESSSubjIDs =state.centerExamSessionSpecialtyID && state.centerExamSessionSpecialtyID.split("/");
-
+  const getCESSSubjIDs =
+    state.centerExamSessionSpecialtyID &&
+    state.centerExamSessionSpecialtyID.split("/");
+  console.dir({ getCESSSubjIDs });
   const {
     data: dataRegistration,
     loading: loadingReg,
     error: errReg,
   } = useQuery(getRegisteredCandidatesPerSpecialty, {
-    skip:getCESSSubjIDs  && !getCESSSubjIDs[0],
-    variables: { id: getCESSSubjIDs &&  getCESSSubjIDs[0] },
+    skip: getCESSSubjIDs && !getCESSSubjIDs[0],
+    variables: { id: getCESSSubjIDs && getCESSSubjIDs[0] },
   });
 
   const { centerExamSessionSpecialty: CESS } = { ...dataRegistration };
   const { registration } = { ...CESS };
   const getCandOptions =
     registration &&
-    registration.map((item) => ({
-      value: item.candExamSecretCode,
-      label: item.candidate.cand1stName.concat(
-        item.candidate.cand2ndName,
-        item.candRegistrationNumber
-      ),
-    }));
+    registration.map((item) => {
+      <MenuItem key={item.candExamSecretCode}>
+        {item.item.candidate.cand1stName.concat(
+          item.candidate.cand2ndName,
+          item.candRegistrationNumber
+        )}
+      </MenuItem>;
+    });
 
   const {
     data: dataSubjSpecialty,
     loading: loadingSubjSpecialty,
     error: errSubjSpecialty,
   } = useQuery(getAllSubjectSpecialtiesOfASpecialtyQuery, {
-    skip: getCESSSubjIDs &&  !getCESSSubjIDs[1],
+    skip: getCESSSubjIDs && !getCESSSubjIDs[1],
     variables: { id: getCESSSubjIDs && getCESSSubjIDs[1] },
   });
 
@@ -267,11 +284,9 @@ const CreateAttendance = () => {
     subjectSpecialty && removeTypename(subjectSpecialty);
   const getSubjectSpecialtyOptions =
     refinedSubjectSpecialty &&
-    refinedSubjectSpecialty.map((item) => ({
-      id: item.id,
-      value: item.id,
-      label: item.subject.subjectName,
-    }));
+    refinedSubjectSpecialty.map((item) => {
+      <MenuItem key={item.id}>{item.item.subject.subjectName}</MenuItem>;
+    });
 
   const [createAttendance, { loading, error }] = useMutation(
     createAttendanceMutation
@@ -286,7 +301,8 @@ const CreateAttendance = () => {
           variables: {
             ...values,
             candExamSecretCode: values.candExamSecretCode.value,
-            centerExamSessionSpecialty:getCESSSubjIDs && getObjectFromID(getCESSSubjIDs[0]),
+            centerExamSessionSpecialty:
+              getCESSSubjIDs && getObjectFromID(getCESSSubjIDs[0]),
             subjectSpecialty:
               refinedSubjectSpecialty &&
               getObjectFromID(values.subjectSpecialty.value),
@@ -299,157 +315,196 @@ const CreateAttendance = () => {
         }, 400);
       }}
     >
-      {({ setFieldValue, isSubmitting, isValid, dirty }) => {
+      {({ submitForm, setFieldValue, isSubmitting }) => {
         return (
-          <MinimStyledPage>
-            <h4>Présence des candidats à l'Ecrit</h4>
-            <Error
-              error={
-                error ||
-                errCenter ||
-                errExams ||
-                errSession ||
-                errExamSessions ||
-                errSpecialtyCES ||
-                errEducType ||
-                errSubjSpecialty ||
-                errReg
-              }
-            />
+          <Paper className={classes.pageStyled}>
+            <Form>
+              {(isSubmitting || loading) && <LinearProgress />}
+              <Grid container>
+                <Grid container>
+                  <Grid item xs={12}>
+                    <Error
+                      error={
+                        error ||
+                        errCenter ||
+                        errExams ||
+                        errSession ||
+                        errExamSessions ||
+                        errSpecialtyCES ||
+                        errEducType ||
+                        errSubjSpecialty ||
+                        errReg
+                      }
+                    />
+                  </Grid>
+                </Grid>
 
-            <StyledForm
-              disabled={
-                isSubmitting ||
-                loadingExams ||
-                loadingSession ||
-                loadingCES ||
-                loadingExamSession ||
-                loading ||
-                loadingSpecialtyCES ||
-                loadingEducType ||
-                loadingSubjSpecialty ||
-                loadingCenter ||
-                loadingReg
-              }
-              aria-busy={
-                isSubmitting ||
-                loadingExams ||
-                loadingSession ||
-                loadingCES ||
-                loadingExamSession ||
-                loading ||
-                loadingSpecialtyCES ||
-                loadingEducType ||
-                loadingSubjSpecialty ||
-                loadingCenter ||
-                loadingReg
-              }
-            >
-              <Form>
-                <WholeControls>
-                  <InputGroup>
-                    <SygexInput
-                      value={centerByNumber && centerByNumber.centerCode || "" }
+                <Grid container>
+                  <Grid item xs={12} className={classes.MuiGrid}>
+                    <Typography
+                      variant="h6"
+                      className={classes.typographyStyled}
+                    >
+                      Présence des candidats à l'Ecrit
+                    </Typography>
+                  </Grid>
+                </Grid>
+
+                <Grid container>
+                  <Grid item direction="column" xs={12} sm={6}>
+                    <Field
+                      component={TextField}
+                      value={
+                        (centerByNumber && centerByNumber.centerCode) || ""
+                      }
                       name="centerName"
                       type="text"
                       label=" Nom du centre"
                     />
-                    <SygexInput
+                    <Field
+                      component={TextField}
                       onChange={handleChange}
                       name="centerNumber"
-                      value={state.centerNumber && state.centerNumber }
+                      value={state.centerNumber && state.centerNumber}
                       type="number"
                       label="Numéro du centre"
                       disabled={isSubmitting}
                     />
-
-                    <SygefexSelect
-                      onChange={handleReactSelectChange}
+                    <Field
+                      select
+                      component={TextField}
+                      helperText="Type d'Enseignement"
+                      onChange={handleInputChange}
                       name="educTypeID"
-                      options={getEducTypeOptions}
-                      placeholder={"Type d'enseignement"}
                       disabled={isSubmitting}
-                    />
-                    <SygefexSelect
-                      onChange={handleReactSelectChange}
+                    >
+                      <MenuItem>Type d'enseignement</MenuItem>
+                      {refinedEducTypes &&
+                        refinedEducTypes.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.educationTypeName}
+                          </MenuItem>
+                        ))}
+                    </Field>
+                    <Field
+                      component={TextField}
+                      select
+                      onChange={handleInputChange}
                       name="sessionID"
-                      options={getSessionsOptions}
-                      placeholder={"La Session"}
                       disabled={isSubmitting}
+                      helperText="Session"
+                    >
+                      {refinedSessions &&
+                        refinedSessions.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.sessionName}
+                          </MenuItem>
+                        ))}
+                    </Field>
+                    <SygefexMuiSelect
+                      name="position"
+                      label="position"
+                      variant="standard"
+                      options={
+                        refinedEducTypes &&
+                        refinedEducTypes.map((item) => (
+                          <MenuItem key={item.id} value={item}>
+                            {item.educationTypeName}
+                          </MenuItem>
+                        ))
+                      }
                     />
-                    <SygefexSelect
-                      onChange={handleReactSelectChange}
+                    <SygefexMuiSelect
+                      name="opposition"
+                      label="opposition"
+                      variant="standard"
+                      options={
+                        getExams &&
+                        getExams.map((item) => (
+                          <MenuItem key={item.id} value={item}>
+                            {item.examName}
+                          </MenuItem>
+                        ))
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} className={classes.MuiGrid}>
+                    <Field
+                      helperText="Examen"
+                      component={TextField}
+                      select
+                      onChange={handleInputChange}
                       name="examID"
-                      options={getExamsOptions}
-                      placeholder={"L'Examen"}
                       disabled={isSubmitting}
-                    />
-                    <SygefexSelect
-                      onChange={handleReactSelectChange}
+                    >
+                      {getExams &&
+                        getExams.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.examName}
+                          </MenuItem>
+                        ))}
+                    </Field>
+
+                    <Field
+                      select
+                      component={TextField}
+                      helperText="Specialty"
+                      onChange={handleInputChange}
                       name="centerExamSessionSpecialtyID"
-                      options={getCESSOptions}
-                      placeholder={"Les Spécialités"}
                       disabled={isSubmitting}
-                    />
-                    <SygefexSelect
+                    >
+                      {refinedEducTypes &&
+                        refinedEducTypes.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.educationTypeName}
+                          </MenuItem>
+                        ))}
+                    </Field>
+
+                    <Field
+                      component={TextField}
+                      select
+                      helperText="Matiere"
                       onChange={(value) =>
                         setFieldValue("subjectSpecialty", value)
                       }
                       name="subjectSpecialty"
-                      placeholder={"les Matières"}
-                      options={getSubjectSpecialtyOptions}
                       disabled={isSubmitting}
-                    />
-                    <SygefexSelect
+                    >
+                      {refinedEducTypes &&
+                        refinedEducTypes.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.educationTypeName}
+                          </MenuItem>
+                        ))}
+                    </Field>
+
+                    <Field
+                      component={TextField}
+                      select
+                      helperText="Code Candidat"
                       onChange={(value) =>
                         setFieldValue("candExamSecretCode", value)
                       }
                       name="candExamSecretCode"
-                      options={getCandOptions}
-                      placeholder={"Candidats par Spécialité"}
                       disabled={isSubmitting}
-                    />
+                    >
+                      {refinedEducTypes &&
+                        refinedEducTypes.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.educationTypeName}
+                          </MenuItem>
+                        ))}
+                    </Field>
 
-                    <RadioControls>
-                      <RadioButtons>
-                        <FormLabel>Collecte Des Materiels</FormLabel>
-                        <RadioGroup name="collected" className="RadioSet">
-                          <FormikRadio
-                            label="Oui"
-                            name="collected"
-                            value="Oui"
-                          />
-                          <FormikRadio
-                            label="Non"
-                            name="collected"
-                            value="Non"
-                          />
-                        </RadioGroup>
-                      </RadioButtons>
-                      <RadioButtons>
-                        <FormLabel>Remise Des Copies</FormLabel>
-                        <RadioGroup name="handin" className="RadioSet">
-                          <FormikRadio label="Oui" name="handin" value="Oui" />
-                          <FormikRadio label="Non" name="handin" value="Non" />
-                        </RadioGroup>
-                      </RadioButtons>
-                    </RadioControls>
-                  </InputGroup>
-
-                  <div>
-                    <ButtonStyled>
-                      <StyledButton
-                        type="submit"
-                        disabled={!(dirty && isValid) || isSubmitting}
-                      >
-                        Valid{isSubmitting ? "ation en cours" : "er"}
-                      </StyledButton>
-                    </ButtonStyled>
-                  </div>
-                </WholeControls>
-              </Form>
-            </StyledForm>
-          </MinimStyledPage>
+                    <Button onChange={submitForm} disabled={isSubmitting}>
+                      Valid{isSubmitting ? "ation en cours" : "er"}
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Form>
+          </Paper>
         );
       }}
     </Formik>

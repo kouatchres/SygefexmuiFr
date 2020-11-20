@@ -163,7 +163,7 @@ const CreateNewCandidate = () => {
           variables: {
             ...values,
             image: photo.image,
-            candCode: uniqueCodeGen(12),
+            // candCode: uniqueCodeGen(12),
           },
         });
         Router.push({

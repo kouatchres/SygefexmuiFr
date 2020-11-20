@@ -1,56 +1,101 @@
-import React, { useState, useEffect } from "react";
-import { getAllRegionsQuery } from "../queries&Mutations&Functions/Queries";
-import SygefexText from "../utils/table/ui/SygefexText";
-import DataTable from "../utils/table/DataTable";
-import Tr from "../utils/table/tr";
-import styled from "styled-components";
+import React, { forwardRef, useEffect, useState } from "react";
+import MaterialTable from "material-table";
+import AddBox from "@material-ui/icons/AddBox";
+import { Paper } from "@material-ui/core";
+import ArrowDownward from "@material-ui/icons/ArrowDownward";
+import Check from "@material-ui/icons/Check";
+import ChevronLeft from "@material-ui/icons/ChevronLeft";
+import ChevronRight from "@material-ui/icons/ChevronRight";
+import Clear from "@material-ui/icons/Clear";
+import DeleteOutline from "@material-ui/icons/DeleteOutline";
+import Edit from "@material-ui/icons/Edit";
+import FilterList from "@material-ui/icons/FilterList";
+import FirstPage from "@material-ui/icons/FirstPage";
+import LastPage from "@material-ui/icons/LastPage";
+import Remove from "@material-ui/icons/Remove";
+import SaveAlt from "@material-ui/icons/SaveAlt";
+import Search from "@material-ui/icons/Search";
+import ViewColumn from "@material-ui/icons/ViewColumn";
+import { makeStyles } from "@material-ui/core/styles";
 import { useApolloClient } from "@apollo/react-hooks";
+import { getAllRegionsQuery } from "../queries&Mutations&Functions/Queries";
 
-const HeaderStyled = styled.tr`
-  display: grid;
-  grid-template-columns: 3.8fr 2.5fr 2fr;
-  td:nth-child(1) {
-    min-width: 20rem;
-  }
-
-  td:nth-child(2) {
-    min-width: 6rem;
-  }
-  td:nth-child(3) {
-    min-width: 5rem;
-  }
-`;
-
-const RowStyled = styled.tr`
-  td:nth-child(3) {
-    min-width: 5rem;
-  }
-  td:nth-child(1) {
-    min-width: 20rem;
-  }
-
-  td:nth-child(2) {
-    min-width: 6rem;
-  }
-  display: grid;
-  grid-template-columns: 3.8fr 2.5fr 2fr;
-`;
-
-const TablePresentation = styled.div`
-  margin: 0 auto;
-  display: grid;
-  min-width: 80rem;
-  grid-auto-flow: row;
-`;
-
-const pageData = ({ data, per = 20, page = 1 }) => {
-  return data.slice(per * (page - 1), per * page);
+const tableIcons = {
+  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+  DetailPanel: forwardRef((props, ref) => (
+    <ChevronRight {...props} ref={ref} />
+  )),
+  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  PreviousPage: forwardRef((props, ref) => (
+    <ChevronLeft {...props} ref={ref} />
+  )),
+  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
+  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-const searchableColumns = ["regName", "regCode", "id"];
+const useStyles = makeStyles({
+  stickyActionsColumn: {
+    "& table:first-child": {
+      "& tr": {
+        "& td:first-child, th:first-child": {
+          backgroundColor: "#f5f5f5",
+          position: "sticky",
+          left: 0,
+          zIndex: 10,
+        },
+        "& th:first-child": {
+          zIndex: 10,
+        },
+      },
+    },
+  },
+  stickyHeader: {
+    "& table:first-child": {
+      "& tr": {
+        "& th": {
+          backgroundColor: "#5aa193",
+          position: "sticky",
+          top: "4rem",
+          zIndex: 10,
+        },
+        "& th": {
+          zIndex: 10,
+        },
+      },
+    },
+  },
+});
 
-const RegionList = ({}) => {
+const RegionList = () => {
+  const classes = useStyles();
   const client = useApolloClient();
+
+  const [state, setState] = useState({
+    columns: [
+      {
+        field: "regName",
+        title: "Region Name",
+      },
+      {
+        field: "regCode",
+        title: "Region Code",
+      },
+      { field: "id", title: "ID" },
+    ],
+    data: [],
+  });
+
   const [regions, setRegions] = useState([]);
 
   const loadRegionData = async () => {
@@ -64,124 +109,76 @@ const RegionList = ({}) => {
     console.log(regions);
     setRegions(regions);
     console.log(regions);
-    setRegions(regions);
-    setState((prev) => ({ ...prev, data: pageData({ data: regions }) }));
+    setState((prev) => ({ ...prev, data: regions }));
   };
 
   useEffect(() => {
     loadRegionData();
-    console.dir(state.data);
   }, []);
-
-  const [state, setState] = useState({
-    data: pageData({ data: [] }),
-    loading: false,
-    page: 1,
-    sortedBy: null,
-  });
-  const [query, setQuery] = useState("");
-  const [additionalData, setAdditionalData] = useState([]);
-
-  console.dir(pageData({ data: regions }));
-
-  useEffect(() => {
-    if (!state.sortedBy) return;
-    const sortKey = Object.keys(state.sortedBy)[0];
-    const direction = state.sortedBy[sortKey];
-
-    setState((prev) => ({
-      ...prev,
-      data: prev.data.sort((a, b) => {
-        return direction === "ascending"
-          ? a[sortKey].localeCompare(b[sortKey])
-          : b[sortKey].localeCompare(a[sortKey]);
-      }),
-    }));
-  }, [state.sortedBy]);
-
-  useEffect(() => {
-    setState((prev) => ({
-      ...prev,
-      data: search(regions),
-    }));
-  }, [query]);
-
-  const search = (data) => {
-    return (
-      data &&
-      data.filter((row) =>
-        searchableColumns.some(
-          (column) =>
-            row[column].toString().toLowerCase().indexOf(query.toLowerCase()) >
-            -1
-        )
-      )
-    );
-  };
-
-  const loadMore = () => {
-    console.log("loading more data");
-    if (state.loading) return;
-    setState((prev) => ({
-      ...prev,
-      loading: true,
-    }));
-
-    setState((prev) => ({
-      data: [...prev.data, ...pageData({ data: regions, page: prev.page + 1 })],
-      loading: false,
-      page: prev.page + 1,
-    }));
-  };
-
-  const toggleAdditionalData = (row) => {
-    setAdditionalData((prev) =>
-      additionalData.includes(row.id)
-        ? prev.filter((id) => row.id !== id)
-        : [...prev, row.id]
-    );
-  };
   console.dir(state.data);
   return (
-    <TablePresentation>
-      <SygefexText
-        placeholder="Type here to filter results"
-        value={query}
-        onChange={(val) => setQuery(val)}
-      />
-      <DataTable
-        loadMore={loadMore}
-        items={state.data}
-        renderHead={() => (
-          <RowStyled>
-            <Tr
-              label="ID"
-              sortedBy={state.sortedBy}
-              sort={{ key: "id", changer: setState }}
-            />
-            <Tr
-              label="Nom Region"
-              sortedBy={state.sortedBy}
-              sort={{ key: "regName", changer: setState }}
-            />
-            <Tr
-              label="Code Region"
-              sortedBy={state.sortedBy}
-              sort={{ key: "regCode", changer: setState }}
-            />
-          </RowStyled>
-        )}
-        renderRow={(row) => (
-          <HeaderStyled>
-            <td onClick={() => toggleAdditionalData(row)}>{row.id}</td>
-            <td onClick={() => toggleAdditionalData(row)}>{row.regName}</td>
-            <td onClick={() => toggleAdditionalData(row)}>{row.regCode}</td>
-          </HeaderStyled>
-        )}
-      />
-    </TablePresentation>
+    <Paper style={{ marginTop: "2rem" }}>
+      <div className={classes.stickyHeader}>
+        <MaterialTable
+          icons={tableIcons}
+          title="Users List"
+          columns={state.columns}
+          data={state.data}
+          options={{
+            paging: true,
+            pageSize: 10, // make initial page size
+            emptyRowsWhenPaging: false, //to make page size fix in case of less data rows
+            pageSizeOptions: [5, 10, 20], // rows selection options
+          }}
+          // editable={{
+          //   onRowAdd: (newData) =>
+          //     new Promise((resolve) => {
+          //       setTimeout(() => {
+          //         resolve();
+          //         setState((prevState) => {
+          //           const data = [...prevState.data];
+          //           data.push(newData);
+          //           return {
+          //             ...prevState,
+          //             data,
+          //           };
+          //         });
+          //       }, 400);
+          //     }),
+          //   onRowUpdate: (newData, oldData) =>
+          //     new Promise((resolve) => {
+          //       setTimeout(() => {
+          //         resolve();
+          //         if (oldData) {
+          //           setState((prevState) => {
+          //             const data = [...prevState.data];
+          //             data[data.indexOf(oldData)] = newData;
+          //             return {
+          //               ...prevState,
+          //               data,
+          //             };
+          //           });
+          //         }
+          //       }, 400);
+          //     }),
+          //   onRowDelete: (oldData) =>
+          //     new Promise((resolve) => {
+          //       setTimeout(() => {
+          //         resolve();
+          //         setState((prevState) => {
+          //           const data = [...prevState.data];
+          //           data.splice(data.indexOf(oldData), 1);
+          //           return {
+          //             ...prevState,
+          //             data,
+          //           };
+          //         });
+          //       }, 400);
+          //     }),
+          // }}
+        />
+      </div>
+    </Paper>
   );
 };
 export default RegionList;
-
-// url: "http://localhost:10000/show/results/candResults?id=ckfzupb6z8e2t0a35hr13yvq3",

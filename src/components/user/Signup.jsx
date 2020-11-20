@@ -1,41 +1,67 @@
 import React from "react";
-import { MinimStyledPage } from "../styles/StyledPage";
 import Error from "../ErrorMessage.js";
-import { Formik, Form } from "formik";
 import Link from "next/link";
-import {
-  SygexInput,
-  StyledForm,
-  ButtonStyled,
-  StyledButton,
-} from "../utils/FormInputs";
-import styled from "styled-components";
+import { Formik, Form, Field } from "formik";
+import { TextField } from "formik-material-ui";
+import { Grid, Typography, Paper, FormGroup, Button } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
 import { useMutation } from "@apollo/react-hooks";
 import { signupUserMutation } from "../queries&Mutations&Functions/Mutations";
-import { currentUserQuery } from "../queries&Mutations&Functions/Queries";
 
-const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 1rem;
-`;
-const AllControls = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const LoginStyled = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-items: left;
-  a {
-    display: block;
-    cursor: pointer;
-  }
-  h9 {
-    display: block;
-  }
-`;
+const useStyles = makeStyles({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    // fontSize: 100,
+  },
+  listStyled: {
+    display: "grid",
+    placeItems: "left",
+    listStyleType: "none",
+    margin: 0,
+    padding: 0,
+    paddingTop: "0.1rem",
+  },
+  pageStyled: {
+    display: "grid",
+    placeItems: "center",
+    marginTop: "2rem",
+    padding: "1rem",
+    height: "80vh",
+  },
+  formGroupStyled: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyItems: "center",
+    width: "90%",
+    // paddingLeft: "1rem",
+    // borderRadius: "0.5rem",
+  },
+  titleStyled: {
+    paddingTop: "1rem",
+    display: "grid",
+    placeItems: "center",
+    alignItems: "center",
+    justifyItems: "center",
+  },
+
+  allControls: {
+    paddingTop: "0.1rem",
+    border: "0.05rem solid #1254ac",
+    width: "20vw",
+    borderRadius: "0.5rem",
+  },
+  pap: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  contain: {
+    maxWidth: "20rem",
+  },
+});
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -48,22 +74,17 @@ const validationSchema = Yup.object().shape({
   password: Yup.string()
     .required("Mot de passe Obligatoire")
     .min(8, "Mot de passe, 8 characters au moins"),
-  confirmPassword: Yup.string()
-    .required("Confirme mot de passe Obligatoire")
-    .oneOf([Yup.ref("password")], "Les mots de passe ne correspondent pas")
-    .min(8, "Mot de passe, 8 characters au moins"),
 });
 
 const Signup = () => {
+  const classes = useStyles();
   const initialValues = {
     name: "",
     email: "",
     password: "",
   };
 
-  const [signup, { loading, error }] = useMutation(signupUserMutation, {
-    refetchQueries: ["currentUserQuery"],
-  });
+  const [signup, { loading, error }] = useMutation(signupUserMutation);
 
   return (
     <Formik
@@ -82,57 +103,82 @@ const Signup = () => {
         }, 200);
       }}
     >
-      {({ isSubmitting }) => {
+      {({ submitForm, isSubmitting }) => {
         return (
-          <MinimStyledPage>
-            <h4>Ouverture de compte</h4>
+          <Paper className={classes.pageStyled} elevation={15}>
             <Error error={error} />
-            <StyledForm disabled={isSubmitting} aria-busy={isSubmitting}>
-              <Form>
-                <AllControls>
-                  <InputGroup>
-                    <SygexInput
-                      name="email"
-                      type="email"
-                      label="Email"
-                      disabled={isSubmitting}
-                    />
-                    <SygexInput
-                      name="name"
-                      type="text"
-                      label="Nom"
-                      disabled={isSubmitting}
-                    />
-                    <SygexInput
-                      name="password"
-                      type="password"
-                      label="Mot de passe"
-                      disabled={isSubmitting}
-                    />
-                    <SygexInput
-                      name="confirmPassword"
-                      type="password"
-                      label="Confirme mot de passe"
-                      disabled={isSubmitting}
-                    />
-                  </InputGroup>
-                  <LoginStyled>
-                    <ul>
-                      <h9>Acceder a votre compte. </h9>
-                      <Link href="/creates/login">
-                        <a>Connectez-vous</a>
-                      </Link>
-                    </ul>
-                  </LoginStyled>
-                  <ButtonStyled>
-                    <StyledButton type="submit" disabled={isSubmitting}>
-                      Valid{isSubmitting ? "ation en cours" : "er"}
-                    </StyledButton>
-                  </ButtonStyled>
-                </AllControls>
-              </Form>
-            </StyledForm>
-          </MinimStyledPage>
+            <Form>
+              <Grid
+                paddingTop="0.1rem"
+                className={classes.allControls}
+                container
+                direction="column"
+                alignItems="center"
+                justifyItems="center"
+              >
+                <Typography className={classes.titleStyled} variant="h6">
+                  Créer un nouveau compte
+                </Typography>
+                <FormGroup
+                  className={classes.formGroupStyled}
+                  direction="column"
+                  alignItems="center"
+                  justifyItems="center"
+                >
+                  <Field
+                    name="email"
+                    component={TextField}
+                    type="email"
+                    label="Email"
+                    fullWidth
+                    disabled={isSubmitting || loading}
+                  />
+                </FormGroup>
+                <FormGroup
+                  className={classes.formGroupStyled}
+                  direction="column"
+                >
+                  <Field
+                    name="name"
+                    component={TextField}
+                    type="text"
+                    fullWidth
+                    label="Nom"
+                    disabled={isSubmitting || loading}
+                  />
+                </FormGroup>
+                <FormGroup
+                  className={classes.formGroupStyled}
+                  direction="column"
+                >
+                  <Field
+                    name="password"
+                    component={TextField}
+                    type="password"
+                    fullWidth
+                    label="Mot de passe"
+                    disabled={isSubmitting || loading}
+                  />
+                </FormGroup>
+                <Typography className={classes.titleStyled} variant="h6">
+                  Vous avez deja un compte?
+                </Typography>
+                <ul className={classes.listStyled}>
+                  <Link href="/creates/login">
+                    <a>Connectez-vous</a>
+                  </Link>
+                </ul>
+                <FormGroup
+                  className={classes.formGroupStyled}
+                  direction="column"
+                >
+                  <Button disabled={isSubmitting} onClick={submitForm}>
+                    Valid{isSubmitting ? "ation en cours" : "er"}
+                  </Button>
+                </FormGroup>
+              </Grid>
+            </Form>
+          </Paper>
         );
       }}
     </Formik>

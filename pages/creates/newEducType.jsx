@@ -1,14 +1,12 @@
 import React from "react";
-import CreateNewEducationTypeHook from "../../src/components/educationType/CreateNewEducationTypeHook";
+import NewEducationType from "../../src/components/educationType/NewEducationType";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
-const NewEducationType = () => {
+const newEducationType = () => {
   return (
-    <div>
-      <GatedSignin>
-        <CreateNewEducationTypeHook />
-      </GatedSignin>
-    </div>
+    <GatedSignin>
+      <NewEducationType />
+    </GatedSignin>
   );
 };
-export default NewEducationType;
+export default newEducationType;

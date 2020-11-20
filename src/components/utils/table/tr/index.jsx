@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import AscIcon from "../Icons/sort/ascending";
-import DesIcon from "../Icons/sort/descending";
+import AscIcon from "../../icons/sort/ascending";
+import DesIcon from "../../icons/sort/descending";
 
 const TitleStyled = styled.th`
   display: grid;

@@ -1,22 +1,28 @@
-
-import { useState } from 'react'
+import { useState } from "react";
 
 const useForm = (initialValues) => {
-    const [state, setState] = useState(initialValues)
+  const [state, setState] = useState(initialValues);
 
-    const handleInputChange = e => {
-        const { name, value, type } = e.target;
-        const val = type === "number" ? parseInt(value) : value;
-        setState(state => ({ ...state, [name]: val }));
-    };
+  const handleInputChange = (e) => {
+    const { name, value, type } = e.target;
+    console.log({ name, value });
+    const val = type === "number" ? parseInt(value) : value;
+    setState((state) => ({ ...state, [name]: val }));
+  };
 
-    const handleReactSelectChange = (value, action) => {
-        console.log(value.value);
-        console.log(action.name);
+  const handleReactSelectChange = (value, action) => {
+    console.log(value.value);
+    console.log(action.name);
 
-        setState(state => ({ ...state, [action.name]: value.value }))
-    }
+    setState((state) => ({ ...state, [action.name]: value.value }));
+  };
 
-    return [state, setState, handleReactSelectChange, handleInputChange]
-}
-export default useForm
+
+  return [
+    state,
+    setState,
+    handleReactSelectChange,
+    handleInputChange,
+  ];
+};
+export default useForm;

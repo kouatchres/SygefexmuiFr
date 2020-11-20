@@ -11,11 +11,11 @@
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/creates/newRegion": [
+    "/creates/muiComps": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/creates/login": [
+    "/creates/newSubDivision": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]

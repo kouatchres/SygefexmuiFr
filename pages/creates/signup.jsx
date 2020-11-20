@@ -1,11 +1,11 @@
-import React from 'react';
-import Signup from '../../src/components/user/Signup';
+import React from "react";
+import SignupMui from "../../src/components/user/SignupMui";
 
 const newUser = () => {
-	return (
-		<div>
-			<Signup />
-		</div>
-	);
+  return (
+    <div>
+      <SignupMui />
+    </div>
+  );
 };
 export default newUser;

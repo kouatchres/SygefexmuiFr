@@ -900,9 +900,44 @@ const getAllRegionsDivisionsAndTownsQuery = gql`
         divCode
         id
         subDivision {
+          id
+          subDivName
+          subDivCode
           town(orderBy: townName_ASC) {
             id
             townName
+            townCode
+          }
+        }
+      }
+    }
+  }
+`;
+
+const getAllRegionsDivisionsTownsCentersQuery = gql`
+  query getAllRegionsDivisionsTownsCentersQuery {
+    regions {
+      id
+      regName
+      regCode
+      division(orderBy: divName_ASC) {
+        divName
+        divCode
+        id
+        subDivision {
+          id
+          subDivName
+          subDivCode
+          town(orderBy: townName_ASC) {
+            id
+            townName
+            townCode
+            center(orderBy: centerName_ASC) {
+              id
+              centerName
+              centerCode
+              centerNumber
+            }
           }
         }
       }
@@ -1493,6 +1528,7 @@ export {
   getAllUsersQuery,
   singleExaminerQuery,
   getAllRegionsDivisionsAndTownsQuery,
+  getAllRegionsDivisionsTownsCentersQuery,
   getCandidateRegistrationInfoQuery,
   getCESExaminerQuery,
   getExaminerIDQuery,

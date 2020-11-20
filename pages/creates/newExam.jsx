@@ -1,14 +1,12 @@
 import React from "react";
-import CreateExam from "../../src/components/exam/CreateExam";
+import NewExam from "../../src/components/exam/NewExam";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
-const NewExam = () => {
+const newExam = () => {
   return (
-    <div>
-      <GatedSignin>
-        <CreateExam />
-      </GatedSignin>
-    </div>
+    <GatedSignin>
+      <NewExam />
+    </GatedSignin>
   );
 };
-export default NewExam;
+export default newExam;

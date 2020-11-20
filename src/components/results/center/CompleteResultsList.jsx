@@ -84,15 +84,7 @@ const searchableColumns = [
 const CompleteResultsList = ({ id }) => {
   const client = useApolloClient();
 
-  const [cand, setCand] = useState([]);
-  const [state, setState] = useState({
-    data: pageData({ data: [] }),
-    loading: false,
-    page: 1,
-    sortedBy: null,
-  });
-  const [query, setQuery] = useState("");
-  const [title, setTitle] = useState("");
+  const [state, setState] = useState([]);
   const [additionalData, setAdditionalData] = useState([]);
 
   const loadTitleData = async () => {
@@ -128,8 +120,7 @@ const CompleteResultsList = ({ id }) => {
       }));
     console.log({ registration });
     console.log(getCand);
-    setCand(getCand);
-    setState((prev) => ({ ...prev, data: getCand }));
+    setState(getCand);
   };
 
   useEffect(() => {

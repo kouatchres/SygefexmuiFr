@@ -1,14 +1,12 @@
 import React from "react";
-import SubDivHooks from "../../src/components/subDivision/SubDivHooks";
+import NewSubDivision from "../../src/components/subDivision/NewSubDivision";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
-const newSubDivision = (props) => {
+const newSubDivision = () => {
   return (
-    <div>
-      <GatedSignin>
-        <SubDivHooks />
-      </GatedSignin>
-    </div>
+    <GatedSignin>
+      <NewSubDivision />
+    </GatedSignin>
   );
 };
 export default newSubDivision;

@@ -4,7 +4,6 @@ import { Form, Formik } from "formik";
 import { BiggestStyledPage } from "../../styles/StyledPage";
 import { centerExamSessionForResultsQuery } from "../../queries&Mutations&Functions/Queries";
 import SeriesTitles from "./SeriesTitles";
-import Error from "../../ErrorMessage";
 import styled from "styled-components";
 import { StyledForm } from "../../utils/FormInputs";
 import useForm from "../../utils/useForm";

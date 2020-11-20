@@ -1,12 +1,12 @@
 import React from "react";
-import NewRegistrationHook from "../../src/components/registration/NewRegistrationHook";
+import RegistrationMui from "../../src/components/registration/RegistrationMui";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
 const newRegister = () => {
   return (
     <div>
       <GatedSignin>
-        <NewRegistrationHook />
+        <RegistrationMui />
       </GatedSignin>
     </div>
   );

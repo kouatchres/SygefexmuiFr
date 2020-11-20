@@ -269,16 +269,16 @@ const GenCenterResultsHook = () => {
 
                     <SygefexSelect
                       onChange={handleReactSelectChange}
-                      name="sessionID"
-                      options={getSessionsOptions}
-                      placeholder={"La Session"}
+                      name="examID"
+                      options={getExamsOptions}
+                      placeholder="L'Examen"
                       disabled={isSubmitting}
                     />
                     <SygefexSelect
                       onChange={handleReactSelectChange}
-                      name="examID"
-                      options={getExamsOptions}
-                      placeholder={"L'Examen"}
+                      name="sessionID"
+                      options={getSessionsOptions}
+                      placeholder="La Session"  
                       disabled={isSubmitting}
                     />
                   </InputGroup>

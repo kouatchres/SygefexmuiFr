@@ -153,7 +153,6 @@ const createNewReportMutation = gql`
 const createRegistrationMutation = gql`
   mutation createRegistrationMutation(
     $candidate: CandidateWhereUniqueInput!
-    $candExamSecretCode: String!
     $candExamSession: String!
     $candRegistrationNumber: String!
     $centerExamSession: CenterExamSessionWhereUniqueInput!
@@ -165,7 +164,6 @@ const createRegistrationMutation = gql`
   ) {
     createRegistration(
       candidate: $candidate
-      candExamSecretCode: $candExamSecretCode
       candExamSession: $candExamSession
       candRegistrationNumber: $candRegistrationNumber
       centerExamSession: $centerExamSession
@@ -548,7 +546,6 @@ const createCandidateMutation = gql`
     $cand3rdName: String
     $dadName: String
     $momName: String
-    $candCode: String
     $email: String!
     $image: String!
     $phoneNumb: Int
@@ -563,7 +560,6 @@ const createCandidateMutation = gql`
       dadName: $dadName
       momName: $momName
       cand3rdName: $cand3rdName
-      candCode: $candCode
       email: $email
       image: $image
       phoneNumb: $phoneNumb
@@ -637,7 +633,6 @@ const createExaminerMutation = gql`
     $examiner1stName: String!
     $examiner2ndName: String!
     $examinerOtherNames: String
-    $examinerCode: String!
     $examinerEmail: String!
     $examinerCNI: String!
     $examinerMatricule: String!
@@ -650,7 +645,6 @@ const createExaminerMutation = gql`
       examiner2ndName: $examiner2ndName
       examinerOtherNames: $examinerOtherNames
       examinerMatricule: $examinerMatricule
-      examinerCode: $examinerCode
       examinerCNI: $examinerCNI
       examinerEmail: $examinerEmail
       examinerImage: $examinerImage

@@ -13,7 +13,6 @@ import {
   ButtonStyled,
   StyledButton,
 } from "../utils/FormInputs";
-import { uniqueCodeGen } from "../queries&Mutations&Functions/Functions";
 import { FormikDatepicker, FormikRadio } from "@dccs/react-formik-mui";
 import { FormLabel, RadioGroup } from "@material-ui/core";
 
@@ -155,7 +154,7 @@ const CreateMultipleCandidates = () => {
           variables: {
             ...values,
             image: photo.image,
-            candCode: uniqueCodeGen(12),
+            // candCode: uniqueCodeGen(12),
           },
         });
         Router.push({

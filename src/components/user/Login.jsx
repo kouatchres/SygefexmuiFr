@@ -1,13 +1,19 @@
 import React from "react";
 import Error from "../ErrorMessage.js";
-import { Formik, Form, Field } from "formik";
-import { TextField, container, paper } from "formik-material-ui";
-import { Button, Grid, Box } from "@material-ui/core";
+import { ErrorMessage, Formik, Form } from "formik";
+import { TextField } from "formik-material-ui";
+import {
+  Grid,
+  Typography,
+  Paper,
+  Button,
+  LinearProgress,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { orange, red } from "@material-ui/core/colors";
 import Link from "next/link";
 import * as Yup from "yup";
 import { useMutation } from "@apollo/react-hooks";
+import SygefexMuiInput from "../muiComponents/controls/SygefexMuiInput";
 import { loginUserMutation } from "../queries&Mutations&Functions/Mutations";
 
 const useStyles = makeStyles({
@@ -16,18 +22,44 @@ const useStyles = makeStyles({
     flexDirection: "column",
     // fontSize: 100,
   },
+  divStyled: {
+    display: "grid",
+    placeItems: "center",
+    top: "2rem",
+    height: "90vh",
+  },
+  pageStyled: {
+    display: "grid",
+    placeItems: "center",
+    marginTop: "2rem",
+    padding: "1rem",
+    minWidth: "20%",
+  },
+  listStyled: {
+    display: "grid",
+    placeItems: "center",
+    listStyleType: "none",
+    margin: 0,
+    padding: 0,
+    paddingTop: "0.1rem",
+  },
+  titleStyled: {
+    display: "grid",
+    placeItems: "center",
+  },
 
   allControls: {
-    display: "flex",
-    flexDirection: "column",
+    display: "grid",
+    placeItems: "center",
+    paddingTop: "0.2rem",
+    border: "0.05rem solid #1254ac",
+    // width: "20vw",
+    borderRadius: "0.5rem",
+    // marginTop: "2rem",
   },
-  pap: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  contain: {
-    maxWidth: "20rem",
+  centerAll: {
+    display: "grid",
+    placeItems: "center",
   },
 });
 
@@ -72,58 +104,63 @@ const Login = () => {
     >
       {({ submitForm, isSubmitting }) => {
         return (
-          <div>
-            <h4>Acceder a son compte</h4>
-            <Error error={error} />
+          <div className={classes.centerAll}>
+            <Paper className={classes.pageStyled} elevation={3}>
+              <Form aria-busy={isSubmitting}>
+                {(isSubmitting || loading) && <LinearProgress />}
+                <Grid className={classes.centerAll} container>
+                  <Grid container className={classes.centerAll}>
+                    <Grid item>
+                      <Error error={error} />
+                      <Typography
+                        className={classes.titleStyled}
+                        variant="body1"
+                      >
+                        Se Connecter
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid item className={classes.centerAll}>
+                    <SygefexMuiInput
+                      name="email"
+                      component={TextField}
+                      type="email"
+                      fullWidth
+                      label="Email"
+                      size="small"
+                      variant="standard"
+                      disabled={isSubmitting || loading}
+                      helperText={<ErrorMessage name="email" />}
+                    />
+                    <SygefexMuiInput
+                      name="password"
+                      component={TextField}
+                      type="password"
+                      fullWidth
+                      label="password"
+                      size="small"
+                      variant="standard"
+                      disabled={isSubmitting || loading}
+                      helperText={<ErrorMessage name="password" />}
+                    />
+                    <Typography variant="body2" className={classes.centerAll}>
+                      Pas encore de compte?
+                    </Typography>
+                    <ul className={classes.listStyled}>
+                      <Typography variant="body2">
+                        <Link href="/creates/signup">
+                          <a>Créer un compte</a>
+                        </Link>
+                      </Typography>
+                    </ul>
 
-            <Form>
-              <Grid
-                container
-                direction="column"
-                alignItems="center"
-                justifyItems="center"
-                margin={0.5}
-                Style={{ minHeight: "100vh" }}
-                spacing={5}
-                background="orange"
-              >
-                <Field
-                  name="email"
-                  component={TextField}
-                  type="email"
-                  label="Email"
-                  disabled={isSubmitting || loading}
-                  style={{ marginBottom: "1rem" }}
-                />
-
-                <Field
-                  name="password"
-                  component={TextField}
-                  type="password"
-                  label="Mot de passe"
-                  disabled={isSubmitting || loading}
-                  style={{ marginBottom: "1rem" }}
-                />
-
-                <ul>
-                  <h6>Pas encore de compte?</h6>
-                  <Link href="/creates/signup">
-                    <a>Créez votre compte</a>
-                  </Link>
-                </ul>
-                <Box>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    disabled={isSubmitting}
-                    onClick={submitForm}
-                    style={{ marginBottom: "1rem" }}
-                  >
-                    Valid{isSubmitting ? "ation en cours" : "er"}
-                  </Button>
-                </Box>
-              </Grid>
-            </Form>
+                    <Button disabled={isSubmitting} onClick={submitForm}>
+                      Valid{isSubmitting ? "ation en cours" : "er"}
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Form>
+            </Paper>
           </div>
         );
       }}
@@ -131,3 +168,11 @@ const Login = () => {
   );
 };
 export default Login;
+
+// <Field
+//   name="password"
+//   component={TextField}
+//   type="password"
+//   label="Mot de passe"
+//   disabled={isSubmitting || loading}
+// />
