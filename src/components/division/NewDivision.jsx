@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Error from "../ErrorMessage.js";
 import * as Yup from "yup";
-import { ErrorMessage, Formik, Form } from "formik";
+import { TextField } from "material-ui-formik-components/TextField";
+import { Select } from "material-ui-formik-components/Select";
+import { ErrorMessage, Formik, Form, Field } from "formik";
 import {
   Grid,
   Typography,
@@ -10,10 +12,8 @@ import {
   LinearProgress,
   CircularProgress,
 } from "@material-ui/core";
+import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import { makeStyles } from "@material-ui/core/styles";
-import SygefexMuiInput from "../muiComponents/controls/SygefexMuiInput";
-import SygefexMuiSelect from "../muiComponents/controls/SygefexMuiSelect";
-import { useMutation, useApolloClient, useQuery } from "@apollo/react-hooks";
 import { getAllRegionsQuery } from "../queries&Mutations&Functions/Queries";
 import { getObjectFromID } from "../queries&Mutations&Functions/Functions";
 import { createDivisionMutation } from "../queries&Mutations&Functions/Mutations";
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
     placeItems: "center",
     marginTop: "2rem",
     padding: "1rem",
-    minWidth: "25%",
+    minWidth: "30%",
   },
   listStyled: {
     display: "grid",
@@ -136,7 +136,10 @@ const NewDivision = () => {
                       <Error error={error} />
                       <Typography
                         className={classes.titleStyled}
-                        variant="body1"
+                        color="primary"
+                        gutterBottom
+                        variant="h5"
+                        component="h6"
                       >
                         Nouveau Département
                       </Typography>
@@ -144,9 +147,10 @@ const NewDivision = () => {
                   </Grid>
                   <Grid container className={classes.centerAll}>
                     <Grid item className={classes.centerAll}>
-                      <SygefexMuiSelect
+                      <Field
+                        component={Select}
                         autocomplete="off"
-                        variant="standard"
+                        variant="outlined"
                         name="region"
                         label="La Région"
                         placeholder="la Région"
@@ -154,24 +158,26 @@ const NewDivision = () => {
                         options={getRegionsOptions}
                         helperText={<ErrorMessage name="region" />}
                       />
-                      <SygefexMuiInput
+                      <Field
+                        component={TextField}
                         autocomplete="off"
                         name="divName"
                         type="text"
                         label="Nom Département"
                         fullWidth
-                        variant="standard"
+                        variant="outlined"
                         disabled={isSubmitting || loading}
                         helperText={<ErrorMessage name="divName" />}
                       />
 
-                      <SygefexMuiInput
+                      <Field
+                        component={TextField}
                         autocomplete="off"
                         name="divCode"
                         type="text"
                         label="Code Département"
                         fullWidth
-                        variant="standard"
+                        variant="outlined"
                         disabled={isSubmitting || loading}
                         helperText={<ErrorMessage name="divCode" />}
                       />

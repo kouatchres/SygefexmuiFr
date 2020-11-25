@@ -264,11 +264,9 @@ const createCenterMutation = gql`
     $centerName: String!
     $centerNumber: Int
     $centerCode: String!
-    $centerSecretCode: String!
     $town: TownWhereUniqueInput!
   ) {
     createCenter(
-      centerSecretCode: $centerSecretCode
       centerName: $centerName
       centerNumber: $centerNumber
       centerCode: $centerCode

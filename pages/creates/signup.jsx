@@ -1,11 +1,7 @@
 import React from "react";
-import SignupMui from "../../src/components/user/SignupMui";
+import Signup from "../../src/components/user/Signup";
 
 const newUser = () => {
-  return (
-    <div>
-      <SignupMui />
-    </div>
-  );
+  return <Signup />;
 };
 export default newUser;

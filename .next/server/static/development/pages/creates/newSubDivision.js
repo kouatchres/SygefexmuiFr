@@ -237,138 +237,6 @@ DisplayError.defaultProps = {
 
 /***/ }),
 
-/***/ "./src/components/muiComponents/controls/SygefexMuiInput.jsx":
-/*!*******************************************************************!*\
-  !*** ./src/components/muiComponents/controls/SygefexMuiInput.jsx ***!
-  \*******************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/TextField */ "@material-ui/core/TextField");
-/* harmony import */ var _material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var formik__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! formik */ "formik");
-/* harmony import */ var formik__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(formik__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/styles */ "@material-ui/core/styles");
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__);
-var _jsxFileName = "E:\\sygefexMui\\sygefexMui-frontend\\src\\components\\muiComponents\\controls\\SygefexMuiInput.jsx";
-
-
-
-
-var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__["makeStyles"])(function (theme) {
-  return {
-    root: {
-      margin: theme.spacing(1)
-    }
-  };
-});
-
-var SygefexMuiInput = function SygefexMuiInput(props) {
-  var classes = useStyles();
-  var name = props.name,
-      label = props.label,
-      _props$type = props.type,
-      type = _props$type === void 0 ? "text" : _props$type,
-      _props$variant = props.variant,
-      variant = _props$variant === void 0 ? "outlined" : _props$variant,
-      helperText = props.helperText;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_2__["Field"], {
-    as: _material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_1___default.a,
-    name: name,
-    label: label,
-    fullWidth: true,
-    variant: variant,
-    type: type,
-    helperText: helperText,
-    className: classes.root,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 23
-    },
-    __self: this
-  });
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (SygefexMuiInput);
-
-/***/ }),
-
-/***/ "./src/components/muiComponents/controls/SygefexMuiSelect.jsx":
-/*!********************************************************************!*\
-  !*** ./src/components/muiComponents/controls/SygefexMuiSelect.jsx ***!
-  \********************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var formik_material_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! formik-material-ui */ "formik-material-ui");
-/* harmony import */ var formik_material_ui__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(formik_material_ui__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var formik__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! formik */ "formik");
-/* harmony import */ var formik__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(formik__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core */ "@material-ui/core");
-/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/styles */ "@material-ui/core/styles");
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4__);
-var _jsxFileName = "E:\\sygefexMui\\sygefexMui-frontend\\src\\components\\muiComponents\\controls\\SygefexMuiSelect.jsx";
-
-
-
-
-
-var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4__["makeStyles"])(function (theme) {
-  return {
-    root: {
-      margin: theme.spacing(1)
-    }
-  };
-});
-
-var SygefexMuiSelect = function SygefexMuiSelect(props) {
-  var classes = useStyles();
-  var name = props.name,
-      label = props.label,
-      options = props.options,
-      _props$variant = props.variant,
-      variant = _props$variant === void 0 ? "outlined" : _props$variant,
-      helperText = props.helperText;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_2__["Field"], {
-    variant: variant,
-    component: formik_material_ui__WEBPACK_IMPORTED_MODULE_1__["TextField"],
-    fullWidth: true,
-    name: name,
-    label: label,
-    select: true,
-    className: classes.root,
-    helperText: helperText,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 17
-    },
-    __self: this
-  }, options && options.map(function (item) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["MenuItem"], {
-      value: item.value,
-      key: item.value,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 29
-      },
-      __self: this
-    }, item.label);
-  }));
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (SygefexMuiSelect);
-
-/***/ }),
-
 /***/ "./src/components/queries&Mutations&Functions/Functions.jsx":
 /*!******************************************************************!*\
   !*** ./src/components/queries&Mutations&Functions/Functions.jsx ***!
@@ -1009,7 +877,7 @@ function _templateObject19() {
 }
 
 function _templateObject18() {
-  var data = _taggedTemplateLiteral(["\n  mutation createCenterMutation(\n    $centerName: String!\n    $centerNumber: Int\n    $centerCode: String!\n    $centerSecretCode: String!\n    $town: TownWhereUniqueInput!\n  ) {\n    createCenter(\n      centerSecretCode: $centerSecretCode\n      centerName: $centerName\n      centerNumber: $centerNumber\n      centerCode: $centerCode\n      town: $town\n    ) {\n      id\n      centerName\n      centerSecretCode\n      centerCode\n      town {\n        townName\n      }\n    }\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  mutation createCenterMutation(\n    $centerName: String!\n    $centerNumber: Int\n    $centerCode: String!\n    $town: TownWhereUniqueInput!\n  ) {\n    createCenter(\n      centerName: $centerName\n      centerNumber: $centerNumber\n      centerCode: $centerCode\n      town: $town\n    ) {\n      id\n      centerName\n      centerSecretCode\n      centerCode\n      town {\n        townName\n      }\n    }\n  }\n"]);
 
   _templateObject18 = function _templateObject18() {
     return data;
@@ -2345,14 +2213,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/styles */ "@material-ui/core/styles");
 /* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _utils_useForm__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utils/useForm */ "./src/components/utils/useForm.jsx");
-/* harmony import */ var _muiComponents_controls_SygefexMuiInput__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../muiComponents/controls/SygefexMuiInput */ "./src/components/muiComponents/controls/SygefexMuiInput.jsx");
-/* harmony import */ var _muiComponents_controls_SygefexMuiSelect__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../muiComponents/controls/SygefexMuiSelect */ "./src/components/muiComponents/controls/SygefexMuiSelect.jsx");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @apollo/react-hooks */ "@apollo/react-hooks");
-/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var _queries_Mutations_Functions_Queries__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../queries&Mutations&Functions/Queries */ "./src/components/queries&Mutations&Functions/Queries.jsx");
-/* harmony import */ var _queries_Mutations_Functions_Functions__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../queries&Mutations&Functions/Functions */ "./src/components/queries&Mutations&Functions/Functions.jsx");
-/* harmony import */ var _queries_Mutations_Functions_Mutations__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../queries&Mutations&Functions/Mutations */ "./src/components/queries&Mutations&Functions/Mutations.jsx");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @apollo/react-hooks */ "@apollo/react-hooks");
+/* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _queries_Mutations_Functions_Queries__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../queries&Mutations&Functions/Queries */ "./src/components/queries&Mutations&Functions/Queries.jsx");
+/* harmony import */ var _queries_Mutations_Functions_Functions__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../queries&Mutations&Functions/Functions */ "./src/components/queries&Mutations&Functions/Functions.jsx");
+/* harmony import */ var _queries_Mutations_Functions_Mutations__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../queries&Mutations&Functions/Mutations */ "./src/components/queries&Mutations&Functions/Mutations.jsx");
 
 var _jsxFileName = "E:\\sygefexMui\\sygefexMui-frontend\\src\\components\\subDivision\\NewSubDivision.jsx";
 
@@ -2388,9 +2253,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-
-
-
 var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__["makeStyles"])({
   root: {
     display: "flex",
@@ -2410,26 +2272,9 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__["ma
     padding: "1rem",
     minWidth: "30vw"
   },
-  listStyled: {
-    display: "grid",
-    placeItems: "center",
-    listStyleType: "none",
-    margin: 0,
-    padding: 0,
-    paddingTop: "0.1rem"
-  },
   titleStyled: {
     display: "grid",
     placeItems: "center"
-  },
-  allControls: {
-    display: "grid",
-    placeItems: "center",
-    paddingTop: "0.2rem",
-    border: "0.05rem solid #1254ac",
-    // width: "20vw",
-    borderRadius: "0.5rem" // marginTop: "2rem",
-
   },
   centerAll: {
     display: "grid",
@@ -2445,7 +2290,7 @@ var validationSchema = yup__WEBPACK_IMPORTED_MODULE_3__["object"]().shape({
 
 var NewSubDivision = function NewSubDivision() {
   var classes = useStyles();
-  var client = Object(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__["useApolloClient"])();
+  var client = Object(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_9__["useApolloClient"])();
 
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
       _useState2 = _slicedToArray(_useState, 2),
@@ -2483,7 +2328,7 @@ var NewSubDivision = function NewSubDivision() {
             case 0:
               _context.next = 2;
               return client.query({
-                query: _queries_Mutations_Functions_Queries__WEBPACK_IMPORTED_MODULE_13__["getAllRegionsQuery"]
+                query: _queries_Mutations_Functions_Queries__WEBPACK_IMPORTED_MODULE_10__["getAllRegionsQuery"]
               });
 
             case 2:
@@ -2532,7 +2377,7 @@ var NewSubDivision = function NewSubDivision() {
               _context2.next = 2;
               return client.query({
                 skip: regionID && !regionID,
-                query: _queries_Mutations_Functions_Queries__WEBPACK_IMPORTED_MODULE_13__["getDivisionsOfARegionQuery"],
+                query: _queries_Mutations_Functions_Queries__WEBPACK_IMPORTED_MODULE_10__["getDivisionsOfARegionQuery"],
                 variables: {
                   id: regionID
                 }
@@ -2546,7 +2391,7 @@ var NewSubDivision = function NewSubDivision() {
               loading && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["CircularProgress"], {
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 121
+                  lineNumber: 102
                 },
                 __self: this
               });
@@ -2580,7 +2425,7 @@ var NewSubDivision = function NewSubDivision() {
   });
   console.dir(getDivOptions);
 
-  var _useMutation = Object(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_12__["useMutation"])(_queries_Mutations_Functions_Mutations__WEBPACK_IMPORTED_MODULE_15__["createSubDivisionMutation"], {
+  var _useMutation = Object(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_9__["useMutation"])(_queries_Mutations_Functions_Mutations__WEBPACK_IMPORTED_MODULE_12__["createSubDivisionMutation"], {
     refetchQueries: ["getAllSubDivisionsQuery"]
   }),
       _useMutation2 = _slicedToArray(_useMutation, 2),
@@ -2604,7 +2449,7 @@ var NewSubDivision = function NewSubDivision() {
                 _context3.next = 3;
                 return createSubDivision({
                   variables: _objectSpread({}, values, {
-                    division: values.division && Object(_queries_Mutations_Functions_Functions__WEBPACK_IMPORTED_MODULE_14__["getObjectFromID"])(values.division)
+                    division: values.division && Object(_queries_Mutations_Functions_Functions__WEBPACK_IMPORTED_MODULE_11__["getObjectFromID"])(values.division)
                   })
                 });
 
@@ -2631,7 +2476,7 @@ var NewSubDivision = function NewSubDivision() {
     }(),
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 148
+      lineNumber: 129
     },
     __self: this
   }, function (_ref5) {
@@ -2642,7 +2487,7 @@ var NewSubDivision = function NewSubDivision() {
       className: classes.centerAll,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 169
+        lineNumber: 150
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Paper"], {
@@ -2650,20 +2495,20 @@ var NewSubDivision = function NewSubDivision() {
       elevation: 3,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 170
+        lineNumber: 151
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_6__["Form"], {
       "aria-busy": isSubmitting,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 171
+        lineNumber: 152
       },
       __self: this
     }, (isSubmitting || loading) && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["LinearProgress"], {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 172
+        lineNumber: 153
       },
       __self: this
     }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
@@ -2671,7 +2516,7 @@ var NewSubDivision = function NewSubDivision() {
       container: true,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 173
+        lineNumber: 154
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
@@ -2679,29 +2524,32 @@ var NewSubDivision = function NewSubDivision() {
       className: classes.centerAll,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 174
+        lineNumber: 155
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
       item: true,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 175
+        lineNumber: 156
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_ErrorMessage_js__WEBPACK_IMPORTED_MODULE_2__["default"], {
       error: error,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 176
+        lineNumber: 157
       },
       __self: this
     }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Typography"], {
       className: classes.titleStyled,
-      variant: "body1",
+      color: "primary",
+      gutterBottom: true,
+      variant: "h5",
+      component: "h6",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 177
+        lineNumber: 158
       },
       __self: this
     }, "Nouvel Arrondissement"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
@@ -2709,7 +2557,7 @@ var NewSubDivision = function NewSubDivision() {
       className: classes.centerAll,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 185
+        lineNumber: 169
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
@@ -2717,7 +2565,7 @@ var NewSubDivision = function NewSubDivision() {
       className: classes.centerAll,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 186
+        lineNumber: 170
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_6__["Field"], {
@@ -2725,14 +2573,13 @@ var NewSubDivision = function NewSubDivision() {
       name: "regionID",
       label: "La R\xE9gion",
       onChange: handleRegionIDChange,
-      component: material_ui_formik_components_Select__WEBPACK_IMPORTED_MODULE_5__["Select"] // placeholder="la Région"
-      ,
+      component: material_ui_formik_components_Select__WEBPACK_IMPORTED_MODULE_5__["Select"],
       disabled: isSubmitting,
       helperText: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_6__["ErrorMessage"], {
         name: "regionID",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 195
+          lineNumber: 178
         },
         __self: this
       }),
@@ -2740,7 +2587,7 @@ var NewSubDivision = function NewSubDivision() {
       fullWidth: true,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 187
+        lineNumber: 171
       },
       __self: this
     }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_6__["Field"], {
@@ -2754,7 +2601,7 @@ var NewSubDivision = function NewSubDivision() {
         name: "division",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 206
+          lineNumber: 189
         },
         __self: this
       }),
@@ -2762,7 +2609,7 @@ var NewSubDivision = function NewSubDivision() {
       fullWidth: true,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 199
+        lineNumber: 182
       },
       __self: this
     }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_6__["Field"], {
@@ -2777,13 +2624,13 @@ var NewSubDivision = function NewSubDivision() {
         name: "subDivName",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 219
+          lineNumber: 202
         },
         __self: this
       }),
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 211
+        lineNumber: 194
       },
       __self: this
     }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_6__["Field"], {
@@ -2798,13 +2645,13 @@ var NewSubDivision = function NewSubDivision() {
         name: "subDivCode",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 229
+          lineNumber: 212
         },
         __self: this
       }),
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 221
+        lineNumber: 204
       },
       __self: this
     }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Button"], {
@@ -2812,13 +2659,13 @@ var NewSubDivision = function NewSubDivision() {
       onClick: submitForm,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 231
+        lineNumber: 214
       },
       __self: this
     }, (isSubmitting || loading) && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["CircularProgress"], {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 232
+        lineNumber: 215
       },
       __self: this
     }), "Valid", isSubmitting ? "ation en cours" : "er")))))));
@@ -2826,7 +2673,7 @@ var NewSubDivision = function NewSubDivision() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (NewSubDivision); //  <SygefexMuiSelect
-//    variant="standard"
+//    variant="outlined"
 //    name="division"
 //    label="Le Département"
 //    placeholder="Le Département"
@@ -2836,7 +2683,7 @@ var NewSubDivision = function NewSubDivision() {
 //  />;
 // //
 // <SygefexMuiSelect
-//   variant="standard"
+//   variant="outlined"
 //   name="division"
 //   label="Le Département"
 //   placeholder="Le Département"
@@ -2845,7 +2692,7 @@ var NewSubDivision = function NewSubDivision() {
 //   helperText={<ErrorMessage name="division" />}
 // />
 // <SygefexMuiSelect
-//   variant="standard"
+//   variant="outlined"
 //   name="division"
 //   label="Le Département"
 //   placeholder="Le Département"
@@ -2874,7 +2721,7 @@ var NewSubDivision = function NewSubDivision() {
 //     ))}
 // </Field>;
 // <Field
-//   variant="standard"
+//   variant="outlined"
 //   disabled={isSubmitting}
 //   fullWidth
 //   placeholder="Le Département"
@@ -2983,8 +2830,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ErrorMessage_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ErrorMessage.js */ "./src/components/ErrorMessage.js");
 /* harmony import */ var formik__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! formik */ "formik");
 /* harmony import */ var formik__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(formik__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var formik_material_ui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! formik-material-ui */ "formik-material-ui");
-/* harmony import */ var formik_material_ui__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(formik_material_ui__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var material_ui_formik_components_TextField__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! material-ui-formik-components/TextField */ "material-ui-formik-components/TextField");
+/* harmony import */ var material_ui_formik_components_TextField__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(material_ui_formik_components_TextField__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core */ "@material-ui/core");
 /* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/styles */ "@material-ui/core/styles");
@@ -2995,8 +2842,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var yup__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(yup__WEBPACK_IMPORTED_MODULE_8__);
 /* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @apollo/react-hooks */ "@apollo/react-hooks");
 /* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var _muiComponents_controls_SygefexMuiInput__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../muiComponents/controls/SygefexMuiInput */ "./src/components/muiComponents/controls/SygefexMuiInput.jsx");
-/* harmony import */ var _queries_Mutations_Functions_Mutations__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../queries&Mutations&Functions/Mutations */ "./src/components/queries&Mutations&Functions/Mutations.jsx");
+/* harmony import */ var _queries_Mutations_Functions_Mutations__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../queries&Mutations&Functions/Mutations */ "./src/components/queries&Mutations&Functions/Mutations.jsx");
 
 var _jsxFileName = "E:\\sygefexMui\\sygefexMui-frontend\\src\\components\\user\\Login.jsx";
 
@@ -3030,7 +2876,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-
 var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_6__["makeStyles"])({
   root: {
     display: "flex",
@@ -3048,7 +2893,7 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_6__["ma
     placeItems: "center",
     marginTop: "2rem",
     padding: "1rem",
-    minWidth: "20%"
+    minWidth: "30vw"
   },
   listStyled: {
     display: "grid",
@@ -3073,7 +2918,8 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_6__["ma
   },
   centerAll: {
     display: "grid",
-    placeItems: "center"
+    placeItems: "center",
+    minWidth: "30vw"
   }
 });
 var validationSchema = yup__WEBPACK_IMPORTED_MODULE_8__["object"]().shape({
@@ -3088,7 +2934,7 @@ var Login = function Login() {
     password: ""
   };
 
-  var _useMutation = Object(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_9__["useMutation"])(_queries_Mutations_Functions_Mutations__WEBPACK_IMPORTED_MODULE_11__["loginUserMutation"], {
+  var _useMutation = Object(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_9__["useMutation"])(_queries_Mutations_Functions_Mutations__WEBPACK_IMPORTED_MODULE_10__["loginUserMutation"], {
     refetchQueries: ["currentUserQuery"]
   }),
       _useMutation2 = _slicedToArray(_useMutation, 2),
@@ -3137,7 +2983,7 @@ var Login = function Login() {
     }(),
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 89
+      lineNumber: 90
     },
     __self: this
   }, function (_ref3) {
@@ -3147,7 +2993,7 @@ var Login = function Login() {
       className: classes.centerAll,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 107
+        lineNumber: 108
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Paper"], {
@@ -3155,20 +3001,20 @@ var Login = function Login() {
       elevation: 3,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 108
+        lineNumber: 109
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_3__["Form"], {
       "aria-busy": isSubmitting,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 109
+        lineNumber: 110
       },
       __self: this
     }, (isSubmitting || loading) && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["LinearProgress"], {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 110
+        lineNumber: 111
       },
       __self: this
     }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Grid"], {
@@ -3176,7 +3022,7 @@ var Login = function Login() {
       container: true,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 111
+        lineNumber: 112
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Grid"], {
@@ -3184,81 +3030,82 @@ var Login = function Login() {
       className: classes.centerAll,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 112
+        lineNumber: 113
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Grid"], {
       item: true,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 113
+        lineNumber: 114
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_ErrorMessage_js__WEBPACK_IMPORTED_MODULE_2__["default"], {
       error: error,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 114
+        lineNumber: 115
       },
       __self: this
     }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Typography"], {
       className: classes.titleStyled,
-      variant: "body1",
+      color: "primary",
+      gutterBottom: true,
+      variant: "h5",
+      component: "h6",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 115
+        lineNumber: 116
       },
       __self: this
-    }, "Se Connecter"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Grid"], {
+    }, "Connexion"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Grid"], {
       item: true,
       className: classes.centerAll,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 123
+        lineNumber: 127
       },
       __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_muiComponents_controls_SygefexMuiInput__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_3__["Field"], {
       name: "email",
-      component: formik_material_ui__WEBPACK_IMPORTED_MODULE_4__["TextField"],
+      component: material_ui_formik_components_TextField__WEBPACK_IMPORTED_MODULE_4__["TextField"],
       type: "email",
       fullWidth: true,
       label: "Email",
-      size: "small",
-      variant: "standard",
+      variant: "outlined",
       disabled: isSubmitting || loading,
       helperText: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_3__["ErrorMessage"], {
         name: "email",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 133
+          lineNumber: 136
         },
         __self: this
       }),
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 124
+        lineNumber: 128
       },
       __self: this
-    }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_muiComponents_controls_SygefexMuiInput__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_3__["Field"], {
       name: "password",
-      component: formik_material_ui__WEBPACK_IMPORTED_MODULE_4__["TextField"],
+      component: material_ui_formik_components_TextField__WEBPACK_IMPORTED_MODULE_4__["TextField"],
       type: "password",
       fullWidth: true,
       label: "password",
-      size: "small",
-      variant: "standard",
+      variant: "outlined",
       disabled: isSubmitting || loading,
       helperText: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_3__["ErrorMessage"], {
         name: "password",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 144
+          lineNumber: 146
         },
         __self: this
       }),
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 135
+        lineNumber: 138
       },
       __self: this
     }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Typography"], {
@@ -3266,34 +3113,34 @@ var Login = function Login() {
       className: classes.centerAll,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 146
+        lineNumber: 148
       },
       __self: this
     }, "Pas encore de compte?"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", {
       className: classes.listStyled,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 149
+        lineNumber: 151
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Typography"], {
       variant: "body2",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 150
+        lineNumber: 152
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(next_link__WEBPACK_IMPORTED_MODULE_7___default.a, {
       href: "/creates/signup",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 151
+        lineNumber: 153
       },
       __self: this
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 152
+        lineNumber: 154
       },
       __self: this
     }, "Cr\xE9er un compte")))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Button"], {
@@ -3301,10 +3148,16 @@ var Login = function Login() {
       onClick: submitForm,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 157
+        lineNumber: 159
       },
       __self: this
-    }, "Valid", isSubmitting ? "ation en cours" : "er"))))));
+    }, (isSubmitting || loading) && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["CircularProgress"], {
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 160
+      },
+      __self: this
+    }), isSubmitting || loading ? "Connection en cours" : "se Connecter"))))));
   });
 };
 
@@ -3315,71 +3168,6 @@ var Login = function Login() {
 //   label="Mot de passe"
 //   disabled={isSubmitting || loading}
 // />
-
-/***/ }),
-
-/***/ "./src/components/utils/useForm.jsx":
-/*!******************************************!*\
-  !*** ./src/components/utils/useForm.jsx ***!
-  \******************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? Object(arguments[i]) : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-var useForm = function useForm(initialValues) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(initialValues),
-      _useState2 = _slicedToArray(_useState, 2),
-      state = _useState2[0],
-      setState = _useState2[1];
-
-  var handleInputChange = function handleInputChange(e) {
-    var _e$target = e.target,
-        name = _e$target.name,
-        value = _e$target.value,
-        type = _e$target.type;
-    console.log({
-      name: name,
-      value: value
-    });
-    var val = type === "number" ? parseInt(value) : value;
-    setState(function (state) {
-      return _objectSpread({}, state, _defineProperty({}, name, val));
-    });
-  };
-
-  var handleReactSelectChange = function handleReactSelectChange(value, action) {
-    console.log(value.value);
-    console.log(action.name);
-    setState(function (state) {
-      return _objectSpread({}, state, _defineProperty({}, action.name, value.value));
-    });
-  };
-
-  return [state, setState, handleReactSelectChange, handleInputChange];
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (useForm);
 
 /***/ }),
 
@@ -3428,17 +3216,6 @@ module.exports = require("@material-ui/core");
 
 /***/ }),
 
-/***/ "@material-ui/core/TextField":
-/*!**********************************************!*\
-  !*** external "@material-ui/core/TextField" ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/core/TextField");
-
-/***/ }),
-
 /***/ "@material-ui/core/styles":
 /*!*******************************************!*\
   !*** external "@material-ui/core/styles" ***!
@@ -3480,17 +3257,6 @@ module.exports = require("axios");
 /***/ (function(module, exports) {
 
 module.exports = require("formik");
-
-/***/ }),
-
-/***/ "formik-material-ui":
-/*!*************************************!*\
-  !*** external "formik-material-ui" ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("formik-material-ui");
 
 /***/ }),
 

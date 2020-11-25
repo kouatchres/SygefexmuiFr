@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     placeItems: "center",
     marginTop: "2rem",
     padding: "1rem",
-    minWidth: "30",
+    minWidth: "30vw",
   },
   listStyled: {
     display: "grid",
@@ -59,7 +59,7 @@ const useStyles = makeStyles({
   centerAll: {
     display: "grid",
     placeItems: "center",
-    minWidth: "30",
+    minWidth: "30vw",
   },
 });
 
@@ -110,6 +110,10 @@ const NewRank = () => {
                       <Typography
                         className={classes.titleStyled}
                         variant="body1"
+                        color="primary"
+                        gutterBottom
+                        variant="h5"
+                        component="h6"
                       >
                         Nouveau Poste
                       </Typography>

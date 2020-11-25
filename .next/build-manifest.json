@@ -11,11 +11,11 @@
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/creates/muiComps": [
+    "/creates/newSubDivision": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/creates/newSubDivision": [
+    "/creates/newGroupCand": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]

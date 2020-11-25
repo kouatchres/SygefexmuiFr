@@ -52,7 +52,7 @@ const NewCenterHooks = () => {
     centerCode: "",
     town: "",
   };
-  const [state, setState, handleReactSelectChange] = useForm({
+  const [state, setState, handleSelectChange] = useForm({
     regionID: "",
     divisionID: "",
     subDivID: "",

@@ -7,6 +7,7 @@ const SygefexTheme = createMuiTheme({
     primary: {
       // main: "#C28B2B",
       main: "#044562",
+      // main: "#f5f5f5",
       light: "#f00",
       // main: "#0780b7",
     },
@@ -18,9 +19,13 @@ const SygefexTheme = createMuiTheme({
       main: red.A200,
     },
     background: {
+      // default: "#12343b",
       default: "#e2e7e8",
+      // default: "#f1f1ef",
+      // default: "#D5d5d5",
     },
   },
+
   typography: {
     fontFamily: ["Roboto", "sans-serif"].join(","),
     body2: {
@@ -48,6 +53,7 @@ const SygefexTheme = createMuiTheme({
     borderRadius: "0.4rem",
   },
   spacing: 2,
+
   overrides: {
     MuiToolbar: {
       regular: {
@@ -55,7 +61,50 @@ const SygefexTheme = createMuiTheme({
         maxHeight: "1.9rem",
       },
     },
+    MuiSelect: {
+      root: {
+        fontSize: "1.1rem",
+        paddingBottom: "0.5rem",
+        height: "1.3rem",
+      },
+      nativeInput: {
+        fontSize: "0.5rem",
+      },
+    },
 
+    MuiTypography: {
+      root: {
+        // marginBottom: "1rem",
+      },
+      body1: {
+        fontSize: "0.8rem",
+      },
+      h6: {
+        fontFamily: "Roboto",
+        fontSize: "1.2rem",
+      },
+    },
+    MuiOutlinedInput: {
+      input: {
+        height: "1.2rem",
+        fontSize: "1rem",
+        paddingBottom: ".5rem",
+      },
+      MuiFormInputLabel: {
+        formControl: {
+          margin: "0.4rem",
+        },
+        root: {
+          fontSize: "0.6rem",
+        },
+      },
+
+      MuiMenuItem: {
+        root: {
+          fontSize: "0.8rem",
+        },
+      },
+    },
     MuiButton: {
       root: {
         textTransform: "capitalize",
@@ -112,8 +161,14 @@ const SygefexTheme = createMuiTheme({
       root: {
         width: "90%",
         margin: "0.5rem",
-        // backgroundColor: "#abcdef",
+        fontSize: "0.8rem",
       },
+      marginNormal: {
+        marginTop: 0,
+      },
+    },
+    MuiFormLabel: {
+      root: {},
     },
     MuiFormHelperText: {
       root: {
@@ -150,7 +205,6 @@ const SygefexTheme = createMuiTheme({
     MuiPaper: {
       root: {
         minHeight: "100vh",
-        backgroundColor: "#a2aabc",
       },
     },
 
@@ -167,6 +221,11 @@ const SygefexTheme = createMuiTheme({
       root: {
         fontFamily: "Comic Sans MS",
         fontSize: "0.9rem",
+      },
+    },
+    MuiSelect: {
+      nativeInput: {
+        fontSize: "0.2rem",
       },
     },
   },

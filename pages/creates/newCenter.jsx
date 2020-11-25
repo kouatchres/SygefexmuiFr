@@ -1,14 +1,12 @@
 import React from "react";
-import NewCenterHooks from "../../src/components/center/NewCenterHooks";
+import NewCenter from "../../src/components/center/NewCenter";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
 const newCenter = (props) => {
   return (
-    <div>
-      <GatedSignin>
-        <NewCenterHooks />
-      </GatedSignin>
-    </div>
+    <GatedSignin>
+      <NewCenter />
+    </GatedSignin>
   );
 };
 export default newCenter;

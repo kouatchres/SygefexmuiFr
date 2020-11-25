@@ -4,7 +4,7 @@ import Error from "../ErrorMessage.js";
 import useForm from "../utils/useForm";
 import { TextField } from "formik-material-ui";
 import { Formik, Form, Field } from "formik";
-import SygefexMuiSelect from "../muiComponents/controls/SygefexMuiSelect";
+import SygefexMuiSelect from "../muiComponents/controls/SygefexMuiDatePicker";
 import {
   Grid,
   Typography,

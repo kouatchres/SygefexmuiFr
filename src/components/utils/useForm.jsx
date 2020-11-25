@@ -10,19 +10,16 @@ const useForm = (initialValues) => {
     setState((state) => ({ ...state, [name]: val }));
   };
 
-  const handleReactSelectChange = (value, action) => {
-    console.log(value.value);
-    console.log(action.name);
-
-    setState((state) => ({ ...state, [action.name]: value.value }));
+  const handleChange = (e) => {
+    const { value, type } = e.target;
+    const val = type === "number" ? parseInt(value) : value;
+    return val;
   };
 
+  const handleSelectChange = (event, name) => {
+    setState((state) => ({ ...state, [name]: handleChange(event) }));
+  };
 
-  return [
-    state,
-    setState,
-    handleReactSelectChange,
-    handleInputChange,
-  ];
+  return [state, setState, handleSelectChange, handleInputChange];
 };
 export default useForm;

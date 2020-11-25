@@ -1,19 +1,19 @@
 import React from "react";
 import Error from "../ErrorMessage.js";
-import { ErrorMessage, Formik, Form } from "formik";
-import { TextField } from "formik-material-ui";
+import { ErrorMessage, Formik, Form, Field } from "formik";
+import { TextField } from "material-ui-formik-components/TextField";
 import {
   Grid,
   Typography,
   Paper,
   Button,
   LinearProgress,
+  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "next/link";
 import * as Yup from "yup";
 import { useMutation } from "@apollo/react-hooks";
-import SygefexMuiInput from "../muiComponents/controls/SygefexMuiInput";
 import { loginUserMutation } from "../queries&Mutations&Functions/Mutations";
 
 const useStyles = makeStyles({
@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     placeItems: "center",
     marginTop: "2rem",
     padding: "1rem",
-    minWidth: "20%",
+    minWidth: "30vw",
   },
   listStyled: {
     display: "grid",
@@ -60,6 +60,7 @@ const useStyles = makeStyles({
   centerAll: {
     display: "grid",
     placeItems: "center",
+    minWidth: "30vw",
   },
 });
 
@@ -114,32 +115,33 @@ const Login = () => {
                       <Error error={error} />
                       <Typography
                         className={classes.titleStyled}
-                        variant="body1"
+                        color="primary"
+                        gutterBottom
+                        variant="h5"
+                        component="h6"
                       >
-                        Se Connecter
+                        Connexion
                       </Typography>
                     </Grid>
                   </Grid>
                   <Grid item className={classes.centerAll}>
-                    <SygefexMuiInput
+                    <Field
                       name="email"
                       component={TextField}
                       type="email"
                       fullWidth
                       label="Email"
-                      size="small"
-                      variant="standard"
+                      variant="outlined"
                       disabled={isSubmitting || loading}
                       helperText={<ErrorMessage name="email" />}
                     />
-                    <SygefexMuiInput
+                    <Field
                       name="password"
                       component={TextField}
                       type="password"
                       fullWidth
                       label="password"
-                      size="small"
-                      variant="standard"
+                      variant="outlined"
                       disabled={isSubmitting || loading}
                       helperText={<ErrorMessage name="password" />}
                     />
@@ -155,7 +157,10 @@ const Login = () => {
                     </ul>
 
                     <Button disabled={isSubmitting} onClick={submitForm}>
-                      Valid{isSubmitting ? "ation en cours" : "er"}
+                      {(isSubmitting || loading) && <CircularProgress />}
+                      {isSubmitting || loading
+                        ? "Connection en cours"
+                        : "se Connecter"}
                     </Button>
                   </Grid>
                 </Grid>

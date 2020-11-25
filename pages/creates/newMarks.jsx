@@ -1,14 +1,12 @@
 import React from "react";
-import EnterMarks from "../../src/components/score/EnterMarks";
+import EnterNewMarks from "../../src/components/score/EnterNewMarks";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
 const newMarks = () => {
   return (
-    <div>
       <GatedSignin>
-        <EnterMarks />
+        <EnterNewMarks />
       </GatedSignin>
-    </div>
   );
 };
 export default newMarks;

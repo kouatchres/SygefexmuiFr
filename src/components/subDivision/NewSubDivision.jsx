@@ -13,9 +13,6 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import useForm from "../utils/useForm";
-import SygefexMuiInput from "../muiComponents/controls/SygefexMuiInput";
-import SygefexMuiSelect from "../muiComponents/controls/SygefexMuiSelect";
 import { useMutation, useApolloClient, useQuery } from "@apollo/react-hooks";
 import {
   getDivisionsOfARegionQuery,
@@ -43,28 +40,12 @@ const useStyles = makeStyles({
     padding: "1rem",
     minWidth: "30vw",
   },
-  listStyled: {
-    display: "grid",
-    placeItems: "center",
-    listStyleType: "none",
-    margin: 0,
-    padding: 0,
-    paddingTop: "0.1rem",
-  },
+
   titleStyled: {
     display: "grid",
     placeItems: "center",
   },
 
-  allControls: {
-    display: "grid",
-    placeItems: "center",
-    paddingTop: "0.2rem",
-    border: "0.05rem solid #1254ac",
-    // width: "20vw",
-    borderRadius: "0.5rem",
-    // marginTop: "2rem",
-  },
   centerAll: {
     display: "grid",
     placeItems: "center",
@@ -176,7 +157,10 @@ const NewSubDivision = () => {
                       <Error error={error} />
                       <Typography
                         className={classes.titleStyled}
-                        variant="body1"
+                        color="primary"
+                        gutterBottom
+                        variant="h5"
+                        component="h6"
                       >
                         Nouvel Arrondissement
                       </Typography>
@@ -190,7 +174,6 @@ const NewSubDivision = () => {
                         label="La Région"
                         onChange={handleRegionIDChange}
                         component={Select}
-                        // placeholder="la Région"
                         disabled={isSubmitting}
                         helperText={<ErrorMessage name="regionID" />}
                         options={getRegionsOptions}
@@ -229,7 +212,7 @@ const NewSubDivision = () => {
                         helperText={<ErrorMessage name="subDivCode" />}
                       />
                       <Button disabled={isSubmitting} onClick={submitForm}>
-                      {(isSubmitting || loading) && <CircularProgress/>}
+                        {(isSubmitting || loading) && <CircularProgress />}
                         Valid{isSubmitting ? "ation en cours" : "er"}
                       </Button>
                     </Grid>
@@ -245,7 +228,7 @@ const NewSubDivision = () => {
 };
 export default NewSubDivision;
 //  <SygefexMuiSelect
-//    variant="standard"
+//    variant="outlined"
 //    name="division"
 //    label="Le Département"
 //    placeholder="Le Département"
@@ -256,7 +239,7 @@ export default NewSubDivision;
 // //
 
 // <SygefexMuiSelect
-//   variant="standard"
+//   variant="outlined"
 //   name="division"
 //   label="Le Département"
 //   placeholder="Le Département"
@@ -266,7 +249,7 @@ export default NewSubDivision;
 // />
 
 // <SygefexMuiSelect
-//   variant="standard"
+//   variant="outlined"
 //   name="division"
 //   label="Le Département"
 //   placeholder="Le Département"
@@ -297,7 +280,7 @@ export default NewSubDivision;
 // </Field>;
 
 // <Field
-//   variant="standard"
+//   variant="outlined"
 //   disabled={isSubmitting}
 //   fullWidth
 //   placeholder="Le Département"

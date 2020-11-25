@@ -1,13 +1,20 @@
 import React from "react";
 import Error from "../ErrorMessage.js";
-import { Formik, Form, Field } from "formik";
-import { Button, Box, container, paper } from "@material-ui/core";
-import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
-import { TextField } from "formik-material-ui";
+import { ErrorMessage, Formik, Form, Field } from "formik";
+import { TextField } from "material-ui-formik-components/TextField";
+import {
+  Grid,
+  Typography,
+  Paper,
+  Button,
+  LinearProgress,
+  CircularProgress,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import Link from "next/link";
 import * as Yup from "yup";
 import { useMutation } from "@apollo/react-hooks";
 import { createNewRegionMutation } from "../queries&Mutations&Functions/Mutations";
-import { orange } from "@material-ui/core/colors";
 
 const useStyles = makeStyles({
   root: {
@@ -15,70 +22,75 @@ const useStyles = makeStyles({
     flexDirection: "column",
     // fontSize: 100,
   },
+  divStyled: {
+    display: "grid",
+    placeItems: "center",
+    top: "2rem",
+    height: "90vh",
+  },
+  pageStyled: {
+    display: "grid",
+    placeItems: "center",
+    marginTop: "2rem",
+    padding: "1rem",
+    minWidth: "30vw",
+  },
+  listStyled: {
+    display: "grid",
+    placeItems: "center",
+    listStyleType: "none",
+    margin: 0,
+    padding: 0,
+    paddingTop: "0.1rem",
+  },
+  titleStyled: {
+    display: "grid",
+    placeItems: "center",
+  },
 
   allControls: {
-    display: "flex",
-    flexDirection: "column",
+    display: "grid",
+    placeItems: "center",
+    paddingTop: "0.2rem",
+    border: "0.05rem solid #1254ac",
+    // width: "20vw",
+    borderRadius: "0.5rem",
+    // marginTop: "2rem",
   },
-  pap: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  contain: {
-    maxWidth: "20rem",
+  centerAll: {
+    display: "grid",
+    placeItems: "center",
+    minWidth: "30vw",
   },
 });
 
 const validationSchema = Yup.object().shape({
-  regName: Yup.string().required("Nom Région Obligatoire"),
+  regName: Yup.string().required("Libellé Région Obligatoire"),
   regCode: Yup.string().required("Code Région Obligatoire"),
 });
+
 const NewRegionMui = () => {
-  const MuiTheme = createMuiTheme({
-    typography: {
-      h4: {
-        fontSize: 25,
-      },
-      fontSize: 20,
-    },
-    palette: {
-      primary: {
-        main: orange[500],
-
-        // light: "#757ce8",
-        // main2: "#3f50b5",
-        // main: "#0780b7",
-        // dark: "#002884",
-        // contrastText: "#fff",
-      },
-      secondary: {
-        main: orange[500],
-        // light: "#ff7961",
-        // dark: "#f44336",
-        // main: "#ba000d",
-        // contrastText: "#000",
-      },
-    },
-  });
-
-  const classes = useStyles();
+  const classes = useStyles()
   const initialValues = {
     regName: "",
     regCode: "",
   };
-
   const [createRegion, { loading, error }] = useMutation(
-    createNewRegionMutation
+    createNewRegionMutation,
+    {
+      refetchQueries: ["currentUserQuery"],
+    }
   );
-
+// 675 059 039
   return (
     <Formik
       method="POST"
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
-        const res = await createRegion({ variables: { ...values } });
+        const res = await createRegion({
+          variables: { ...values },
+        });
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
@@ -89,46 +101,57 @@ const NewRegionMui = () => {
     >
       {({ submitForm, isSubmitting }) => {
         return (
-          <div>
-            <h4>Nouvelle Région</h4>
-            <Error error={error} />
-            <container maxWidth="sm">
-              <Form>
-                <container className={classes.contain}>
-                  <paper className={classes.pap}>
-                    <Box margin={0.5}>
-                      <Field
-                        component={TextField}
-                        name="regName"
-                        type="text"
-                        label="Nom la Région"
-                        disabled={isSubmitting}
-                      />
-                    </Box>
-                    <Box margin={0.5}>
-                      <Field
-                        component={TextField}
-                        name="regCode"
-                        type="text"
-                        label="Code la Région"
-                        disabled={isSubmitting}
-                      />
-                    </Box>
-
-                    <Box margin={0.5}>
-                      <Button
-                        variant="contained"
+          <div className={classes.centerAll}>
+            <Paper className={classes.pageStyled} elevation={3}>
+              <Form aria-busy={isSubmitting}>
+                {(isSubmitting || loading) && <LinearProgress />}
+                <Grid className={classes.centerAll} container>
+                  <Grid container className={classes.centerAll}>
+                    <Grid item>
+                      <Error error={error} />
+                      <Typography
+                        className={classes.titleStyled}
                         color="primary"
-                        disabled={isSubmitting}
-                        onClick={submitForm}
+                        gutterBottom
+                        variant="h5"
+                        component="h6"
                       >
-                        Valid{isSubmitting ? "ation en cours" : "er"}
-                      </Button>
-                    </Box>
-                  </paper>
-                </container>
+                        Nouvelle Région
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid item className={classes.centerAll}>
+                    <Field
+                      name="regName"
+                      component={TextField}
+                      type="text"
+                      fullWidth
+                      label="Libellé Région"
+                      variant="outlined"
+                      disabled={isSubmitting || loading}
+                      helperText={<ErrorMessage name="regName" />}
+                    />
+                    <Field
+                      name="regCode"
+                      component={TextField}
+                      type="text"
+                      fullWidth
+                      label="Code Région"
+                      variant="outlined"
+                      disabled={isSubmitting || loading}
+                      helperText={<ErrorMessage name="regCode" />}
+                    />
+
+                    <Button disabled={isSubmitting} onClick={submitForm}>
+                      {(isSubmitting || loading) && <CircularProgress />}
+                      {isSubmitting || loading
+                        ? "Région en création"
+                        : "Crée Région"}
+                    </Button>
+                  </Grid>
+                </Grid>
               </Form>
-            </container>
+            </Paper>
           </div>
         );
       }}

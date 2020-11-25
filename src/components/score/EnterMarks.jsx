@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React  from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { MinimStyledPage } from "../styles/StyledPage";
 import Error from "../ErrorMessage.js";

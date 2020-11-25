@@ -1,584 +1,521 @@
-import React, { Component } from 'react';
-import { Mutation, Query } from 'react-apollo';
-import Form from '../styles/Form';
-import { StyledPage } from '../styles/StyledPage';
-import Error from '../ErrorMessage';
-import styled from 'styled-components';
-import { createRegistrationMutation } from '../queries&Mutations&Functions/Mutations';
-import { getSelectedObject, uniqueCodeGen, candExamSessionCode } from '../queries&Mutations&Functions/Functions';
+import React, { useEffect } from "react";
+import Error from "../ErrorMessage.js";
+import * as Yup from "yup";
+import Router from "next/router";
+
+import FRadioGroup from "../muiComponents/controls/SygefexMuiRadioGroup";
+import { TextField } from "material-ui-formik-components/TextField";
+import { Select } from "material-ui-formik-components/Select";
+import { ErrorMessage, Formik, Form, Field } from "formik";
+import useForm from "../utils/useForm";
 import {
-    getAllRegionsQuery,
-    getExamSessionQuery,
-    getDivisionsOfARegionQuery,
-    getSubDivisionsOfADivisionQuery,
-    getCentersOfATownQuery,
-    getCenterExamSessionSeriesQuery,
-    getTownsOfASubDivisionQuery,
-    getAllExamsQuery,
-    getAllSeriesOfACenterExamSessionQuery,
-    getAllSessionsQuery,
-    getSingleCenterExamSessionQuery
-} from '../queries&Mutations&Functions/Queries';
+  Grid,
+  Typography,
+  Paper,
+  Button,
+  LinearProgress,
+  CircularProgress,
+} from "@material-ui/core";
+import { useMutation, useApolloClient } from "@apollo/react-hooks";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  getSelectedObject,
+  removeTypename,
+  uniqueCodeGen,
+  candExamSessionCode,
+} from "../queries&Mutations&Functions/Functions";
+import {
+  getExamSessionQuery,
+  getAllExamsQuery,
+  getAllEducationTypesQuery,
+  getAllSessionsQuery,
+  getSingleCenterExamSessionQuery,
+  getAllSpecialtiesOfACenterExamSessionQuery,
+  getSingleCenterQuery,
+} from "../queries&Mutations&Functions/Queries";
+import { createRegistrationMutation } from "../queries&Mutations&Functions/Mutations";
 
-const StyledDivision = styled.div`
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	grid-gap: 2rem;
-	text-align: center;
-	margin: 0 auto;
-	/* width: 55vw; */
-    .submitButton{
-paddding-top:2rem;
-    }
-`;
+const useStyles = makeStyles({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    // fontSize: 100,
+  },
+  divStyled: {
+    display: "grid",
+    placeItems: "center",
+    top: "2rem",
+    height: "90vh",
+  },
+  pageStyled: {
+    display: "flex",
+    flexDirection: "column",
+    marginTop: "2rem",
+    padding: "1rem",
+    maxWidth: "50vw",
+  },
 
-const CenterSelect = styled.div`
-	display: block;
-	text-align: center;
-	margin: 0 auto;
-	/* min-width: 40rem; */
-`;
+  titleStyled: {
+    display: "grid",
+    placeItems: "center",
+  },
 
-const OtherSelect = styled.div`
-	display: block;
-	text-align: center;
-	margin: 0 auto;
-	/* min-width: 40rem; */
-`;
+  allControls: {
+    display: "grid",
+    placeItems: "center",
+  },
+  centerAll: {
+    display: "grid",
+    placeItems: "center",
+    minWidth: "30vw",
+  },
+});
 
-class Registration extends Component {
-    state = {
-        candCode: '',
-        divisionID: '12',
-        subDivisionID: '12',
-        regionID: '12',
-        centerID: '12',
-        townID: '12',
-        sessionID: '12',
-        candExamSecretCode: '',
-        seriesID: '12',
-        examID: '12',
-        educTypeID: '12'
-    };
+const validationSchema = Yup.object().shape({
+  // centerNumber: Yup.string().required(
+  //   "Code anonymat du candidat Obligatoire"),
+  educTypeID: Yup.string().required("Choix de la matière Obligatoire"),
+  subjectAve: Yup.number()
+    .required("Note du candidat Obligatoire")
+    .min(0, "Pas de note négative")
+    .max(20, "Pas de note supérieure a 20"),
+});
 
-    handleChange = (e) => {
-        const { name, value, type } = e.target;
-        const val = type === 'number'
-            ? parseInt(value)
-            : value;
-        this.setState({ [name]: val });
-    };
+const NewDivision = () => {
+  const classes = useStyles();
+  const client = useApolloClient();
+  const [state, setState, handleSelectChange, handleInputChange] = useForm({
+    centerExamSessionSpecialtyID: "",
+    centerNumber: "",
+    centerByNumber: {},
+    examID: "",
+    sessionID: "",
+    examSession: {},
+    centerExamSession: {},
+    educTypeID: "",
+    educTypes: [],
+    sessions: [],
+    exams: [],
+  });
 
-    resetForm = () => {
-        this.setState({ candCode: '' });
-    };
+  const initialValues = {
+    centerNumber: "",
+    EPF1: "",
+    EPF2: "",
+  };
+  const {
+    sessionID,
+    educTypeID,
+    examID,
+    educTypes,
+    exams,
+    sessions,
+    centerNumber,
+    centerByNumber,
+    examSession,
+    centerExamSession,
+  } = state;
 
-    makeCandVariableObject = (candCodeValue) => {
-        const storedCandidate = {
-            candCode: `${candCodeValue}`
-        };
-        return storedCandidate;
-    };
-    makeCESSObject = (candCodeValue) => {
-        const objCESS = {
-            id: `${candCodeValue}`
-        };
-        return objCESS;
-    };
+  const loadEducTypeData = async () => {
+    const { error, data, loading } = await client.query({
+      query: getAllEducationTypesQuery,
+    });
 
-    render() {
-        const {
-            regionID,
-            divisionID,
-            subDivisionID,
-            townID,
-            centerID,
-            examID,
-            sessionID,
-            seriesID,
-            candCode
-        } = this.state;
+    setState((prev) => ({ ...prev, educTypes: data.educationTypes }));
+  };
+
+  const getEducTypeOptions =
+    educTypes &&
+    educTypes.map((item) => ({
+      value: item.id,
+      label: item.educationTypeName,
+    }));
+
+  const loadSessionData = async () => {
+    const { error, data, loading } = await client.query({
+      query: getAllSessionsQuery,
+    });
+
+    setState((prev) => ({ ...prev, sessions: data.sessions }));
+  };
+  const refinedSessions = sessions && removeTypename(sessions);
+
+  const getSessionName = refinedSessions && {
+    ...getSelectedObject(refinedSessions, sessionID),
+  };
+
+  const getSessionsOptions =
+    sessions &&
+    sessions.map((item) => ({
+      value: item.id,
+      label: item.sessionName,
+    }));
+
+  const loadExamData = async () => {
+    const { error, data, loading } = await client.query({
+      query: getAllExamsQuery,
+    });
+
+    setState((prev) => ({ ...prev, exams: data.exams }));
+  };
+  const removeExamName =
+    exams && exams.map(({ examName, ...others }) => others);
+  const refinedExams = exams && removeTypename(removeExamName);
+
+  const getExamName = refinedExams && {
+    ...getSelectedObject(refinedExams, examID),
+  };
+  const getExamsOptions =
+    exams && exams.map((item) => ({ value: item.id, label: item.examName }));
+  console.log(state);
+
+  useEffect(() => {
+    loadEducTypeData();
+    loadSessionData();
+    loadExamData();
+  }, []);
+
+  console.log({ getExamName });
+
+  const loadCenterData = async () => {
+    const { error, data } = await client.query({
+      // skip: !centerNumber,
+      query: getSingleCenterQuery,
+      variables: { centerNumber },
+    });
+
+    const { centerByNumber } = { ...data };
+    const newCenterByNumber = removeTypename(centerByNumber);
+    console.log(newCenterByNumber);
+    setState((prev) => ({ ...prev, centerByNumber: newCenterByNumber }));
+  };
+
+  useEffect(() => {
+    loadCenterData();
+  }, [centerNumber]);
+  console.log(centerByNumber);
+
+  const loadExamSessionData = async () => {
+    console.log("running exam session query");
+    const { error, data: dataExamSessions } = await client.query({
+      // skip: !getExamName || !getSessionName,
+      query: getExamSessionQuery,
+      variables: {
+        exam: getExamName,
+        session: getSessionName,
+      },
+    });
+
+    const getExamSessions = dataExamSessions && dataExamSessions.examSessions;
+    const refinedES = getExamSessions && removeTypename(getExamSessions);
+    const reducedES = refinedES && refinedES[0];
+    console.log(reducedES);
+
+    setState((prev) => ({ ...prev, examSession: reducedES }));
+  };
+
+  useEffect(() => {
+    loadExamSessionData();
+  }, [examID || sessionID]);
+  console.log(examSession);
+
+  const loadCenterExamSessionData = async () => {
+    console.log("running center exam session query");
+
+    const { error, data: dataCES } = await client.query({
+      // skip: !examSession || !centerByNumber,
+      query: getSingleCenterExamSessionQuery,
+      variables: {
+        examSession: examSession && examSession,
+        center: centerByNumber && centerByNumber,
+      },
+    });
+    const getCenterExamSessionsByCode =
+      dataCES && dataCES.centerExamSessionsByCode;
+    console.log(getCenterExamSessionsByCode);
+    const refinedCenterExamSessions =
+      getCenterExamSessionsByCode &&
+      removeTypename(getCenterExamSessionsByCode);
+    // transform the array into a single object
+    const getCESID = refinedCenterExamSessions && refinedCenterExamSessions[0];
+    console.log(getCESID);
+
+    setState((prev) => ({ ...prev, centerExamSession: getCESID }));
+  };
+
+  useEffect(() => {
+    loadCenterExamSessionData();
+  }, [examID || sessionID || centerNumber]);
+  console.log(centerExamSession);
+
+  // const {
+  //   data: dataSpecialtyCES,
+  //   loading: loadingSpecialtyCES,
+  //   error: errSpecialtyCES,
+  // } = useQuery(getAllSpecialtiesOfACenterExamSessionQuery, {
+  //   variables: getCESID,
+  // });
+
+  // console.log(dataSpecialtyCES);
+  // const getCenterExamSession =
+  //   dataSpecialtyCES && dataSpecialtyCES.centerExamSession;
+  // const { centerExamSessionSpecialty } = { ...getCenterExamSession };
+  // console.log({ centerExamSessionSpecialty });
+
+  // const newSpecialty =
+  //   centerExamSessionSpecialty &&
+  //   centerExamSessionSpecialty.map((item) => item);
+  // const refinedSpecialty = newSpecialty && removeTypename(newSpecialty);
+  // console.log(refinedSpecialty);
+  // const getSpecialtyOptions =
+  //   refinedSpecialty &&
+  //   refinedSpecialty.map((item) => ({
+  //     id: item.specialty.id,
+  //     value: item.id,
+  //     label: item.specialty.specialtyName,
+  //   }));
+  // console.log({ state });
+  // console.log({ getCESID });
+  // console.log(state.centerExamSessionSpecialtyID);
+
+  const [createRegistration, { loading, error }] = useMutation(
+    createRegistrationMutation
+  );
+
+  return (
+    <Formik
+      method="POST"
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={async (values, { setSubmitting, resetForm }) => {
+        const res = await createRegistration({
+          variables: {
+            ...values,
+            candExamSecretCode: uniqueCodeGen(20),
+            candidate: makeCandVariableObject(values.candCode),
+            centerExamSession: { id: getCESID.id },
+            specialty: { id: values.centerExamSessionSpecialty.id },
+            aptitude: values.aptitude,
+            EPF1: values.EPF1,
+            EPF2: values.EPF2,
+            centerExamSessionSpecialty: {
+              id: values.centerExamSessionSpecialty.value,
+            },
+            candExamSession: candExamSessionCode(
+              values.candCode,
+              examID,
+              sessionID
+            ),
+            candRegistrationNumber:
+              refinedExams &&
+              refinedSessions &&
+              candRegistrationNumber(
+                centerNumber,
+                getExamName.examCode,
+                getSessionName.sessionName
+              ),
+          },
+        });
+        res &&
+          Router.push({
+            pathname: "/show/results/registrationReceipt",
+            query: { id: res.data.createRegistration.id },
+          });
+        setTimeout(() => {
+          console.log(JSON.stringify(values, null, 2));
+          console.log(res);
+          resetForm(true);
+          setSubmitting(false);
+        }, 400);
+      }}
+    >
+      {({ submitForm, isSubmitting }) => {
         return (
-            <Query query={getAllRegionsQuery}>
-                {({ data, loading, error }) => {
-                    {
-                        loading && <p>Loading...</p>;
-                    }
-                    {
-                        error && <Error error={error} />;
-                    }
-                    const { regions } = data;
-                    const refinedRegion = regions && regions.map(({
-                        __typename,
-                        ...others
-                    }) => others);
-                    //prepare data for the region select options
+          <div className={classes.centerAll}>
+            <Paper className={classes.pageStyled} elevation={5}>
+              <Form aria-busy={isSubmitting}>
+                {(isSubmitting || loading) && <LinearProgress />}
+                <Grid className={classes.centerAll} container>
+                  <Grid container className={classes.centerAll}>
+                    <Grid item>
+                      <Error error={error} />
+                      <Typography
+                        className={classes.titleStyled}
+                        color="primary"
+                        gutterBottom
+                        variant="h5"
+                        component="h6"
+                      >
+                        Inscription aux Examens
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={10}>
+                    <Grid item xs={12} sm={6} className={classes.allControls}>
+                      <Field
+                        component={TextField}
+                        fullWidth
+                        variant="outlined"
+                        name="centerName"
+                        type="text"
+                        value={
+                          (centerByNumber && centerByNumber.centerCode) || ""
+                        }
+                        label="Libellé du centre"
+                        disabled={isSubmitting}
+                        helperText={<ErrorMessage name="centerName" />}
+                      />
+                      <Field
+                        component={TextField}
+                        fullWidth
+                        variant="outlined"
+                        name="centerNumber"
+                        type="number"
+                        value={(centerNumber && centerNumber) || 0}
+                        onChange={handleInputChange}
+                        label="Numéro du centre"
+                        disabled={isSubmitting}
+                        helperText={<ErrorMessage name="centerNumber" />}
+                      />
+                      <Field
+                        component={Select}
+                        variant="outlined"
+                        name="sessionID"
+                        placeholder="Session"
+                        onChange={(event) => {
+                          handleSelectChange(event, "sessionID");
+                        }}
+                        label="Session"
+                        options={getSessionsOptions}
+                        disabled={isSubmitting}
+                        helperText={<ErrorMessage name="sessionID" />}
+                      />
 
-                    const regionsOptions = refinedRegion && refinedRegion.map((item) => (
-                        <option value={item.id} key={item.id}>
-                            {item.regName}
-                        </option>
-                    ));
-                    return (
-                        <Query
-                            query={getDivisionsOfARegionQuery}
-                            variables={refinedRegion && getSelectedObject(refinedRegion, regionID)}>
-                            {({ data, loading, error }) => {
-                                {
-                                    loading && <p>Loading...</p>;
-                                }
-                                {
-                                    error && <Error error={error} />;
-                                }
-                                console.log(data);
-                                const { region } = data;
-                                const allDivs = {
-                                    ...region
-                                };
-                                const { division } = allDivs;
-                                console.log(allDivs);
-                                console.log(division);
-                                const refinedDivision = division && division.map(({
-                                    __typename,
-                                    ...others
-                                }) => others);
+                      <Field
+                        component={Select}
+                        variant="outlined"
+                        name="examID"
+                        placeholder="Examen"
+                        label="Examen"
+                        options={getExamsOptions}
+                        disabled={isSubmitting}
+                        onChange={(event) => {
+                          handleSelectChange(event, "examID");
+                        }}
+                        helperText={<ErrorMessage name="examID" />}
+                      />
 
-                                const divisionsOptions = refinedDivision && refinedDivision.map((item) => (
-                                    <option value={item.id} key={item.id}>
-                                        {item.divName}
-                                    </option>
-                                ));
+                      <Field
+                        component={Select}
+                        variant="outlined"
+                        name="educTypeID"
+                        placeholder="Type d'enseignement"
+                        label="Type d'enseignement"
+                        onChange={(event) => {
+                          handleSelectChange(event, "educTypeID");
+                        }}
+                        options={getEducTypeOptions}
+                        disabled={isSubmitting}
+                        helperText={<ErrorMessage name="educTypeID" />}
+                      />
+                      <Field
+                        component={Select}
+                        variant="outlined"
+                        name="centerExamSessionSpecialty"
+                        placeholder="La Spécialité"
+                        label="La Spécialité"
+                        options={getSessionsOptions}
+                        disabled={isSubmitting}
+                        helperText={
+                          <ErrorMessage name="centerExamSessionSpecialty" />
+                        }
+                      />
+                      <Field
+                        component={TextField}
+                        fullWidth
+                        variant="outlined"
+                        name="candCode"
+                        type="text"
+                        label="Code secret"
+                        disabled={isSubmitting}
+                        helperText={<ErrorMessage name="candCode" />}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6} className={classes.allControls}>
+                      <Field
+                        required
+                        name="aptitude"
+                        component={FRadioGroup}
+                        label="Aptitude en EPS"
+                        options={[
+                          { value: "A", label: "Apte" },
+                          { value: "I", label: "Inapte" },
+                        ]}
+                        groupProps={{ row: true }}
+                      />
+                      <Field
+                        required
+                        name="EPF1"
+                        component={FRadioGroup}
+                        label="EPF1 Theorie"
+                        options={[
+                          { value: "D", label: "Dessin" },
+                          { value: "M", label: "Education Musicale" },
+                          { value: "E", label: "Education Menagere" },
+                          { value: "G", label: "Grec" },
+                          { value: "L", label: "Latin" },
+                        ]}
+                        groupProps={{ row: true }}
+                      />
+                      <Field
+                        required
+                        name="EPF2"
+                        component={FRadioGroup}
+                        label="EPF2 Pratiques"
+                        options={[
+                          { value: "C", label: "TP Chimie" },
+                          { value: "I", label: "TP Info" },
+                          { value: "P", label: "TP Physique" },
+                          { value: "S", label: "TP SVT" },
+                        ]}
+                        groupProps={{ row: true }}
+                      />
 
-                                return (
-                                    <Query
-                                        query={getSubDivisionsOfADivisionQuery}
-                                        variables={refinedDivision && getSelectedObject(refinedDivision, divisionID)}>
-                                        {({ data, loading, error }) => {
-                                            {
-                                                loading && <p>Loading...</p>;
-                                            }
-                                            {
-                                                error && <Error error={error} />;
-                                            }
-                                            const { division: departement } = data;
-
-                                            const allSubDivs = {
-                                                ...departement
-                                            };
-                                            const { subDivision } = allSubDivs;
-                                            console.log(subDivision);
-                                            const refinedSubDivision = subDivision && subDivision.map(({
-                                                __typename,
-                                                ...others
-                                            }) => others);
-
-                                            const subDivisionsOptions = refinedSubDivision && refinedSubDivision.map((item) => (
-                                                <option value={item.id} key={item.id}>
-                                                    {item.subDivName}
-                                                </option>
-                                            ));
-
-                                            return (
-                                                <Query
-                                                    query={getTownsOfASubDivisionQuery}
-                                                    variables={refinedSubDivision && getSelectedObject(refinedSubDivision, subDivisionID)}>
-                                                    {({ data, loading, error }) => {
-                                                        {
-                                                            loading && <p>Loading...</p>;
-                                                        }
-                                                        {
-                                                            error && <Error>error={error}</Error>;
-                                                        }
-
-                                                        const village = data.subDivision;
-
-                                                        const allTowns = {
-                                                            ...village
-                                                        };
-
-                                                        const { town } = allTowns;
-                                                        const refinedTown = town && town.map(({
-                                                            __typename,
-                                                            townName,
-                                                            townCode,
-                                                            ...others
-                                                        }) => others);
-
-                                                        return (
-                                                            <Query
-                                                                query={getCentersOfATownQuery}
-                                                                variables={refinedTown && getSelectedObject(refinedTown, townID)}>
-                                                                {({ data, loading, error }) => {
-                                                                    {
-                                                                        loading && <p>Loding...</p>;
-                                                                    }
-                                                                    {
-                                                                        error && <Error error={error} />;
-                                                                    }
-                                                                    const { town: ville } = data;
-                                                                    const theTowns = {
-                                                                        ...ville
-                                                                    };
-                                                                    const { center } = theTowns;
-                                                                    console.log(center);
-                                                                    const refinedCenter = center && center.map(({
-                                                                        __typename,
-                                                                        centerName,
-                                                                        ...others
-                                                                    }) => others);
-                                                                    return (
-                                                                        <Query query={getAllExamsQuery}>
-                                                                            {({ data, loading, error }) => {
-                                                                                {
-                                                                                    loading && <p>loading...</p>;
-                                                                                }
-                                                                                {
-                                                                                    error && <Error error={error} />;
-                                                                                }
-
-                                                                                const { exams } = data;
-                                                                                console.log(exams);
-
-                                                                                const refinedExams = exams && exams.map(({
-                                                                                    __typename,
-                                                                                    examName,
-                                                                                    ...others
-                                                                                }) => others);
-
-                                                                                return (
-                                                                                    <Query query={getAllSessionsQuery}>
-                                                                                        {({ data, loading, error }) => {
-                                                                                            {
-                                                                                                loading && (
-                                                                                                    <p >
-                                                                                                        loading...
-                                                                                                    </p>
-                                                                                                );
-                                                                                            }
-                                                                                            {
-                                                                                                error && (<Error error={error} />);
-                                                                                            }
-
-                                                                                            const { sessions } = data;
-                                                                                            console.log(sessions);
-                                                                                            const refinedSessions = sessions && sessions.map(({
-                                                                                                __typename,
-                                                                                                sessionName,
-                                                                                                ...others
-                                                                                            }) => others);
-
-                                                                                            return (
-
-                                                                                                <Query query={getExamSessionQuery}
-                                                                                                    variables={{
-
-                                                                                                        exam: refinedExams && getSelectedObject(refinedExams, examID),
-                                                                                                        session: refinedSessions && getSelectedObject(refinedSessions, sessionID)
-                                                                                                    }}  >
-                                                                                                    {({ data, error, loading }) => {
-                                                                                                        console.log(data)
-                                                                                                        const { examSessions } = { ...data }
-                                                                                                        const refinedES = examSessions && examSessions.map(({ __typename, ...others }) => others)
-                                                                                                        const reducedES = refinedES && refinedES.reduce((item) => item)
-                                                                                                        console.log(reducedES)
-
-                                                                                                        return (
-                                                                                                            <Query
-                                                                                                                query={getSingleCenterExamSessionQuery}
-                                                                                                                variables={{
-                                                                                                                    examSession: reducedES && reducedES,
-                                                                                                                    center: refinedCenter && getSelectedObject(refinedCenter, centerID)
-                                                                                                                }}>
-                                                                                                                {({ data, error, loading }) => {
-                                                                                                                    console.log(data);
-                                                                                                                    const { centerExamSessions } = {
-                                                                                                                        ...data
-                                                                                                                    };
-                                                                                                                    console.log(centerExamSessions);
-                                                                                                                    // remove typename from the object
-                                                                                                                    const refinedCenterExamSessions = centerExamSessions && centerExamSessions.map(({
-                                                                                                                        __typename,
-                                                                                                                        ...others
-                                                                                                                    }) => others);
-                                                                                                                    // transform the array into a single object
-                                                                                                                    const getObj = refinedCenterExamSessions && refinedCenterExamSessions.reduce((item) => item);
-                                                                                                                    console.log(getObj);
-                                                                                                                    return (
-
-
-                                                                                                                        <Query
-                                                                                                                            query={getAllSeriesOfACenterExamSessionQuery}
-                                                                                                                            variables={{ id: getObj && getObj.id }}>
-                                                                                                                            {({ data, loading, error }) => {
-                                                                                                                                {
-                                                                                                                                    loading && (
-                                                                                                                                        <p>
-                                                                                                                                            loading...
-                                                                                                                                        </p>
-                                                                                                                                    );
-                                                                                                                                }
-                                                                                                                                {
-                                                                                                                                    error && (<Error error={error} />);
-                                                                                                                                }
-                                                                                                                                console.log(data);
-
-                                                                                                                                const { centerExamSession } = data;
-
-                                                                                                                                const seriesCES = {
-                                                                                                                                    ...centerExamSession
-                                                                                                                                };
-                                                                                                                                const { centerExamSessionSeries } = seriesCES;
-                                                                                                                                console.log(centerExamSessionSeries);
-                                                                                                                                // get all the series out of this object
-
-                                                                                                                                const newSeries = centerExamSessionSeries && centerExamSessionSeries.map((item) => (item.series))
-                                                                                                                                const refinedSeries = newSeries && newSeries.map(({
-                                                                                                                                    __typename,
-                                                                                                                                    seriesName,
-                                                                                                                                    ...others
-                                                                                                                                }) => others);
-
-
-                                                                                                                                const seriesOptions = newSeries && newSeries.map((item) => (
-                                                                                                                                    <option key={item.id} value={item.id}>
-                                                                                                                                        {item.seriesName}
-                                                                                                                                    </option>
-                                                                                                                                ));
-
-                                                                                                                                return (
-
-                                                                                                                                    <Query query={getCenterExamSessionSeriesQuery} variables={{
-                                                                                                                                        centerExamSession: getObj && getObj,
-                                                                                                                                        series: refinedSeries && getSelectedObject(refinedSeries, seriesID)
-                                                                                                                                    }}   >
-                                                                                                                                        {({ data, error, loading }) => {
-                                                                                                                                            const { centerExamSessionSerieses } = { ...data }
-                                                                                                                                            const getCESS = centerExamSessionSerieses && centerExamSessionSerieses.reduce((item) => item)
-                                                                                                                                            console.log(getCESS)
-                                                                                                                                            console.log(refinedSeries)
-                                                                                                                                            const { id: idObj } = { ...getCESS }
-                                                                                                                                            const refinedCESS = idObj && this.makeCESSObject(idObj)
-                                                                                                                                            console.log(refinedCESS)
-
-
-                                                                                                                                            return (
-                                                                                                                                                <Mutation
-                                                                                                                                                    mutation={createRegistrationMutation}
-                                                                                                                                                    variables={{
-                                                                                                                                                        ...this.state,
-                                                                                                                                                        candExamSecretCode: uniqueCodeGen(8),
-                                                                                                                                                        candidate: this.makeCandVariableObject(candCode),
-                                                                                                                                                        centerExamSession: getObj && getObj,
-                                                                                                                                                        series: refinedSeries && getSelectedObject(refinedSeries, seriesID),
-                                                                                                                                                        centerExamSessionSeries: refinedCESS && refinedCESS,
-                                                                                                                                                        candExamSession: candExamSessionCode(candCode, examID, sessionID)
-
-                                                                                                                                                    }}>
-                                                                                                                                                    {(createRegistration, { loading, error }) => (
-                                                                                                                                                        <StyledPage >
-                                                                                                                                                            <Form
-                                                                                                                                                                method="POST"
-                                                                                                                                                                onSubmit={async (e) => {
-                                                                                                                                                                    e.preventDefault();
-                                                                                                                                                                    const res = await createRegistration();
-                                                                                                                                                                    console.log(res);
-                                                                                                                                                                    this.resetForm();
-                                                                                                                                                                }}>
-                                                                                                                                                                <h4 >
-                                                                                                                                                                    S'Inscrire à un Examen
-                                                                                                                                                    </h4>
-                                                                                                                                                                <Error error={error} />
-                                                                                                                                                                <fieldset disabled={loading} aria-busy={loading}>
-                                                                                                                                                                    <StyledDivision >
-                                                                                                                                                                        <CenterSelect >
-                                                                                                                                                                            <select
-                                                                                                                                                                                type="select"
-                                                                                                                                                                                id="regionID"
-                                                                                                                                                                                name="regionID"
-                                                                                                                                                                                value={regionID}
-                                                                                                                                                                                onChange={this.handleChange}
-                                                                                                                                                                                required>
-                                                                                                                                                                                <option >
-                                                                                                                                                                                    La région
-                                                                                                                                                                    </option>
-                                                                                                                                                                                {regionsOptions && regionsOptions}
-                                                                                                                                                                            </select>
-
-                                                                                                                                                                            <select
-                                                                                                                                                                                type="select"
-                                                                                                                                                                                id="divisionID"
-                                                                                                                                                                                name="divisionID"
-                                                                                                                                                                                value={divisionID}
-                                                                                                                                                                                onChange={this.handleChange}
-                                                                                                                                                                                required>
-                                                                                                                                                                                <option >
-                                                                                                                                                                                    Le département
-                                                                                                                                                                    </option>
-                                                                                                                                                                                {division && divisionsOptions}
-                                                                                                                                                                            </select>
-                                                                                                                                                                            <select
-                                                                                                                                                                                type="select"
-                                                                                                                                                                                id="subDivisionID"
-                                                                                                                                                                                name="subDivisionID"
-                                                                                                                                                                                value={subDivisionID}
-                                                                                                                                                                                onChange={this.handleChange}
-                                                                                                                                                                                required>
-                                                                                                                                                                                <option >
-                                                                                                                                                                                    L'Arrondissement
-                                                                                                                                                                    </option>
-                                                                                                                                                                                {subDivision && subDivisionsOptions}
-                                                                                                                                                                            </select>
-                                                                                                                                                                            <select
-                                                                                                                                                                                type="select"
-                                                                                                                                                                                id="townID"
-                                                                                                                                                                                name="townID"
-                                                                                                                                                                                value={townID}
-                                                                                                                                                                                onChange={this.handleChange}
-                                                                                                                                                                                required>
-                                                                                                                                                                                <option >
-                                                                                                                                                                                    La Ville
-                                                                                                                                                                    </option>
-                                                                                                                                                                                {town && town.map((item) => (
-                                                                                                                                                                                    <option key={item.id} value={item.id}>
-                                                                                                                                                                                        {item.townName}
-                                                                                                                                                                                    </option>
-                                                                                                                                                                                ))}
-                                                                                                                                                                            </select>
-
-                                                                                                                                                                            <select
-                                                                                                                                                                                type="select"
-                                                                                                                                                                                id="centerD"
-                                                                                                                                                                                name="centerID"
-                                                                                                                                                                                value={centerID}
-                                                                                                                                                                                onChange={this.handleChange}
-                                                                                                                                                                                required>
-                                                                                                                                                                                <option >
-                                                                                                                                                                                    Le Centre d'Examen
-                                                                                                                                                                    </option>
-                                                                                                                                                                                {center && center.map((item) => (
-                                                                                                                                                                                    <option key={item.id} value={item.id}>
-                                                                                                                                                                                        {item.centerName}
-                                                                                                                                                                                    </option>
-                                                                                                                                                                                ))}
-                                                                                                                                                                            </select>
-                                                                                                                                                                        </CenterSelect>
-                                                                                                                                                                        <OtherSelect >
-                                                                                                                                                                            <select
-                                                                                                                                                                                type="select"
-                                                                                                                                                                                id="sessionID"
-                                                                                                                                                                                name="sessionID"
-                                                                                                                                                                                value={sessionID}
-                                                                                                                                                                                onChange={this.handleChange}
-                                                                                                                                                                                required>
-                                                                                                                                                                                <option >
-                                                                                                                                                                                    La Session
-                                                                                                                                                                    </option>
-                                                                                                                                                                                {sessions && sessions.map((item) => (
-                                                                                                                                                                                    <option key={item.id} value={item.id}>
-                                                                                                                                                                                        {item.sessionName}
-                                                                                                                                                                                    </option>
-                                                                                                                                                                                ))}
-                                                                                                                                                                            </select>
-
-                                                                                                                                                                            <select
-                                                                                                                                                                                type="select"
-                                                                                                                                                                                id="examID"
-                                                                                                                                                                                name="examID"
-                                                                                                                                                                                value={examID}
-                                                                                                                                                                                onChange={this.handleChange}
-                                                                                                                                                                                required>
-                                                                                                                                                                                <option >
-                                                                                                                                                                                    L'Examen
-                                                                                                                                                                    </option>
-                                                                                                                                                                                {exams && exams.map((item) => (
-                                                                                                                                                                                    <option key={item.id} value={item.id}>
-                                                                                                                                                                                        {item.examName}
-                                                                                                                                                                                    </option>
-                                                                                                                                                                                ))}
-                                                                                                                                                                            </select>
-
-                                                                                                                                                                            <select
-                                                                                                                                                                                type="select"
-                                                                                                                                                                                id="seriesID"
-                                                                                                                                                                                name="seriesID"
-                                                                                                                                                                                value={seriesID}
-                                                                                                                                                                                onChange={this.handleChange}
-                                                                                                                                                                                required>
-                                                                                                                                                                                <option >
-                                                                                                                                                                                    La Série
-                                                                                                                                                                    </option>
-                                                                                                                                                                                {seriesOptions && seriesOptions}
-                                                                                                                                                                            </select>
-
-                                                                                                                                                                            <input
-                                                                                                                                                                                type="text"
-                                                                                                                                                                                id="candCode"
-                                                                                                                                                                                name="candCode"
-                                                                                                                                                                                placeholder="Code Candidat"
-                                                                                                                                                                                value={candCode}
-                                                                                                                                                                                onChange={this.handleChange}
-                                                                                                                                                                                required />
-
-                                                                                                                                                                            <div className="submitButton">
-                                                                                                                                                                                <button type="submit">
-                                                                                                                                                                                    Valid{loading
-                                                                                                                                                                                        ? 'ation en cours'
-                                                                                                                                                                                        : 'er'}
-                                                                                                                                                                                </button>
-                                                                                                                                                                            </div>
-                                                                                                                                                                        </OtherSelect>
-                                                                                                                                                                    </StyledDivision>
-                                                                                                                                                                </fieldset>
-                                                                                                                                                            </Form>
-                                                                                                                                                        </StyledPage>
-                                                                                                                                                    )
-                                                                                                                                                    }
-                                                                                                                                                </Mutation>
-
-                                                                                                                                            )
-                                                                                                                                        }}
-                                                                                                                                    </Query>
-                                                                                                                                );
-                                                                                                                            }
-                                                                                                                            }
-                                                                                                                        </Query>
-                                                                                                                    );
-                                                                                                                }
-                                                                                                                }
-                                                                                                            </Query>
-                                                                                                        );
-                                                                                                    }
-                                                                                                    }
-                                                                                                </Query>
-                                                                                            );
-                                                                                        }
-                                                                                        }
-                                                                                    </Query>
-                                                                                );
-                                                                            }
-                                                                            }
-                                                                        </Query>
-                                                                    );
-                                                                }
-                                                                }
-                                                            </Query>
-                                                        );
-                                                    }
-                                                    }
-                                                </Query>
-                                            );
-                                        }
-                                        }
-                                    </Query>
-                                );
-                            }
-                            }
-                        </Query>
-                    )
-                }}
-            </Query>
+                      <Button
+                        disabled={isSubmitting || loading}
+                        onClick={submitForm}
+                      >
+                        {(isSubmitting || loading) && <CircularProgress />}
+                        {isSubmitting || loading
+                          ? "Inscription en cours"
+                          : "S'Inscrire"}
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Form>
+            </Paper>
+          </div>
         );
-    }
-}
+      }}
+    </Formik>
+  );
+};
+export default NewDivision;
 
-export default Registration;
+// <SygefexMuiSelect
+// name="region"
+// margin="normal"
+// onChange={(value) =>
+//   setFieldValue("region", value.target)
+// }
+// placeholder="la Région"
+// disabled={isSubmitting}
+// >
+//   {regions &&
+//     regions.map((item) => (
+//       <MenuItem key={item.id} value={item.id}>
+//         {item.regName}
+//       </MenuItem>
+//     ))}
+// </Field>

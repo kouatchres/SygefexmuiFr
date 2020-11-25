@@ -1,13 +1,12 @@
 import React from "react";
-import CreateTownHook from "../../src/components/town/CreateTownHook";
+import NewTown from "../../src/components/town/NewTown";
 import GatedSignin from "../../src/components/user/GatedSignin";
-const newTown = (props) => {
+
+const newTown = () => {
   return (
-    <div>
-      <GatedSignin>
-        <CreateTownHook />
-      </GatedSignin>
-    </div>
+    <GatedSignin>
+      <NewTown />
+    </GatedSignin>
   );
 };
 export default newTown;

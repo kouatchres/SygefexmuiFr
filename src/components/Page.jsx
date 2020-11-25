@@ -74,20 +74,4 @@ const Page = (props) => {
 
 export default Page;
 
-// const MuiTheme = createMuiTheme({
-//   typography: {
-//     h4: {
-//       fontSize: 15,
-//     },
-//     fontSize: 12,
-//   },
-//   palette: {
-//     primary: {
-//       main: blue[700],
-//     },
-//     secondary: {
-//       main: orange[200],
-//     },
-//     fontFamily: ["Roboto", "sans-serif"].join(","),
-//   },
-// });
+

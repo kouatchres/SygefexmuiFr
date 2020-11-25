@@ -1,11 +1,11 @@
 import React from "react";
-import AllMuiFields from "../../src/components/attendance/AllMuiFields";
+import MuiComp from "../../src/components/attendance/MuiComp";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
 const muiComps = () => {
   return (
     <GatedSignin>
-      <AllMuiFields />
+      <MuiComp />
     </GatedSignin>
   );
 };
