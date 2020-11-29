@@ -3,5 +3,6 @@
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
   "/show/results/registrationReceipt": "pages/show/results/registrationReceipt.js",
-  "/show/singleCand": "pages/show/singleCand.js"
+  "/show/singleCand": "pages/show/singleCand.js",
+  "/show/results/centerResults": "pages/show/results/centerResults.js"
 }

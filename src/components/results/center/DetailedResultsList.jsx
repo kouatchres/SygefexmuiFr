@@ -11,7 +11,6 @@ const DetailedResults = ({ id }) => {
   const [state, setState] = useState({
     columns: [
       { field: "candRegistrationNumber", title: "No Inscrit" },
-      { field: "specialty", title: "Serie" },
       { field: "specialtyCode", title: "Code Serie" },
       { field: "aptitude", title: "Aptitude" },
       { field: "EPF1", title: "EPF1" },
@@ -47,7 +46,6 @@ const DetailedResults = ({ id }) => {
       }));
     console.log({ registration });
     console.log(getCand);
-    setCand(getCand);
     setState((prev) => ({ ...prev, data: getCand }));
   };
 

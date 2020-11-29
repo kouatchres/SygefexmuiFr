@@ -1,10 +1,13 @@
+import { useRouter } from "next/router";
 import React from "react";
 import DetailedResultsList from "../../../src/components/results/center/DetailedResultsList";
 
-const centerResults = ({ query }) => {
+const centerResults = () => {
+  const router = useRouter();
+  const { id } = router.query;
   return (
     <div>
-      <DetailedResultsList id={query.id} />
+      <DetailedResultsList id={id} />
     </div>
   );
 };

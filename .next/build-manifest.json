@@ -24,6 +24,11 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
+    "/show/results/centerResults": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/show/results/centerResults.js"
+    ],
     "/show/results/registrationReceipt": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
