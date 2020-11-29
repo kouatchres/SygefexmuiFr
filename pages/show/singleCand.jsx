@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React from "react";
-import SingleCandidateHooks from "../../src/components/candidate/SingleCandidateHooks";
+import CandidateReceipt from "../../src/components/candidate/CandidateReceipt";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
 const singleCand = () => {
@@ -9,7 +9,7 @@ const singleCand = () => {
 
   return (
     <GatedSignin>
-      <SingleCandidateHooks id={id} />
+      <CandidateReceipt id={id} />
     </GatedSignin>
   );
 };

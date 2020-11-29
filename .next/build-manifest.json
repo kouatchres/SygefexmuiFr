@@ -24,10 +24,10 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/show/results/centerResults": [
+    "/creates/newGroupCand": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/show/results/centerResults.js"
+      "static/chunks/pages/creates/newGroupCand.js"
     ],
     "/show/results/registrationReceipt": [
       "static/chunks/main.js",
