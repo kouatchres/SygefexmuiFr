@@ -1,14 +1,12 @@
 import React from "react";
-import NewRegistration from "../../src/components/registration/NewRegistration";
+import ExamRegistration from "../../src/components/registration/ExamRegistration";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
 const newRegister = () => {
   return (
-    <div>
-      <GatedSignin>
-        <NewRegistration />
-      </GatedSignin>
-    </div>
+    // <GatedSignin>
+    <ExamRegistration />
+    // </GatedSignin>
   );
 };
 export default newRegister;

@@ -4,11 +4,10 @@ import GatedSignin from "../../src/components/user/GatedSignin";
 
 const singleCand=({ query })=> {
   return (
-    <div>
-      <GatedSignin>
-        <SingleCandidateHooks id={query.id} />
-      </GatedSignin>
-    </div>
+    <GatedSignin>
+      <p> {query}</p>
+      <SingleCandidateHooks id={query.id} />
+    </GatedSignin>
   );
 }
 export default singleCand;

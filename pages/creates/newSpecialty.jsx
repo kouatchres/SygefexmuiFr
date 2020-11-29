@@ -1,12 +1,12 @@
 import React from "react";
-import CreateNewSpecialtyHook from "../../src/components/specialty/CreateNewSpecialtyHook";
+import NewSpecialty from "../../src/components/specialty/NewSpecialty";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
 const newSeries = () => {
   return (
     <div>
       <GatedSignin>
-        <CreateNewSpecialtyHook />
+        <NewSpecialty />
       </GatedSignin>
     </div>
   );

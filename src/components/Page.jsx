@@ -4,6 +4,7 @@ import Meta from "./Meta";
 import { makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
 import { orange, green, blue } from "@material-ui/core/colors";
 import SygefexTheme from "./utils/SygefexTheme";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 const useStyles = makeStyles({
   root: {
@@ -64,6 +65,7 @@ const Page = (props) => {
         <div className={classes.headers}>
           <HeaderMUI />
         </div>
+
         <div className={classes.mains}>
           <div className={classes.inner}>{props.children}</div>
         </div>
@@ -73,5 +75,3 @@ const Page = (props) => {
 };
 
 export default Page;
-
-

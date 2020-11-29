@@ -587,7 +587,6 @@ const createMultipleCandidatesMutation = gql`
     $cand3rdName: String
     $dadName: String
     $momName: String
-    $candCode: String
     $email: String!
     $image: String!
     $phoneNumb: Int
@@ -602,7 +601,6 @@ const createMultipleCandidatesMutation = gql`
       dadName: $dadName
       momName: $momName
       cand3rdName: $cand3rdName
-      candCode: $candCode
       email: $email
       image: $image
       phoneNumb: $phoneNumb

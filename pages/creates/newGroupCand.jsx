@@ -1,11 +1,11 @@
 import React from "react";
-import CreateMultipleCandidates from "../../src/components/candidate/CreateMultipleCandidates";
+import NewCandidates from "../../src/components/candidate/NewCandidates";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
 const newCand = () => {
   return (
     <GatedSignin>
-      <CreateMultipleCandidates />
+      <NewCandidates />
     </GatedSignin>
   );
 };

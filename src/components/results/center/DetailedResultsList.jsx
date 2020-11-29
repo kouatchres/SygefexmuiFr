@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MaterialTable, { MTableToolbar } from "material-table";
 import { Paper } from "@material-ui/core";
-import allUsers from "../../region/people.json";
 import tableIcons from "../../utils/icons/tableIcons";
-import Link from "next/link";
 
 import { useApolloClient } from "@apollo/react-hooks";
 import { centerExamSessionForResultsQuery } from "../../queries&Mutations&Functions/Queries";

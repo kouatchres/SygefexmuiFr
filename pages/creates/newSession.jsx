@@ -1,14 +1,12 @@
 import React from "react";
-import CreateNewSessionHook from "../../src/components/session/CreateNewSessionHook";
+import NewSession from "../../src/components/session/NewSession";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
-const NewSession = () => {
+const newSession = () => {
   return (
-    <div>
       <GatedSignin>
-        <CreateNewSessionHook />
+        <NewSession />
       </GatedSignin>
-    </div>
   );
 };
-export default NewSession;
+export default newSession;

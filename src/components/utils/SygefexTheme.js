@@ -1,3 +1,4 @@
+import { Toolbar } from "@material-ui/core/Toolbar";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { blue, red, orange, grey } from "@material-ui/core/colors";
 
@@ -88,7 +89,8 @@ const SygefexTheme = createMuiTheme({
       input: {
         height: "1.2rem",
         fontSize: "1rem",
-        paddingBottom: ".5rem",
+        paddingBottom: "0.5rem",
+        // marginBottom: "0.5rem",
       },
       MuiFormInputLabel: {
         formControl: {
@@ -150,6 +152,7 @@ const SygefexTheme = createMuiTheme({
         fontSize: "0.9rem",
       },
     },
+
     MuiTableCell: {
       root: {
         paddingTop: "0.01rem",
@@ -164,12 +167,55 @@ const SygefexTheme = createMuiTheme({
         fontSize: "0.8rem",
       },
       marginNormal: {
+        margin: "0.5rem",
         marginTop: 0,
+        marginBottom: "0.3rem",
       },
     },
-    MuiFormLabel: {
-      root: {},
+
+    MuiPickersToolbar: {
+      toolbar: {
+        backgroundColor: "#044562",
+      },
     },
+
+    MuiTypography: {
+      alignCenter: {
+        fontSize: "1.1rem",
+      },
+    },
+    MuiPickersCalendarHeader: {
+      transitionContainer: {
+        height: "2.5rem",
+      },
+      iconButton: {
+        height: "2rem",
+      },
+    },
+    MuiToolbar: {
+      regular: {
+        maxHeight: "3rem",
+        minHeight: "3rem",
+      },
+    },
+    MuiPickersToolbarText: {
+      toolbarTxt: {
+        fontSize: "1.3rem",
+        padding: "0.5rem",
+      },
+    },
+    MuiPickersDatePickerRoot: {
+      toolbar: {
+        flexDirection: "row",
+        alignItems: "center",
+      },
+    },
+    MuiPickersCalendarHeader: {
+      daysHeader: {
+        fontSize: "1.3rem",
+      },
+    },
+
     MuiFormHelperText: {
       root: {
         color: orange[900],

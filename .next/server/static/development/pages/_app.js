@@ -525,10 +525,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/colors */ "@material-ui/core/colors");
 /* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _utils_SygefexTheme__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/SygefexTheme */ "./src/components/utils/SygefexTheme.js");
+/* harmony import */ var notistack__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! notistack */ "notistack");
+/* harmony import */ var notistack__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(notistack__WEBPACK_IMPORTED_MODULE_6__);
 var _footers,
     _jsxFileName = "E:\\sygefexMui\\sygefexMui-frontend\\src\\components\\Page.jsx";
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -586,47 +589,47 @@ var Page = function Page(props) {
     theme: _utils_SygefexTheme__WEBPACK_IMPORTED_MODULE_5__["default"],
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 61
+      lineNumber: 62
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Meta__WEBPACK_IMPORTED_MODULE_2__["default"], {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 62
+      lineNumber: 63
     },
     __self: this
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: classes.root,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 63
+      lineNumber: 64
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: classes.headers,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 64
+      lineNumber: 65
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_HeaderMUI__WEBPACK_IMPORTED_MODULE_1__["default"], {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 65
+      lineNumber: 66
     },
     __self: this
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: classes.mains,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 67
+      lineNumber: 69
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: classes.inner,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 68
+      lineNumber: 70
     },
     __self: this
   }, props.children))));
@@ -645,14 +648,21 @@ var Page = function Page(props) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @material-ui/core/styles */ "@material-ui/core/styles");
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/colors */ "@material-ui/core/colors");
-/* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @material-ui/core/Toolbar */ "@material-ui/core/Toolbar");
+/* harmony import */ var _material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/styles */ "@material-ui/core/styles");
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/colors */ "@material-ui/core/colors");
+/* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors__WEBPACK_IMPORTED_MODULE_2__);
+var _overrides;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
  // Create a theme instance.
 
-var SygefexTheme = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_0__["createMuiTheme"])({
+var SygefexTheme = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__["createMuiTheme"])({
   palette: {
     primary: {
       // main: "#C28B2B",
@@ -666,7 +676,7 @@ var SygefexTheme = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_0__[
       light: "#a2463c"
     },
     error: {
-      main: _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_1__["red"].A200
+      main: _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_2__["red"].A200
     },
     background: {
       // default: "#12343b",
@@ -702,7 +712,7 @@ var SygefexTheme = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_0__[
     borderRadius: "0.4rem"
   },
   spacing: 2,
-  overrides: {
+  overrides: (_overrides = {
     MuiToolbar: {
       regular: {
         minHeight: "1.5rem",
@@ -734,7 +744,8 @@ var SygefexTheme = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_0__[
       input: {
         height: "1.2rem",
         fontSize: "1rem",
-        paddingBottom: ".5rem"
+        paddingBottom: "0.5rem" // marginBottom: "0.5rem",
+
       },
       MuiFormInputLabel: {
         formControl: {
@@ -808,23 +819,56 @@ var SygefexTheme = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_0__[
         fontSize: "0.8rem"
       },
       marginNormal: {
-        marginTop: 0
+        margin: "0.5rem",
+        marginTop: 0,
+        marginBottom: "0.3rem"
       }
     },
-    MuiFormLabel: {
-      root: {}
+    MuiPickersToolbar: {
+      toolbar: {
+        backgroundColor: "#044562"
+      }
+    }
+  }, _defineProperty(_overrides, "MuiTypography", {
+    alignCenter: {
+      fontSize: "1.1rem"
+    }
+  }), _defineProperty(_overrides, "MuiPickersCalendarHeader", {
+    transitionContainer: {
+      height: "2.5rem"
     },
-    MuiFormHelperText: {
-      root: {
-        color: _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_1__["orange"][900],
-        "&$error": {
-          "&.MuiFormHelperText-root.Mui-error": {
-            color: "#e65100"
-          }
+    iconButton: {
+      height: "2rem"
+    }
+  }), _defineProperty(_overrides, "MuiToolbar", {
+    regular: {
+      maxHeight: "3rem",
+      minHeight: "3rem"
+    }
+  }), _defineProperty(_overrides, "MuiPickersToolbarText", {
+    toolbarTxt: {
+      fontSize: "1.3rem",
+      padding: "0.5rem"
+    }
+  }), _defineProperty(_overrides, "MuiPickersDatePickerRoot", {
+    toolbar: {
+      flexDirection: "row",
+      alignItems: "center"
+    }
+  }), _defineProperty(_overrides, "MuiPickersCalendarHeader", {
+    daysHeader: {
+      fontSize: "1.3rem"
+    }
+  }), _defineProperty(_overrides, "MuiFormHelperText", {
+    root: {
+      color: _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_2__["orange"][900],
+      "&$error": {
+        "&.MuiFormHelperText-root.Mui-error": {
+          color: "#e65100"
         }
       }
     }
-  },
+  }), _overrides),
   props: {
     MuiButton: {
       variant: "outlined",
@@ -1029,6 +1073,17 @@ module.exports = require("next-with-apollo");
 /***/ (function(module, exports) {
 
 module.exports = require("next/head");
+
+/***/ }),
+
+/***/ "notistack":
+/*!****************************!*\
+  !*** external "notistack" ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("notistack");
 
 /***/ }),
 

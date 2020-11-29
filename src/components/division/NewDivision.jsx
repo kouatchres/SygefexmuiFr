@@ -92,9 +92,6 @@ const NewDivision = () => {
 
   useEffect(() => {
     loadRegionData();
-    {
-      loading && <LinearProgress />;
-    }
   }, []);
   // const refinedRegion = removeTypename(regions)
   const getRegionsOptions =

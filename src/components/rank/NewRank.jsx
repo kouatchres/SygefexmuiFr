@@ -1,7 +1,7 @@
 import React from "react";
 import Error from "../ErrorMessage.js";
-import * as Yup from "yup";
-import { ErrorMessage, Formik, Form } from "formik";
+import { ErrorMessage, Formik, Form, Field } from "formik";
+import { TextField } from "material-ui-formik-components/TextField";
 import {
   Grid,
   Typography,
@@ -11,7 +11,7 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import SygefexMuiInput from "../muiComponents/controls/SygefexMuiInput";
+import * as Yup from "yup";
 import { useMutation } from "@apollo/react-hooks";
 import { createNewRankMutation } from "../queries&Mutations&Functions/Mutations";
 
@@ -64,19 +64,21 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = Yup.object().shape({
-  rankName: Yup.string().required("Nom poste Obligatoire"),
+  rankName: Yup.string().required("Libelle poste Obligatoire"),
+
   rankCode: Yup.string().required("Code poste Obligatoire"),
 });
 
-const NewRank = () => {
+const Login = () => {
   const classes = useStyles();
-
   const initialValues = {
     rankName: "",
     rankCode: "",
   };
 
-  const [createRank, { loading, error }] = useMutation(createNewRankMutation);
+  const [createRank, { loading, error }] = useMutation(createNewRankMutation, {
+    refetchQueries: ["currentUserQuery"],
+  });
 
   return (
     <Formik
@@ -85,19 +87,17 @@ const NewRank = () => {
       validationSchema={validationSchema}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
         const res = await createRank({
-          variables: {
-            ...values,
-          },
+          variables: { ...values },
         });
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
           resetForm(true);
           setSubmitting(false);
-        }, 400);
+        }, 200);
       }}
     >
-      {({ submitForm, setFieldValue, isSubmitting }) => {
+      {({ submitForm, isSubmitting }) => {
         return (
           <div className={classes.centerAll}>
             <Paper className={classes.pageStyled} elevation={3}>
@@ -109,7 +109,6 @@ const NewRank = () => {
                       <Error error={error} />
                       <Typography
                         className={classes.titleStyled}
-                        variant="body1"
                         color="primary"
                         gutterBottom
                         variant="h5"
@@ -119,38 +118,34 @@ const NewRank = () => {
                       </Typography>
                     </Grid>
                   </Grid>
-                  <Grid container className={classes.centerAll}>
-                    <Grid item className={classes.centerAll}>
-                      <SygefexMuiInput
-                        autocomplete="off"
-                        name="rankName"
-                        type="text"
-                        label="Nom Poste"
-                        fullWidth
-                        variant="standard"
-                        disabled={isSubmitting || loading}
-                        helperText={<ErrorMessage name="rankName" />}
-                      />
+                  <Grid item className={classes.centerAll}>
+                    <Field
+                      name="rankName"
+                      component={TextField}
+                      type="text"
+                      fullWidth
+                      label="Libellé Poste"
+                      variant="outlined"
+                      disabled={isSubmitting || loading}
+                      helperText={<ErrorMessage name="rankName" />}
+                    />
+                    <Field
+                      name="rankCode"
+                      component={TextField}
+                      type="text"
+                      fullWidth
+                      label="Code Poste"
+                      variant="outlined"
+                      disabled={isSubmitting || loading}
+                      helperText={<ErrorMessage name="rankCode" />}
+                    />
 
-                      <SygefexMuiInput
-                        autocomplete="off"
-                        name="rankCode"
-                        type="text"
-                        label="Code Poste"
-                        fullWidth
-                        variant="standard"
-                        disabled={isSubmitting || loading}
-                        helperText={<ErrorMessage name="rankCode" />}
-                      />
-
-                      <Button
-                        disabled={isSubmitting || loading}
-                        onClick={submitForm}
-                      >
-                        {(isSubmitting || loading) && <CircularProgress />}
-                        Valid{isSubmitting ? "ation en cours" : "er"}
-                      </Button>
-                    </Grid>
+                    <Button disabled={isSubmitting} onClick={submitForm}>
+                      {(isSubmitting || loading) && <CircularProgress />}
+                      {isSubmitting || loading
+                        ? "Créattion en cours"
+                        : "crée poste"}
+                    </Button>
                   </Grid>
                 </Grid>
               </Form>
@@ -161,4 +156,4 @@ const NewRank = () => {
     </Formik>
   );
 };
-export default NewRank;
+export default Login;

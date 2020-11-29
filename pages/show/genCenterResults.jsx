@@ -1,11 +1,7 @@
 import React from "react";
-import GenCenterResultsHook from "../../src/components/score/center/GenCenterResultsHook";
+import CompleteCenterResults from "../../src/components/score/center/CompleteCenterResults";
 
 const genCenterResults = () => {
-  return (
-    <div>
-      <GenCenterResultsHook  />
-    </div>
-  );
+  return <CompleteCenterResults />;
 };
 export default genCenterResults;

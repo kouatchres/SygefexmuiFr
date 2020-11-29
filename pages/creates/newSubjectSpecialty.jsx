@@ -1,14 +1,14 @@
 import React from "react";
-import SpecialtyTakesSubjects from "../../src/components/subjectSpecialty/SpecialtyTakesSubjects";
+import NewSubjDistro from "../../src/components/subjectSpecialty/NewSubjDistro";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
-const NewSubjectSpecialty = () => {
+const newSubjectSpecialty = () => {
   return (
     <div>
       <GatedSignin>
-        <SpecialtyTakesSubjects />
+        <NewSubjDistro />
       </GatedSignin>
     </div>
   );
 };
-export default NewSubjectSpecialty;
+export default newSubjectSpecialty;

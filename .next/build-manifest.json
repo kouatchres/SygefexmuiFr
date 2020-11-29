@@ -11,11 +11,15 @@
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/creates/newSubDivision": [
+    "/creates/newGroupCand": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/creates/newGroupCand": [
+    "/creates/newRegister": [
+      "static/runtime/webpack.js",
+      "static/runtime/main.js"
+    ],
+    "/creates/login": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]

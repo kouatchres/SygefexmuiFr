@@ -98,9 +98,7 @@ const NewRegistrationHook = () => {
     sessionID: "",
     educTypeID: "",
   });
-  const [EPF1State, setEPF1State] = useState({ value: "" });
-  const [EPF2State, setEPF2State] = useState({ value: "" });
-
+ 
   const initialValues = {
     centerNumber: "100000",
     EPF1: "",
@@ -360,7 +358,9 @@ const NewRegistrationHook = () => {
                   <TwoGroups>
                     <InputGroup>
                       <SygexInput
-                        value={centerByNumber && centerByNumber.centerCode  || ""}
+                        value={
+                          (centerByNumber && centerByNumber.centerCode) || ""
+                        }
                         name="centerName"
                         type="text"
                         label="Libellé du centre"

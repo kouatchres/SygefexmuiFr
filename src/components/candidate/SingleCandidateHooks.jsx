@@ -46,8 +46,8 @@ const CandImg = styled.div`
 `;
 
 const SingleCandidateHooks = ({ id }) => {
-  const [state, setState] = useForm({});
   const client = useApolloClient();
+  const [state, setState] = useForm({});
 
   const loadCandData = async () => {
     const { error, data } = await client.query({
