@@ -52,7 +52,7 @@ const SingleCandidateHooks = ({ id }) => {
   const loadCandData = async () => {
     const { error, data } = await client.query({
       query: singleCandidateQuery,
-      variables: { id },
+      variables: { id: id },
     });
     console.log(data);
     const { candidate } = data;

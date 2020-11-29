@@ -1,27 +1,39 @@
 {
+  "polyfillFiles": [
+    "static/chunks/polyfills.js"
+  ],
   "devFiles": [
-    "static/development/dll/dll_3adef44842bc65cca58c.js"
+    "static/chunks/react-refresh.js"
+  ],
+  "ampDevFiles": [
+    "static/chunks/webpack.js",
+    "static/chunks/amp.js"
+  ],
+  "lowPriorityFiles": [
+    "static/development/_buildManifest.js",
+    "static/development/_ssgManifest.js"
   ],
   "pages": {
     "/_app": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/_app.js"
     ],
     "/_error": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/_error.js"
     ],
-    "/creates/newGroupCand": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
+    "/show/results/registrationReceipt": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/show/results/registrationReceipt.js"
     ],
-    "/creates/newRegister": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
-    "/creates/login": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
+    "/show/singleCand": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/show/singleCand.js"
     ]
-  }
+  },
+  "ampFirstPages": []
 }

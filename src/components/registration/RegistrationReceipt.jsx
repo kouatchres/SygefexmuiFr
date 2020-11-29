@@ -29,7 +29,6 @@ const WholeForm = styled.div`
   padding: 1rem;
 `;
 
-
 const ResultsHeader = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
@@ -114,13 +113,15 @@ const RegistrationReceipt = ({ id }) => {
   const loadRegistrationData = async () => {
     const { error, data } = await client.query({
       query: getCandidateRegistrationInfoQuery,
-      variables: { id },
+      variables: {  id },
     });
-    {error &&  <Error error={error}/>}
+    {
+      error && <Error error={error} />;
+    }
     console.log(data);
     const { registration } = data;
     setState({ registration });
-    return data
+    return data;
   };
 
   useEffect(() => {

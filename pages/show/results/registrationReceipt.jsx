@@ -1,12 +1,16 @@
+import { useRouter } from "next/router";
+
 import React from "react";
 import RegistrationReceipt from "../../../src/components/registration/RegistrationReceipt";
 import GatedSignin from "../../../src/components/user/GatedSignin";
 
-const candResults = (query) => {
+const candResults = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  // return <div>{id}</div>;
   return (
     <GatedSignin>
-      {console.dir(query)}
-      <RegistrationReceipt id={query} />
+      <RegistrationReceipt id={id} />
     </GatedSignin>
   );
 };

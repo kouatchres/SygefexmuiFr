@@ -1,1 +1,7 @@
-{"/_app":"static\\development\\pages\\_app.js","/_document":"static\\development\\pages\\_document.js","/_error":"static\\development\\pages\\_error.js","/creates/newGroupCand":"static\\development\\pages\\creates\\newGroupCand.js","/creates/newRegister":"static\\development\\pages\\creates\\newRegister.js","/creates/login":"static\\development\\pages\\creates\\login.js"}
+{
+  "/_app": "pages/_app.js",
+  "/_document": "pages/_document.js",
+  "/_error": "pages/_error.js",
+  "/show/results/registrationReceipt": "pages/show/results/registrationReceipt.js",
+  "/show/singleCand": "pages/show/singleCand.js"
+}
