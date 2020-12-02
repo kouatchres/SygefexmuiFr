@@ -6,9 +6,9 @@ import { blue, red, orange, grey } from "@material-ui/core/colors";
 const SygefexTheme = createMuiTheme({
   palette: {
     primary: {
-      // main: "#C28B2B",
+      // main: "#2c5f2d",
+      // main: "#00bb66",
       main: "#044562",
-      // main: "#f5f5f5",
       light: "#f00",
       // main: "#0780b7",
     },
@@ -21,9 +21,8 @@ const SygefexTheme = createMuiTheme({
     },
     background: {
       // default: "#12343b",
-      default: "#e2e7e8",
+      // default: "#e3f4fb",
       // default: "#f1f1ef",
-      // default: "#D5d5d5",
     },
   },
 
@@ -74,16 +73,16 @@ const SygefexTheme = createMuiTheme({
     },
 
     MuiTypography: {
-      root: {
-        // marginBottom: "1rem",
-      },
-      body1: {
-        fontSize: "0.8rem",
-      },
-      h6: {
-        fontFamily: "Roboto",
-        fontSize: "1.2rem",
-      },
+      // root: {
+      //   // marginBottom: "1rem",
+      // },
+      // body1: {
+      //   fontSize: "0.8rem",
+      // },
+      // h6: {
+      //   fontFamily: "Roboto",
+      //   fontSize: "1.2rem",
+      // },
     },
     MuiOutlinedInput: {
       input: {
@@ -175,7 +174,7 @@ const SygefexTheme = createMuiTheme({
 
     MuiPickersToolbar: {
       toolbar: {
-        backgroundColor: "#044562",
+        backgroundColor: "#4a8ba8",
       },
     },
 
@@ -215,6 +214,18 @@ const SygefexTheme = createMuiTheme({
         fontSize: "1.3rem",
       },
     },
+    MuiAppBar: {
+      colorPrimary: {
+        color: "#ff0212",
+        // backGroundColor: "primary",
+      },
+    },
+    MuiPaper: {
+      root: {
+        // minHeight: "100vh",
+        // backgroundColor: "#edca82",
+      },
+    },
 
     MuiFormHelperText: {
       root: {
@@ -246,11 +257,6 @@ const SygefexTheme = createMuiTheme({
           fontFamily: "Comic Sans MS",
           fontSize: "0.7rem",
         },
-      },
-    },
-    MuiPaper: {
-      root: {
-        minHeight: "100vh",
       },
     },
 

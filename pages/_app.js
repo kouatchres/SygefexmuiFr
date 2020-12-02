@@ -8,6 +8,8 @@ import theme from "./theme";
 import { ApolloProvider } from "react-apollo";
 import { ApolloProvider as ApolloHooksProvider } from "@apollo/react-hooks";
 import withData from "../lib/withData";
+import "../src/components/layout/index.css"
+
 
 const MyApp = (props) => {
   const { Component, pageProps, apollo } = props;

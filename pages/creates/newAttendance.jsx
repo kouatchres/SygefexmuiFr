@@ -1,11 +1,11 @@
 import React from "react";
-import CreateAttendance from "../../src/components/attendance/CreateAttendance";
+import Attendance from "../../src/components/attendance/Attendance";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
 const newAttendance = () => {
   return (
     <GatedSignin>
-      <CreateAttendance />
+      <Attendance />
     </GatedSignin>
   );
 };

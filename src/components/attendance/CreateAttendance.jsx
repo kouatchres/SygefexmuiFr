@@ -2,8 +2,9 @@ import React from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import Error from "../ErrorMessage.js";
 import useForm from "../utils/useForm";
-import { TextField } from "formik-material-ui";
-import { Formik, Form, Field } from "formik";
+import { TextField } from "material-ui-formik-components/TextField";
+import { Select } from "material-ui-formik-components/Select";
+import { ErrorMessage, Formik, Form, Field } from "formik";
 import SygefexMuiSelect from "../muiComponents/controls/SygefexMuiDatePicker";
 import {
   Grid,
@@ -259,14 +260,12 @@ const CreateAttendance = () => {
   const { registration } = { ...CESS };
   const getCandOptions =
     registration &&
-    registration.map((item) => {
-      <MenuItem key={item.candExamSecretCode}>
+    registration.map((item) => (
         {item.item.candidate.cand1stName.concat(
           item.candidate.cand2ndName,
           item.candRegistrationNumber
         )}
-      </MenuItem>;
-    });
+    ))
 
   const {
     data: dataSubjSpecialty,

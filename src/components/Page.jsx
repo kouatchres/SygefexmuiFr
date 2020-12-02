@@ -1,10 +1,9 @@
 import React from "react";
-import HeaderMUI from "./HeaderMUI";
 import Meta from "./Meta";
 import { makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
-import { orange, green, blue } from "@material-ui/core/colors";
 import SygefexTheme from "./utils/SygefexTheme";
-import { SnackbarProvider, useSnackbar } from "notistack";
+import LayoutDrawer from "./layout/LayoutDrawer";
+
 
 const useStyles = makeStyles({
   root: {
@@ -18,19 +17,10 @@ const useStyles = makeStyles({
   },
   wholeApp: {
     display: "grid",
-    gridTemplate: "auto 1fr auto",
+    // gridTemplate: "auto 1fr  ",
     background: "white",
   },
-  headers: {
-    display: "grid",
-    gridTemplateColumns: "1fr 4fr",
-    alignItems: "right",
-    gridArea: "Headers",
-    position: "fixed",
-    height: "1rem",
-    zIndex: "10",
-    borderBottom: "0.2rem solid  0.1rem 0.05rem 0.5rem rgba(0, 0, 0.8, 0.5)",
-  },
+ 
   mains: {
     gridArea: "mains",
     paddingLeft: "auto",
@@ -59,19 +49,20 @@ const useStyles = makeStyles({
 const Page = (props) => {
   const classes = useStyles();
   return (
-    <MuiThemeProvider theme={SygefexTheme}>
-      <Meta />
-      <div className={classes.root}>
-        <div className={classes.headers}>
-          <HeaderMUI />
+    <LayoutDrawer>
+      <MuiThemeProvider theme={SygefexTheme}>
+        <Meta />
+        <div className={classes.root}>
+          <div className={classes.mains}>
+            <div className={classes.inner}>{props.children}</div>
+          </div>
         </div>
-
-        <div className={classes.mains}>
-          <div className={classes.inner}>{props.children}</div>
-        </div>
-      </div>
-    </MuiThemeProvider>
+      </MuiThemeProvider>
+    </LayoutDrawer>
   );
 };
 
 export default Page;
+// <div className={classes.headers}>
+//   <HeaderMUI />
+// </div>

@@ -15,7 +15,7 @@ import useForm from "../utils/useForm";
 import DeleteRegion from "../region/DeleteRegion";
 import {
   getAllRegionsOfACountryQuery,
-  getAllCountrysQuery,
+  getAllRegionsQuery,
   getDivisionsOfARegionQuery,
 } from "../queries&Mutations&Functions/Queries";
 import { removeTypename } from "../queries&Mutations&Functions/Functions";
@@ -52,37 +52,17 @@ const DivisionToModifyHook = () => {
     setState({ [name]: val });
   };
 
-  const { data, loading: loadingCount, error: errorCount } = useQuery(
-    getAllCountrysQuery
+  const { data, loading: loadingReg, error: errorReg } = useQuery(
+    getAllRegionsQuery
   );
-  {
-    loadingCount && <p>Loading Countries from DB...</p>;
-  }
-  {
-    errorCount && <Error error={errorCount} />;
-  }
-  const { countries } = { ...data };
-  console.log(countries);
-  const reducedCountries = countries && countries.reduce((item) => item);
-  const refinedCountry = removeTypename(reducedCountries);
-  console.log(refinedCountry);
-  const { id } = { ...refinedCountry };
-  console.log(id);
 
-  const { data: dataRegions, loading: loadingReg, error: errorReg } = useQuery(
-    getAllRegionsOfACountryQuery,
-    {
-      skip: !id,
-      variables: { id },
-    }
-  );
   {
     loadingReg && <p>Loading regions from DB...</p>;
   }
   {
     errorReg && <Error error={errorReg} />;
   }
-  const getCountry = dataRegions && dataRegions.country;
+  const getRegions = data && data.regions;
   const { region } = { ...getCountry };
   console.log(dataRegions);
   const getRegionsOptions =

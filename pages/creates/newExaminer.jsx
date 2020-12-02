@@ -1,14 +1,12 @@
 import React from "react";
-import CreateExaminer from "../../src/components/examiner/CreateExaminer";
+import NewExaminer from "../../src/components/examiner/NewExaminer";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
 const newExaminer = (props) => {
   return (
-    <div>
       <GatedSignin>
-        <CreateExaminer />
+        <NewExaminer />
       </GatedSignin>
-    </div>
   );
 };
 export default newExaminer;
