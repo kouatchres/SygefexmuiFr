@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Error from "../ErrorMessage.js";
 import { ErrorMessage, Formik, Form, Field } from "formik";
 import { TextField } from "material-ui-formik-components/TextField";
@@ -15,6 +15,7 @@ import Link from "next/link";
 import * as Yup from "yup";
 import { useMutation } from "@apollo/react-hooks";
 import { signupUserMutation } from "../queries&Mutations&Functions/Mutations";
+import Notification from "../utils/Notification";
 
 const useStyles = makeStyles({
   root: {
@@ -79,6 +80,13 @@ const validationSchema = Yup.object().shape({
 
 const Signup = () => {
   const classes = useStyles();
+
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
   const initialValues = {
     name: "",
     email: "",
@@ -97,6 +105,11 @@ const Signup = () => {
       onSubmit={async (values, { setSubmitting, resetForm }) => {
         const res = await signup({
           variables: { ...values },
+        });
+        setNotify({
+          isOpen: true,
+          message: "Compte créé avec success",
+          type: "success",
         });
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
@@ -136,7 +149,7 @@ const Signup = () => {
                       label="Email"
                       variant="outlined"
                       disabled={isSubmitting || loading}
-                      helperText={<ErrorMessage name="email" />}
+                      helpertext={<ErrorMessage name="email" />}
                     />
                     <Field
                       name="name"
@@ -146,7 +159,7 @@ const Signup = () => {
                       label="Name"
                       variant="outlined"
                       disabled={isSubmitting || loading}
-                      helperText={<ErrorMessage name="name" />}
+                      helpertext={<ErrorMessage name="name" />}
                     />
                     <Field
                       name="password"
@@ -156,7 +169,7 @@ const Signup = () => {
                       label="Password"
                       variant="outlined"
                       disabled={isSubmitting || loading}
-                      helperText={<ErrorMessage name="password" />}
+                      helpertext={<ErrorMessage name="password" />}
                     />
                     <Typography variant="body2" className={classes.centerAll}>
                       Avez-Vous un compte?
@@ -168,6 +181,7 @@ const Signup = () => {
                         </Link>
                       </Typography>
                     </ul>
+                    <Notification notify={notify} setNotify={setNotify} />
 
                     <Button disabled={isSubmitting} onClick={submitForm}>
                       {(isSubmitting || loading) && <CircularProgress />}

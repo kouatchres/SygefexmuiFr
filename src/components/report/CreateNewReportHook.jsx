@@ -235,6 +235,7 @@ const CreateNewReportHook = () => {
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
+          
           resetForm({ values: "" });
           setSubmitting(false);
         }, 200);

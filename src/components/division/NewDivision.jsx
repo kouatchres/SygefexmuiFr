@@ -12,6 +12,8 @@ import {
   LinearProgress,
   CircularProgress,
 } from "@material-ui/core";
+import Notification from "../utils/Notification";
+
 import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import { makeStyles } from "@material-ui/core/styles";
 import { getAllRegionsQuery } from "../queries&Mutations&Functions/Queries";
@@ -77,6 +79,11 @@ const NewDivision = () => {
   const client = useApolloClient();
   const [regions, setRegions] = useState([]);
 
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
   const initialValues = {
     divName: "",
     divCode: "",
@@ -116,6 +123,11 @@ const NewDivision = () => {
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
+          setNotify({
+            isOpen: true,
+            message: "Nouveau département créé avec success",
+            type: "success",
+          });
           resetForm(true);
           setSubmitting(false);
         }, 400);
@@ -153,7 +165,7 @@ const NewDivision = () => {
                         placeholder="la Région"
                         disabled={isSubmitting}
                         options={getRegionsOptions}
-                        helperText={<ErrorMessage name="region" />}
+                        helpertext={<ErrorMessage name="region" />}
                       />
                       <Field
                         component={TextField}
@@ -164,7 +176,7 @@ const NewDivision = () => {
                         fullWidth
                         variant="outlined"
                         disabled={isSubmitting || loading}
-                        helperText={<ErrorMessage name="divName" />}
+                        helpertext={<ErrorMessage name="divName" />}
                       />
 
                       <Field
@@ -176,8 +188,9 @@ const NewDivision = () => {
                         fullWidth
                         variant="outlined"
                         disabled={isSubmitting || loading}
-                        helperText={<ErrorMessage name="divCode" />}
+                        helpertext={<ErrorMessage name="divCode" />}
                       />
+                      <Notification notify={notify} setNotify={setNotify} />
 
                       <Button
                         disabled={isSubmitting || loading}

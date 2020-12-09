@@ -1,6 +1,5 @@
-import { Toolbar } from "@material-ui/core/Toolbar";
 import { createMuiTheme } from "@material-ui/core/styles";
-import { blue, red, orange, grey } from "@material-ui/core/colors";
+import { red, orange } from "@material-ui/core/colors";
 
 // Create a theme instance.
 const SygefexTheme = createMuiTheme({
@@ -20,7 +19,7 @@ const SygefexTheme = createMuiTheme({
       main: red.A200,
     },
     background: {
-      // default: "#12343b",
+      default: "#dce3e3",
       // default: "#e3f4fb",
       // default: "#f1f1ef",
     },
@@ -67,9 +66,9 @@ const SygefexTheme = createMuiTheme({
         paddingBottom: "0.5rem",
         height: "1.3rem",
       },
-      nativeInput: {
-        fontSize: "0.5rem",
-      },
+      // nativeInput: {
+      //   fontSize: "0.5rem",
+      // },
     },
 
     MuiTypography: {
@@ -91,20 +90,20 @@ const SygefexTheme = createMuiTheme({
         paddingBottom: "0.5rem",
         // marginBottom: "0.5rem",
       },
-      MuiFormInputLabel: {
-        formControl: {
-          margin: "0.4rem",
-        },
-        root: {
-          fontSize: "0.6rem",
-        },
-      },
+      // MuiFormInputLabel: {
+      //   formControl: {
+      //     margin: "0.4rem",
+      //   },
+      //   root: {
+      //     fontSize: "0.6rem",
+      //   },
+      // },
 
-      MuiMenuItem: {
-        root: {
-          fontSize: "0.8rem",
-        },
-      },
+      // MuiMenuItem: {
+      //   root: {
+      //     fontSize: "0.8rem",
+      //   },
+      // },
     },
     MuiButton: {
       root: {
@@ -114,22 +113,24 @@ const SygefexTheme = createMuiTheme({
         fontSize: "1.1rem",
         fontWeight: "bold",
         padding: "0.1rem",
-        // margin: "1rem",
+        // minWidth: "40%",
+        margin: "1rem",
+        // backgroundColor: "rgba(255, 125, 0, 0.65)",
       },
     },
     MuiTableRow: {
       root: {
         // borderBottom: "0.113rem solid #fff",
         "&:nth-child(2n)": {
-          // background: "#e2dd9f",
-          background: "#faf0ff",
+          background: "#bcc4",
+          // background: "#faf0ff",
         },
         // "&:nth-child(2n+1)": {
         //   background: "#e4ebf8",
         // },
 
         "&:hover": {
-          // backgroundColor: "#fff",
+          // backgroundColor: "#abb",
           backgroundColor: "#4523",
         },
       },
@@ -141,6 +142,18 @@ const SygefexTheme = createMuiTheme({
         // zIndex: 1,
         paddingTop: "1rem",
         paddingBottom: "1rem",
+        fontSize: "1.2rem",
+        backgroundColor: "#abb",
+      },
+    },
+    MuiTableToolbar: {
+      root: {
+        backgroundColor: "#4a8ba8",
+      },
+    },
+    MuiFormControl: {
+      root: {
+        color: "#044562",
         fontSize: "1.2rem",
       },
     },
@@ -226,6 +239,21 @@ const SygefexTheme = createMuiTheme({
         // backgroundColor: "#edca82",
       },
     },
+    MuiInputBase: {
+      root: {
+        // width: "50%",
+      },
+    },
+    MuiButtonBase: {
+      root: {
+        // width: "5rem",
+      },
+    },
+    MuiSvgIcon: {
+      root: {
+        width: "4rem",
+      },
+    },
 
     MuiFormHelperText: {
       root: {
@@ -259,6 +287,22 @@ const SygefexTheme = createMuiTheme({
         },
       },
     },
+    MuiTableHead: {
+      root: {
+        position: "sticky",
+        top: 0,
+        // zIndex: 1,
+        paddingTop: "1rem",
+        paddingBottom: "1rem",
+        fontSize: "1.2rem",
+        backgroundColor: "#abb1",
+      },
+    },
+    MuiTableToolbar: {
+      root: {
+        backgroundColor: "#4a8ba8",
+      },
+    },
 
     MuiGrid: {
       root: {
@@ -267,17 +311,6 @@ const SygefexTheme = createMuiTheme({
         direction: "column",
         alignItems: "center",
         justifyItems: "center",
-      },
-    },
-    MuiMenuItem: {
-      root: {
-        fontFamily: "Comic Sans MS",
-        fontSize: "0.9rem",
-      },
-    },
-    MuiSelect: {
-      nativeInput: {
-        fontSize: "0.2rem",
       },
     },
   },

@@ -18,6 +18,8 @@ import {
   getDivisionsOfARegionQuery,
   getAllRegionsQuery,
 } from "../queries&Mutations&Functions/Queries";
+import Notification from "../utils/Notification";
+
 import { getObjectFromID } from "../queries&Mutations&Functions/Functions";
 import { createSubDivisionMutation } from "../queries&Mutations&Functions/Mutations";
 
@@ -66,6 +68,11 @@ const NewSubDivision = () => {
   const [divisions, setDivisions] = useState([]);
   const [regionID, setRegionID] = useState("");
 
+    const [notify, setNotify] = useState({
+      isOpen: false,
+      message: "",
+      type: "",
+    });
   const initialValues = {
     subDivName: "",
     subDivCode: "",
@@ -140,6 +147,11 @@ const NewSubDivision = () => {
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
+          setNotify({
+            isOpen: true,
+            message: "Nouvelle session crééé avec success",
+            type: "success",
+          });
           resetForm(true);
           setSubmitting(false);
         }, 400);
@@ -175,7 +187,7 @@ const NewSubDivision = () => {
                         onChange={handleRegionIDChange}
                         component={Select}
                         disabled={isSubmitting}
-                        helperText={<ErrorMessage name="regionID" />}
+                        helpertext={<ErrorMessage name="regionID" />}
                         options={getRegionsOptions}
                         fullWidth
                       />
@@ -186,7 +198,7 @@ const NewSubDivision = () => {
                         component={Select}
                         placeholder="le Département"
                         disabled={isSubmitting}
-                        helperText={<ErrorMessage name="division" />}
+                        helpertext={<ErrorMessage name="division" />}
                         options={getDivOptions}
                         fullWidth
                       />
@@ -199,7 +211,7 @@ const NewSubDivision = () => {
                         fullWidth
                         variant="outlined"
                         disabled={isSubmitting || loading}
-                        helperText={<ErrorMessage name="subDivName" />}
+                        helpertext={<ErrorMessage name="subDivName" />}
                       />
                       <Field
                         name="subDivCode"
@@ -209,8 +221,10 @@ const NewSubDivision = () => {
                         fullWidth
                         variant="outlined"
                         disabled={isSubmitting || loading}
-                        helperText={<ErrorMessage name="subDivCode" />}
+                        helpertext={<ErrorMessage name="subDivCode" />}
                       />
+                      <Notification notify={notify} setNotify={setNotify} />
+
                       <Button disabled={isSubmitting} onClick={submitForm}>
                         {(isSubmitting || loading) && <CircularProgress />}
                         Valid{isSubmitting ? "ation en cours" : "er"}
@@ -227,66 +241,3 @@ const NewSubDivision = () => {
   );
 };
 export default NewSubDivision;
-//  <SygefexMuiSelect
-//    variant="outlined"
-//    name="division"
-//    label="Le Département"
-//    placeholder="Le Département"
-//    disabled={isSubmitting}
-//    options={getDivOptions}
-//    helperText={<ErrorMessage name="division" />}
-//  />;
-// //
-
-// <SygefexMuiSelect
-//   variant="outlined"
-//   name="division"
-//   label="Le Département"
-//   placeholder="Le Département"
-//   disabled={isSubmitting}
-//   options={getDivOptions}
-//   helperText={<ErrorMessage name="division" />}
-// />
-
-// <SygefexMuiSelect
-//   variant="outlined"
-//   name="division"
-//   label="Le Département"
-//   placeholder="Le Département"
-//   disabled={isSubmitting}
-//   helperText={<ErrorMessage name="division" />}
-// >
-//   {division &&
-//     division.map((item) => (
-//       <MenuItem value={item.id} key={item.id}>
-//         {item.divName}
-//       </MenuItem>
-//     ))}
-// </SygefexMuiSelect>
-
-// <Field
-//   component={TextField}
-//   select
-//   name="regionD"
-//   disabled={isSubmitting}
-//   helperText="region"
-// >
-//   {regions &&
-//     regions.map((item) => (
-//       <MenuItem key={item.id} value={item.id}>
-//         {item.regName}
-//       </MenuItem>
-//     ))}
-// </Field>;
-
-// <Field
-//   variant="outlined"
-//   disabled={isSubmitting}
-//   fullWidth
-//   placeholder="Le Département"
-//   name="division"
-//   label="Département"
-//   options={getDivOptions}
-//   component={Select}
-//   helperText={<ErrorMessage name="region" />}
-// />

@@ -34,9 +34,8 @@ import {
   getRegisteredCandidatesPerSpecialty,
   getSingleCenterQuery,
 } from "../queries&Mutations&Functions/Queries";
+import Notification from "../utils/Notification";
 
-// import { FormikRadio } from "@dccs/react-formik-mui";
-// import { FormLabel, RadioGroup } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   MuiGrid: {
@@ -128,6 +127,12 @@ const CreateAttendance = () => {
     }
   );
 
+  
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
   const initialValues = {
     centerNumber: null,
     collected: "",
@@ -309,6 +314,11 @@ const CreateAttendance = () => {
         });
 
         setTimeout(() => {
+           setNotify({
+            isOpen: true,
+            message: "Présence indiquée avec success",
+            type: "success",
+          });
           resetForm(true);
           setSubmitting(false);
         }, 400);
@@ -372,7 +382,7 @@ const CreateAttendance = () => {
                     <Field
                       select
                       component={TextField}
-                      helperText="Type d'Enseignement"
+                      helpertext="Type d'Enseignement"
                       onChange={handleInputChange}
                       name="educTypeID"
                       disabled={isSubmitting}
@@ -391,7 +401,7 @@ const CreateAttendance = () => {
                       onChange={handleInputChange}
                       name="sessionID"
                       disabled={isSubmitting}
-                      helperText="Session"
+                      helpertext="Session"
                     >
                       {refinedSessions &&
                         refinedSessions.map((item) => (
@@ -429,7 +439,7 @@ const CreateAttendance = () => {
                   </Grid>
                   <Grid item xs={12} sm={6} className={classes.MuiGrid}>
                     <Field
-                      helperText="Examen"
+                      helpertext="Examen"
                       component={TextField}
                       select
                       onChange={handleInputChange}
@@ -447,7 +457,7 @@ const CreateAttendance = () => {
                     <Field
                       select
                       component={TextField}
-                      helperText="Specialty"
+                      helpertext="Specialty"
                       onChange={handleInputChange}
                       name="centerExamSessionSpecialtyID"
                       disabled={isSubmitting}
@@ -463,7 +473,7 @@ const CreateAttendance = () => {
                     <Field
                       component={TextField}
                       select
-                      helperText="Matiere"
+                      helpertext="Matiere"
                       onChange={(value) =>
                         setFieldValue("subjectSpecialty", value)
                       }
@@ -481,7 +491,7 @@ const CreateAttendance = () => {
                     <Field
                       component={TextField}
                       select
-                      helperText="Code Candidat"
+                      helpertext="Code Candidat"
                       onChange={(value) =>
                         setFieldValue("candExamSecretCode", value)
                       }
@@ -495,6 +505,7 @@ const CreateAttendance = () => {
                           </MenuItem>
                         ))}
                     </Field>
+                      <Notification notify={notify} setNotify={setNotify} />
 
                     <Button onChange={submitForm} disabled={isSubmitting}>
                       Valid{isSubmitting ? "ation en cours" : "er"}

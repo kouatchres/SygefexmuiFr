@@ -1,12 +1,32 @@
 import React, { useEffect, useState } from "react";
-import MaterialTable, { MTableToolbar } from "material-table";
+import MaterialTable from "material-table";
 import { Paper } from "@material-ui/core";
 import { useApolloClient } from "@apollo/react-hooks";
 import { getAllRegionsAndDivisionsQuery } from "../queries&Mutations&Functions/Queries";
 import tableIcons from "../utils/icons/tableIcons";
+import AddPopup from "../utils/AddPopup";
+import UpdatePopup from "../utils/UpdatePopup";
+import { useRouter } from "next/router";
+
+import {
+  Edit as EditIcon,
+  Add as AddIcon,
+  Delete as DeleteIcon,
+} from "@material-ui/icons";
+
+import Button from "@material-ui/core/Button";
+import NewDivision from "./NewDivision";
+import UpdateDivision from "./UpdateDivision";
 
 const DivisionList = () => {
   const client = useApolloClient();
+
+  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+  const [updatePopupState, setUpdatePopupState] = useState({
+    isOpen: false,
+    id: "",
+  });
+
   const [state, setState] = useState({
     columns: [
       {
@@ -48,104 +68,78 @@ const DivisionList = () => {
     console.log(state.data);
   }, []);
 
+  const handleAddPopupClose = (event) => {
+    setIsAddPopupOpen(false);
+  };
+
+  const handleUpdatePopupClose = (event) => {
+    setUpdatePopupState((prev) => ({
+      ...prev,
+      isOpen: false,
+    }));
+  };
+
   console.dir(state.data);
+
+  const actions = [
+    {
+      icon: () => <AddIcon />,
+      tooltip: "Add User",
+      isFreeAction: true,
+      onClick: (event, rowData) => {
+        setIsAddPopupOpen(true);
+      },
+    },
+    {
+      icon: () => <EditIcon />,
+      tooltip: "Edit User",
+      onClick: (event, rowData) => {
+        setUpdatePopupState({ isOpen: true, id: rowData.id });
+        // console.log(rowData.id);
+      },
+    },
+    {
+      icon: () => <DeleteIcon />,
+      tooltip: "Delete User",
+      onClick: (event, rowData) => confirm("You want to delete " + rowData.id),
+    },
+  ];
+
+  console.log({ updatePopupState });
   return (
     <Paper style={{ marginTop: "2rem" }}>
-      <div>
-        <MaterialTable
-          stickyHeader
-          style={{ position: "sticky", top: 0 }}
-          components={{
-            Toolbar: (props) => (
-              <div
-                style={{
-                  backgroundColor: "#a2463c",
-                  borderTopRightRadius: "0.5rem",
-                  borderTopLeftRadius: "0.5rem",
-                  color: "#fff",
-                }}
-              >
-                <MTableToolbar
-                  style={{
-                    // textColor: "#000",
-                    textColor: "#fff",
-                  }}
-                  {...props}
-                />
-              </div>
-            ),
-          }}
-          icons={tableIcons}
-          title="Users List"
-          columns={state.columns}
-          data={state.data}
-          options={{
-            actionsColumnIndex: -1,
-            grouping: true,
-            paging: true,
-            pageSize: 50, // make initial page size
-            emptyRowsWhenPaging: false, //to make page size fix in case of less data rows
-            pageSizeOptions: [25, 50, 75, 100, 150], // rows selection options
-            headerStyle: {
-              color: "#fff",
-              paddingTop: "0.5rem",
-              paddingBottom: "0.5rem",
-              backgroundColor: "#01579b",
-              maxHeight: "0.5rem !important",
-            },
-            rowStyle: {
-              color: "#000",
-            },
-          }}
-          editable={{
-            onRowAdd: (newData) =>
-              new Promise((resolve) => {
-                setTimeout(() => {
-                  resolve();
-                  setState((prevState) => {
-                    const data = [...prevState.data];
-                    data.push(newData);
-                    return {
-                      ...prevState,
-                      data,
-                    };
-                  });
-                }, 400);
-              }),
-            onRowUpdate: (newData, oldData) =>
-              new Promise((resolve) => {
-                setTimeout(() => {
-                  resolve();
-                  if (oldData) {
-                    setState((prevState) => {
-                      const data = [...prevState.data];
-                      data[data.indexOf(oldData)] = newData;
-                      return {
-                        ...prevState,
-                        data,
-                      };
-                    });
-                  }
-                }, 400);
-              }),
-            onRowDelete: (oldData) =>
-              new Promise((resolve) => {
-                setTimeout(() => {
-                  resolve();
-                  setState((prevState) => {
-                    const data = [...prevState.data];
-                    data.splice(data.indexOf(oldData), 1);
-                    return {
-                      ...prevState,
-                      data,
-                    };
-                  });
-                }, 400);
-              }),
-          }}
-        />
-      </div>
+      <MaterialTable
+        stickyHeader
+        style={{ position: "sticky", top: 0 }}
+        icons={tableIcons}
+        title="Users List"
+        columns={state.columns}
+        data={state.data}
+        actions={actions}
+      />
+      <AddPopup
+        title="Add User"
+        isOpen={isAddPopupOpen}
+        onClose={handleAddPopupClose}
+      >
+        <NewDivision />
+      </AddPopup>
+      <UpdatePopup
+        title={updatePopupState.id}
+        isOpen={updatePopupState.isOpen}
+        onClose={handleUpdatePopupClose}
+      >
+        <UpdateDivision id={updatePopupState.id} />
+      </UpdatePopup>
     </Paper>
   );
 };
 export default DivisionList;
+
+// <UpdatePopup
+//   title="Update Division"
+//   isOpen={AddPopupOpen
+//   onClose={handleDialogClose}
+// >
+//   <UpdateDivision />
+// </UpdatePopup>

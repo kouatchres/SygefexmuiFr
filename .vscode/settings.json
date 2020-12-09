@@ -1,6 +1,7 @@
 {
   "editor.fontLigatures": null,
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "git.ignoreLimitWarning": true
   //   "workbench.colorCustomizations": {
   //       "activityBar.background": "#591218",
   //       "titleBar.activeBackground": "#7D1A21",

@@ -4,7 +4,6 @@ import { makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
 import SygefexTheme from "./utils/SygefexTheme";
 import LayoutDrawer from "./layout/LayoutDrawer";
 
-
 const useStyles = makeStyles({
   root: {
     display: "flex",
@@ -20,7 +19,7 @@ const useStyles = makeStyles({
     // gridTemplate: "auto 1fr  ",
     background: "white",
   },
- 
+
   mains: {
     gridArea: "mains",
     paddingLeft: "auto",
@@ -63,6 +62,3 @@ const Page = (props) => {
 };
 
 export default Page;
-// <div className={classes.headers}>
-//   <HeaderMUI />
-// </div>

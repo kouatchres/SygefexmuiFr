@@ -16,7 +16,7 @@ const SygefexMuiInput = (props) => {
     label,
     type = "text",
     variant = "outlined",
-    helperText,
+    helpertext,
   } = props;
 
   return (
@@ -27,7 +27,7 @@ const SygefexMuiInput = (props) => {
       fullWidth
       variant={variant}
       type={type}
-      helperText={helperText}
+      helpertext={helpertext}
       className={classes.root}
     />
   );

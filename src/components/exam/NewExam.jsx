@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Error from "../ErrorMessage.js";
 import * as Yup from "yup";
-import { ErrorMessage, Formik, Form } from "formik";
+import { ErrorMessage, Formik, Form, Field } from "formik";
 import {
   Grid,
   Typography,
@@ -10,11 +10,12 @@ import {
   LinearProgress,
   CircularProgress,
 } from "@material-ui/core";
+import { TextField } from "material-ui-formik-components/TextField";
+
 import { makeStyles } from "@material-ui/core/styles";
-import SygefexMuiInput from "../muiComponents/controls/SygefexMuiInput";
 import { useMutation } from "@apollo/react-hooks";
-import { getObjectFromID } from "../queries&Mutations&Functions/Functions";
 import { createExamMutation } from "../queries&Mutations&Functions/Mutations";
+import Notification from "../utils/Notification";
 
 const useStyles = makeStyles({
   root: {
@@ -33,7 +34,7 @@ const useStyles = makeStyles({
     placeItems: "center",
     marginTop: "2rem",
     padding: "1rem",
-    minWidth: "30",
+    minWidth: "30vw",
   },
   listStyled: {
     display: "grid",
@@ -60,7 +61,7 @@ const useStyles = makeStyles({
   centerAll: {
     display: "grid",
     placeItems: "center",
-    minWidth: "30",
+    minWidth: "30vw",
   },
 });
 
@@ -76,6 +77,12 @@ const NewExam = () => {
     examName: "",
     examCode: "",
   };
+
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
 
   const [createExam, { loading, error }] = useMutation(createExamMutation);
 
@@ -93,6 +100,11 @@ const NewExam = () => {
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
+          setNotify({
+            isOpen: true,
+            message: "Opération Réuissie",
+            type: "success",
+          });
           resetForm(true);
           setSubmitting(false);
         }, 400);
@@ -110,42 +122,45 @@ const NewExam = () => {
                       <Error error={error} />
                       <Typography
                         className={classes.titleStyled}
-                        variant="body1"
+                        color="primary"
+                        gutterBottom
+                        variant="h5"
+                        component="h6"
                       >
                         Nouvel Examen
                       </Typography>
                     </Grid>
                   </Grid>
                   <Grid container className={classes.centerAll}>
-                    <Grid item className={classes.centerAll}>
-                      <SygefexMuiInput
-                        autocomplete="off"
+                    <Grid item xs={12} className={classes.centerAll}>
+                      <Field
+                        component={TextField}
                         name="examName"
                         type="text"
                         label="Nom Examen"
                         fullWidth
-                        variant="standard"
+                        variant="outlined"
                         disabled={isSubmitting || loading}
-                        helperText={<ErrorMessage name="examName" />}
+                        helpertext={<ErrorMessage name="examName" />}
                       />
 
-                      <SygefexMuiInput
-                        autocomplete="off"
+                      <Field
+                        component={TextField}
                         name="examCode"
                         type="text"
                         label="Code Examen"
                         fullWidth
-                        variant="standard"
+                        variant="outlined"
                         disabled={isSubmitting || loading}
-                        helperText={<ErrorMessage name="examCode" />}
+                        helpertext={<ErrorMessage name="examCode" />}
                       />
-
+                      <Notification notify={notify} setNotify={setNotify} />
                       <Button
                         disabled={isSubmitting || loading}
                         onClick={submitForm}
                       >
                         {(isSubmitting || loading) && <CircularProgress />}
-                        Valid{isSubmitting ? "ation en cours" : "er"}
+                        {isSubmitting ? "création en cours" : "Crée Examen"}
                       </Button>
                     </Grid>
                   </Grid>

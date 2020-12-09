@@ -1,10 +1,10 @@
 import React from "react";
-import CenterTakesSpecialty from "../../src/components/centerExamSessionSpecialty/CenterTakesSpecialty";
+import CenterSpecialtyDistribution from "../../src/components/centerExamSessionSpecialty/CenterSpecialtyDistribution";
 
 const newCESS = () => {
   return (
     <div>
-      <CenterTakesSpecialty />
+      <CenterSpecialtyDistribution />
     </div>
   );
 };

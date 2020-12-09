@@ -301,6 +301,7 @@ const getCandidateRegistrationInfoQuery = gql`
         cand3rdName
         image
         email
+        phoneNumb
         candCode
         dateOfBirth
         placeOfBirth
@@ -311,6 +312,7 @@ const getCandidateRegistrationInfoQuery = gql`
         specialty {
           id
           specialtyName
+          specialtyCode
           subjectSpecialty {
             coeff
             subject {

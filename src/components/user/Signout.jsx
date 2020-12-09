@@ -1,25 +1,30 @@
 import React from "react";
 import { Mutation } from "react-apollo";
-import styled from "styled-components";
+import Button from "@material-ui/core/Button";
 import { currentUserQuery } from "../queries&Mutations&Functions/Queries";
 import { signoutMutation } from "../queries&Mutations&Functions/Mutations";
-
-const SingoutButton = styled.div`
-  color: white;
-  background: black;
-
-  padding-left: 5rem;
-  padding-right: 2rem;
-
-  cursor: pointer;
-`;
 
 const Signout = (props) => (
   <Mutation
     mutation={signoutMutation}
     refetchQueries={[{ query: currentUserQuery }]}
   >
-    {(signout) => <SingoutButton onClick={signout}> Sign Out </SingoutButton>}
+    {(signout) => (
+      <Button
+        size="medium"
+        variant="outlined"
+        style={{
+          color: "#4a8ba8",
+          paddingLeft: "0.3rem",
+          paddingRight: "0.3rem",
+          textTransform: "none",
+          backgroundColor: "#fff",
+        }}
+        onClick={signout}
+      >
+        Déconnecter
+      </Button>
+    )}
   </Mutation>
 );
 

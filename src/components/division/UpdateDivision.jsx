@@ -5,6 +5,8 @@ import Error from "../ErrorMessage.js";
 import { Formik, Form } from "formik";
 import useForm from "../utils/useForm";
 import * as Yup from "yup";
+import { useRouter } from "next/router";
+
 import { updateDivisionMutation } from "../queries&Mutations&Functions/Mutations";
 import { singleDivisionQuery } from "../queries&Mutations&Functions/Queries";
 import {
@@ -18,24 +20,22 @@ const validationSchema = Yup.object().shape({
   divName: Yup.string().required("Nom du département Obligatoire"),
   divCode: Yup.string().required("Code du département Obligatoire"),
 });
-const UpdateDivision = (props) => {
-  const [state, setState] = useForm({ divName: "", divCode: "" });
+const UpdateDivision = (id) => {
+  const [state, setState] = useForm({});
   const client = useApolloClient();
-  console.log(props);
+  // console.log(id);
 
   const loadDivisionData = async () => {
     const { data, error } = await client.query({
       query: singleDivisionQuery,
-      variables: { id: props.id },
+      variables: { id },
     });
     console.log(data);
-    const getDivData = data.division;
-    const { divName, divCode } = getDivData;
-    setState({ divName: divName, divCode: divCode });
-    return getDivData;
+    setState(data.division);
   };
 
   useEffect(() => {
+    console.log({ id });
     loadDivisionData();
   }, []);
   const initialValues = {
@@ -44,7 +44,7 @@ const UpdateDivision = (props) => {
   };
   console.log(state);
   const [updateDivision] = useMutation(updateDivisionMutation, {
-    variables: { id: props.id },
+    variables: { id },
   });
 
   return (

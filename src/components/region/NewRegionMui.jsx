@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Error from "../ErrorMessage.js";
 import { ErrorMessage, Formik, Form, Field } from "formik";
 import { TextField } from "material-ui-formik-components/TextField";
@@ -11,8 +11,8 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Link from "next/link";
 import * as Yup from "yup";
+import Notification from "../utils/Notification";
 import { useMutation } from "@apollo/react-hooks";
 import { createNewRegionMutation } from "../queries&Mutations&Functions/Mutations";
 
@@ -70,7 +70,14 @@ const validationSchema = Yup.object().shape({
 });
 
 const NewRegionMui = () => {
-  const classes = useStyles()
+  const classes = useStyles();
+
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
   const initialValues = {
     regName: "",
     regCode: "",
@@ -81,7 +88,7 @@ const NewRegionMui = () => {
       refetchQueries: ["currentUserQuery"],
     }
   );
-// 675 059 039
+  // 675 059 039
   return (
     <Formik
       method="POST"
@@ -91,9 +98,15 @@ const NewRegionMui = () => {
         const res = await createRegion({
           variables: { ...values },
         });
+        
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
+          setNotify({
+            isOpen: true,
+            message: "Nouvelle Région crééé avec success",
+            type: "success",
+          });
           resetForm(true);
           setSubmitting(false);
         }, 200);
@@ -129,7 +142,7 @@ const NewRegionMui = () => {
                       label="Libellé Région"
                       variant="outlined"
                       disabled={isSubmitting || loading}
-                      helperText={<ErrorMessage name="regName" />}
+                      helpertext={<ErrorMessage name="regName" />}
                     />
                     <Field
                       name="regCode"
@@ -139,8 +152,9 @@ const NewRegionMui = () => {
                       label="Code Région"
                       variant="outlined"
                       disabled={isSubmitting || loading}
-                      helperText={<ErrorMessage name="regCode" />}
+                      helpertext={<ErrorMessage name="regCode" />}
                     />
+                    <Notification notify={notify} setNotify={setNotify} />
 
                     <Button disabled={isSubmitting} onClick={submitForm}>
                       {(isSubmitting || loading) && <CircularProgress />}

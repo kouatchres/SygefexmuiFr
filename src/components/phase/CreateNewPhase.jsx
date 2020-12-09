@@ -4,6 +4,8 @@ import Error from "../ErrorMessage.js";
 import { Formik, Form } from "formik";
 import styled from "styled-components";
 import * as Yup from "yup";
+import Notification from "../utils/Notification";
+
 import { createPhaseMutation } from "../queries&Mutations&Functions/Mutations";
 import { useMutation } from "@apollo/react-hooks";
 import {
@@ -34,6 +36,11 @@ const CreateNewPhase = () => {
     phaseCode: "",
   };
 
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
   const [createPhase, { loading, error }] = useMutation(createPhaseMutation);
 
   return (
@@ -45,6 +52,11 @@ const CreateNewPhase = () => {
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
+          setNotify({
+            isOpen: true,
+            message: "Nouvelle session crééé avec success",
+            type: "success",
+          });
           resetForm(true);
           setSubmitting(false);
         }, 200);
@@ -74,6 +86,8 @@ const CreateNewPhase = () => {
                     disabled={isSubmitting}
                   />
                 </InputGroup>
+                <Notification notify={notify} setNotify={setNotify} />
+
                 <ButtonStyled>
                   <StyledButton type="submit">
                     Valid{isSubmitting ? "ation en cours" : "er"}

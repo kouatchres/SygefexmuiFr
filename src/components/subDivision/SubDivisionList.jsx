@@ -118,52 +118,21 @@ const SubDivisionList = () => {
               color: "#000",
             },
           }}
-          editable={{
-            onRowAdd: (newData) =>
-              new Promise((resolve) => {
-                setTimeout(() => {
-                  resolve();
-                  setState((prevState) => {
-                    const data = [...prevState.data];
-                    data.push(newData);
-                    return {
-                      ...prevState,
-                      data,
-                    };
-                  });
-                }, 400);
-              }),
-            onRowUpdate: (newData, oldData) =>
-              new Promise((resolve) => {
-                setTimeout(() => {
-                  resolve();
-                  if (oldData) {
-                    setState((prevState) => {
-                      const data = [...prevState.data];
-                      data[data.indexOf(oldData)] = newData;
-                      return {
-                        ...prevState,
-                        data,
-                      };
-                    });
-                  }
-                }, 400);
-              }),
-            onRowDelete: (oldData) =>
-              new Promise((resolve) => {
-                setTimeout(() => {
-                  resolve();
-                  setState((prevState) => {
-                    const data = [...prevState.data];
-                    data.splice(data.indexOf(oldData), 1);
-                    return {
-                      ...prevState,
-                      data,
-                    };
-                  });
-                }, 400);
-              }),
-          }}
+           actions={[
+            {
+              icon: 'save',
+              tooltip: 'Save User',
+              position: 'row',
+              onClick: (event, rowData) => alert('You saved ' + rowData)
+            },
+            {
+              icon: 'delete',
+              tooltip: 'Delete User',
+              position: 'row',
+              onClick: (event, rowData) =>
+                alert('You want to delete ' + rowData.name)
+            }
+          ]}
         />
       </div>
     </Paper>

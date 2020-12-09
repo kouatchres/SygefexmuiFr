@@ -10,6 +10,8 @@ import {
   LinearProgress,
   CircularProgress,
 } from "@material-ui/core";
+import Notification from "../utils/Notification";
+
 import { makeStyles } from "@material-ui/core/styles";
 import SygefexMuiInput from "../muiComponents/controls/SygefexMuiInput";
 import { useMutation } from "@apollo/react-hooks";
@@ -77,7 +79,11 @@ const NewEducationType = () => {
     educationTypeName: "",
     educationTypeCode: "",
   };
-
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
   const [createEducationType, { loading, error }] = useMutation(
     createEducationTypeMutation
   );
@@ -96,6 +102,11 @@ const NewEducationType = () => {
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
+          setNotify({
+            isOpen: true,
+            message: "Nouvelle session crééé avec success",
+            type: "success",
+          });
           resetForm(true);
           setSubmitting(false);
         }, 400);
@@ -129,7 +140,7 @@ const NewEducationType = () => {
                         fullWidth
                         variant="standard"
                         disabled={isSubmitting || loading}
-                        helperText={<ErrorMessage name="educationTypeName" />}
+                        helpertext={<ErrorMessage name="educationTypeName" />}
                       />
 
                       <SygefexMuiInput
@@ -140,8 +151,9 @@ const NewEducationType = () => {
                         fullWidth
                         variant="standard"
                         disabled={isSubmitting || loading}
-                        helperText={<ErrorMessage name="educationTypeCode" />}
+                        helpertext={<ErrorMessage name="educationTypeCode" />}
                       />
+                      <Notification notify={notify} setNotify={setNotify} />
 
                       <Button
                         disabled={isSubmitting || loading}

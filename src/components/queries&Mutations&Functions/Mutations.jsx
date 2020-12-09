@@ -193,13 +193,8 @@ const createCenterExamSessionMutation = gql`
   mutation createCenterExamSessionMutation(
     $examSession: ExamSessionWhereUniqueInput!
     $center: CenterWhereUniqueInput!
-    $CESCode: String!
   ) {
-    createCenterExamSession(
-      examSession: $examSession
-      center: $center
-      CESCode: $CESCode
-    ) {
+    createCenterExamSession(examSession: $examSession, center: $center) {
       id
     }
   }

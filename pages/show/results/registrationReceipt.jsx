@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 
 import React from "react";
-import RegistrationReceipt from "../../../src/components/registration/RegistrationReceipt";
+import NewRegistrationReceipt from "../../../src/components/registration/NewRegistrationReceipt";
 import GatedSignin from "../../../src/components/user/GatedSignin";
 
 const candResults = () => {
@@ -10,7 +10,7 @@ const candResults = () => {
   // return <div>{id}</div>;
   return (
     <GatedSignin>
-      <RegistrationReceipt id={id} />
+      <NewRegistrationReceipt id={id} />
     </GatedSignin>
   );
 };

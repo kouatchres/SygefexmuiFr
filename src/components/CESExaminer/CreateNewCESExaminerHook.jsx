@@ -11,6 +11,8 @@ import {
   ButtonStyled,
   StyledButton,
 } from "../utils/FormInputs";
+import Notification from "../utils/Notification";
+
 import styled from "styled-components";
 import * as Yup from "yup";
 import useForm from "../utils/useForm";
@@ -66,6 +68,12 @@ const CreateNewCESExaminer = () => {
     phaseRank: "",
     examinerCode: "",
   };
+
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
   const [state, setState, handleReactSelectChange] = useForm({
     centerNumber: "",
     examID: "",
@@ -79,19 +87,17 @@ const CreateNewCESExaminer = () => {
     setState({ [name]: val });
   };
 
-
-
   const makeExaminerObject = (profCodeValue) => {
     const storedProf = {
       examinerCode: `${profCodeValue}`,
     };
     return storedProf;
   };
- 
+
   const { data: dataExams, loading: loadingExams, errorExams } = useQuery(
     getAllExamsQuery
   );
-  
+
   const getExams = dataExams && dataExams.exams;
   console.log(getExams);
   const removeExamName =
@@ -104,7 +110,6 @@ const CreateNewCESExaminer = () => {
   const { data: dataSession, loading: loadingSession, errorSession } = useQuery(
     getAllSessionsQuery
   );
-  
 
   const getSessions = dataSession && dataSession.sessions;
   const refinedSessions = removeTypename(getSessions);
@@ -128,7 +133,6 @@ const CreateNewCESExaminer = () => {
         getSessions && getSelectedObject(refinedSessions, state.sessionID),
     },
   });
- 
 
   console.log(dataExamSession);
   const getExamSessions = dataExamSession && dataExamSession.examSessions;
@@ -145,7 +149,6 @@ const CreateNewCESExaminer = () => {
       },
     }
   );
-  
 
   const getCenterByNumber = dataCenter && dataCenter.centerByNumber;
   const newCenter = getCenterByNumber && removeTypename(getCenterByNumber);
@@ -161,7 +164,6 @@ const CreateNewCESExaminer = () => {
       },
     }
   );
- 
 
   console.log(dataCES);
   const getCenterExamSessionsByCode =
@@ -181,7 +183,6 @@ const CreateNewCESExaminer = () => {
     error: errorPhase,
   } = useQuery(getAllPhasesQuery);
 
-  
   console.log(dataPhase);
 
   const getPhases = dataPhase && dataPhase.phases;
@@ -205,7 +206,6 @@ const CreateNewCESExaminer = () => {
     variables: { id: state.phaseID },
   });
 
- 
   console.log(dataPhaseRank);
   const getThePhase = dataPhaseRank && dataPhaseRank.phase;
   const { phaseRank } = { ...getThePhase };
@@ -228,7 +228,7 @@ const CreateNewCESExaminer = () => {
       method="POST"
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={async (values, { setSubmitting, resetForm)} => {
+      onSubmit={async (values, { setSubmitting, resetForm }) => {
         const res = await CreateCenterExamSessionExaminer({
           variables: {
             ...values,
@@ -245,6 +245,11 @@ const CreateNewCESExaminer = () => {
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
+          setNotify({
+            isOpen: true,
+            message: "Nouveau département créé avec success",
+            type: "success",
+          });
           resetForm(true);
           setSubmitting(false);
         }, 400);
@@ -253,14 +258,18 @@ const CreateNewCESExaminer = () => {
       {({ values, setFieldValue, isSubmitting }) => (
         <MinimStyledPage>
           <h4> Inscription d'examinateur</h4>
-          <Error error={error  || 
-           errorExams ||
+          <Error
+            error={
+              error ||
+              errorExams ||
               errorSession ||
               errorExamSession ||
               errorCenter ||
               errorCES ||
               errorPhase ||
-              errorPhaseRank} />
+              errorPhaseRank
+            }
+          />
           <StyledForm
             disabled={
               isSubmitting ||
@@ -271,7 +280,7 @@ const CreateNewCESExaminer = () => {
               loadingCES ||
               loadingPhase ||
               loading ||
-              loadingPhaseRank 
+              loadingPhaseRank
             }
             aria-busy={
               isSubmitting ||
@@ -282,8 +291,7 @@ const CreateNewCESExaminer = () => {
               loadingCES ||
               loadingPhase ||
               loading ||
-              loadingPhaseRank 
-              
+              loadingPhaseRank
             }
           >
             <Form>
@@ -340,6 +348,8 @@ const CreateNewCESExaminer = () => {
                     disabled={isSubmitting}
                   />
                 </InputGroup>
+                <Notification notify={notify} setNotify={setNotify} />
+
                 <ButtonStyled>
                   <StyledButton type="submit">
                     Valid{isSubmitting ? "ation en cours" : "er"}

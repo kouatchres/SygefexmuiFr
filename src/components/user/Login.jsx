@@ -133,7 +133,7 @@ const Login = () => {
                       label="Email"
                       variant="outlined"
                       disabled={isSubmitting || loading}
-                      helperText={<ErrorMessage name="email" />}
+                      helpertext={<ErrorMessage name="email" />}
                     />
                     <Field
                       name="password"
@@ -143,7 +143,7 @@ const Login = () => {
                       label="password"
                       variant="outlined"
                       disabled={isSubmitting || loading}
-                      helperText={<ErrorMessage name="password" />}
+                      helpertext={<ErrorMessage name="password" />}
                     />
                     <Typography variant="body2" className={classes.centerAll}>
                       Pas encore de compte?

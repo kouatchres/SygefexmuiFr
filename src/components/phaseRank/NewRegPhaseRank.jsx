@@ -8,10 +8,15 @@ import {
   ButtonStyled,
   StyledButton,
 } from "../utils/FormInputs";
+import Notification from "../utils/Notification";
+
 import styled from "styled-components";
 import * as Yup from "yup";
 import { createPhaseRankMutation } from "../queries&Mutations&Functions/Mutations";
-import { getObjectFromID, removeTypename } from "../queries&Mutations&Functions/Functions";
+import {
+  getObjectFromID,
+  removeTypename,
+} from "../queries&Mutations&Functions/Functions";
 import {
   getAllPhasesQuery,
   getAllRanksQuery,
@@ -35,19 +40,22 @@ const validationSchema = Yup.object().shape({
 });
 
 const NewRegPhaseRank = () => {
-const  initialValues = {
+  const initialValues = {
     phase: "",
     rank: "",
   };
-
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
   const { data, loadingPhase, errorPhase } = useQuery(getAllPhasesQuery);
 
-  
   console.log(data);
 
-  const allPhases =data &&  data.phases;
+  const allPhases = data && data.phases;
   console.log(allPhases);
-  const refinedPhase =allPhases && removeTypename(allPhases);
+  const refinedPhase = allPhases && removeTypename(allPhases);
   console.log(refinedPhase);
 
   const getPhases =
@@ -55,23 +63,21 @@ const  initialValues = {
     refinedPhase.map((item) => ({
       value: item.id,
       label: item.phaseName,
-    }))
+    }));
   const { data: dataRanks, loading: loadingRanks, error: errRanks } = useQuery(
     getAllRanksQuery
   );
 
-  
-  
-  const AllRanks  = dataRanks   && dataRanks.ranks;
-  
-  const refinedRank = AllRanks && removeTypename(AllRanks)
+  const AllRanks = dataRanks && dataRanks.ranks;
+
+  const refinedRank = AllRanks && removeTypename(AllRanks);
   console.log(refinedRank);
   const getRanks =
     refinedRank &&
     refinedRank.map((item) => ({
       value: item.id,
       label: item.rankName,
-    }))
+    }));
   const [createPhaseRank, { loading: loadingMut, Error: errMut }] = useMutation(
     createPhaseRankMutation
   );
@@ -80,7 +86,7 @@ const  initialValues = {
       method="POST"
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={async (values,{ setSubmitting, resetForm}) => {
+      onSubmit={async (values, { setSubmitting, resetForm }) => {
         const res = await createPhaseRank({
           variables: {
             ...values,
@@ -91,6 +97,11 @@ const  initialValues = {
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
+          setNotify({
+            isOpen: true,
+            message: "Nouvelle session crééé avec success",
+            type: "success",
+          });
           resetForm(true);
           setSubmitting(false);
         }, 400);
@@ -122,6 +133,8 @@ const  initialValues = {
                       placeholder={"Poste de responsabilité tenu"}
                     />
                   </InputGroup>
+                  <Notification notify={notify} setNotify={setNotify} />
+
                   <ButtonStyled>
                     <StyledButton disables={isSubmitting} type="submit">
                       Valid{loadingMut ? "ation en cours" : "er"}

@@ -24,15 +24,10 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/creates/newMarks": [
+    "/show/lists/allregions": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/creates/newMarks.js"
-    ],
-    "/show/singleCand": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/show/singleCand.js"
+      "static/chunks/pages/show/lists/allregions.js"
     ]
   },
   "ampFirstPages": []

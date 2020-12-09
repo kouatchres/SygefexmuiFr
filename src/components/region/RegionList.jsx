@@ -1,48 +1,24 @@
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MaterialTable from "material-table";
-import AddBox from "@material-ui/icons/AddBox";
 import { Paper } from "@material-ui/core";
-import ArrowDownward from "@material-ui/icons/ArrowDownward";
-import Check from "@material-ui/icons/Check";
-import ChevronLeft from "@material-ui/icons/ChevronLeft";
-import ChevronRight from "@material-ui/icons/ChevronRight";
-import Clear from "@material-ui/icons/Clear";
-import DeleteOutline from "@material-ui/icons/DeleteOutline";
-import Edit from "@material-ui/icons/Edit";
-import FilterList from "@material-ui/icons/FilterList";
-import FirstPage from "@material-ui/icons/FirstPage";
-import LastPage from "@material-ui/icons/LastPage";
-import Remove from "@material-ui/icons/Remove";
-import SaveAlt from "@material-ui/icons/SaveAlt";
-import Search from "@material-ui/icons/Search";
-import ViewColumn from "@material-ui/icons/ViewColumn";
 import { makeStyles } from "@material-ui/core/styles";
-import { useApolloClient } from "@apollo/react-hooks";
+import { useApolloClient, useMutation } from "@apollo/react-hooks";
 import { getAllRegionsQuery } from "../queries&Mutations&Functions/Queries";
+import tableIcons from "../utils/icons/tableIcons";
+import AddPopup from "../utils/AddPopup";
+import UpdatePopup from "../utils/UpdatePopup";
+import ConfirmDialog from "../utils/ConfirmDialog";
+import { deleteRegionMutation } from "../queries&Mutations&Functions/Mutations";
+import Notification from "../utils/Notification";
 
-const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => (
-    <ChevronRight {...props} ref={ref} />
-  )),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => (
-    <ChevronLeft {...props} ref={ref} />
-  )),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
-};
+import {
+  Edit as EditIcon,
+  Add as AddIcon,
+  Delete as DeleteIcon,
+} from "@material-ui/icons";
+
+import NewRegionMui from "./NewRegionMui";
+import UpdateRegion from "./UpdateRegion";
 
 const useStyles = makeStyles({
   stickyActionsColumn: {
@@ -78,8 +54,24 @@ const useStyles = makeStyles({
 });
 
 const RegionList = () => {
-  const classes = useStyles();
   const client = useApolloClient();
+  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+  const [updatePopupState, setUpdatePopupState] = useState({
+    isOpen: false,
+    id: "",
+  });
+
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+  const [deleteConfirmDialog, setDeleteConfirmDialog] = useState({
+    isOpen: false,
+    id: "",
+    title: "",
+    subtitle: "",
+  });
 
   const [state, setState] = useState({
     columns: [
@@ -96,8 +88,6 @@ const RegionList = () => {
     data: [],
   });
 
-  const [regions, setRegions] = useState([]);
-
   const loadRegionData = async () => {
     const { error, data } = await client.query({
       query: getAllRegionsQuery,
@@ -107,7 +97,6 @@ const RegionList = () => {
     }
     const { regions } = { ...data };
     console.log(regions);
-    setRegions(regions);
     console.log(regions);
     setState((prev) => ({ ...prev, data: regions }));
   };
@@ -115,69 +104,117 @@ const RegionList = () => {
   useEffect(() => {
     loadRegionData();
   }, []);
-  console.dir(state.data);
+
+  const updateCache = (cache, payload) => {
+    // manually update the cache so that the data are all the same
+    // 1. read the cache for the data we want
+    const data = cache && cache.readQuery({ query: getAllRegionsQuery });
+    cache &&
+      cache.writeQuery({
+        query: getAllRegionsQuery,
+        data: {
+          regions: data.regions.filter(
+            (item) => item.id !== payload.data.deleteRegion.id
+          ),
+        },
+      });
+  };
+  const handleAddPopupClose = () => {
+    setIsAddPopupOpen(false);
+  };
+
+  const handleUpdatePopupClose = () => {
+    setUpdatePopupState((prev) => ({
+      ...prev,
+      isOpen: false,
+    }));
+  };
+  const handleDeleteConfirmDialog = () => {
+    setDeleteConfirmDialog((prev) => ({
+      ...prev,
+      isOpen: false,
+    }));
+  };
+  const [deleteRegion, { loading }] = useMutation(deleteRegionMutation, {
+    variables: { id: deleteConfirmDialog.id },
+    update: updateCache(),
+  });
+
+  const actions = [
+    {
+      icon: () => <AddIcon />,
+      tooltip: "Ajouter Nouvelle Région",
+      isFreeAction: true,
+      onClick: () => {
+        setIsAddPopupOpen(true);
+      },
+    },
+    {
+      icon: () => <EditIcon />,
+      tooltip: "Modifier Région",
+      onClick: (event, rowData) => {
+        setUpdatePopupState({ isOpen: true, id: rowData.id });
+        // console.log(rowData.id);
+      },
+    },
+    {
+      icon: () => <DeleteIcon />,
+      tooltip: "Supprimer région",
+      onClick: (event, rowData) =>
+        setDeleteConfirmDialog({
+          id: rowData.id,
+          isOpen: true,
+          title: "Etes-vous sur de suprimer cette inofrmation",
+          subtitle:
+            "Une fois supprimées, les informations seront perdues a jamais, Seules les regions sans departement pourront etre suprimees",
+          onConfirm: () => {
+          rowData.id &&  deleteRegion(rowData.id);
+            setNotify({
+              isOpen: true,
+              message: "Region Supprimee avec success",
+              type: "error",
+            });
+            console.log("just after the delete process");
+          },
+        }),
+    },
+  ];
+
   return (
     <Paper style={{ marginTop: "2rem" }}>
-      <div className={classes.stickyHeader}>
-        <MaterialTable
-          icons={tableIcons}
-          title="Users List"
-          columns={state.columns}
-          data={state.data}
-          options={{
-            paging: true,
-            pageSize: 10, // make initial page size
-            emptyRowsWhenPaging: false, //to make page size fix in case of less data rows
-            pageSizeOptions: [5, 10, 20], // rows selection options
-          }}
-          // editable={{
-          //   onRowAdd: (newData) =>
-          //     new Promise((resolve) => {
-          //       setTimeout(() => {
-          //         resolve();
-          //         setState((prevState) => {
-          //           const data = [...prevState.data];
-          //           data.push(newData);
-          //           return {
-          //             ...prevState,
-          //             data,
-          //           };
-          //         });
-          //       }, 400);
-          //     }),
-          //   onRowUpdate: (newData, oldData) =>
-          //     new Promise((resolve) => {
-          //       setTimeout(() => {
-          //         resolve();
-          //         if (oldData) {
-          //           setState((prevState) => {
-          //             const data = [...prevState.data];
-          //             data[data.indexOf(oldData)] = newData;
-          //             return {
-          //               ...prevState,
-          //               data,
-          //             };
-          //           });
-          //         }
-          //       }, 400);
-          //     }),
-          //   onRowDelete: (oldData) =>
-          //     new Promise((resolve) => {
-          //       setTimeout(() => {
-          //         resolve();
-          //         setState((prevState) => {
-          //           const data = [...prevState.data];
-          //           data.splice(data.indexOf(oldData), 1);
-          //           return {
-          //             ...prevState,
-          //             data,
-          //           };
-          //         });
-          //       }, 400);
-          //     }),
-          // }}
-        />
-      </div>
+      <MaterialTable
+        icons={tableIcons}
+        title="Liste de Régions"
+        columns={state.columns}
+        data={state.data}
+        actions={actions}
+        stickyHeader
+        style={{ position: "sticky", top: 0 }}
+        icons={tableIcons}
+      />
+      <AddPopup
+        title="Nouvelle Région"
+        isOpen={isAddPopupOpen}
+        onClose={handleAddPopupClose}
+      >
+        <NewRegionMui />
+      </AddPopup>
+      <ConfirmDialog
+        title={deleteConfirmDialog.title}
+        subtitle={deleteConfirmDialog.subtitle}
+        isOpen={deleteConfirmDialog.isOpen}
+        onClose={handleDeleteConfirmDialog}
+        onConfirm={deleteConfirmDialog.onConfirm}
+      />
+      <Notification notify={notify} setNotify={setNotify} />
+
+      <UpdatePopup
+        // title={updatePopupState.id}
+        isOpen={updatePopupState.isOpen}
+        onClose={handleUpdatePopupClose}
+      >
+        <UpdateRegion id={updatePopupState.id} />
+      </UpdatePopup>
     </Paper>
   );
 };
