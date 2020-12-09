@@ -13,6 +13,7 @@ import {
   StyledForm,
   SygexInput,
 } from "../utils/FormInputs";
+import Notification from "../utils/Notification";
 
 const validationSchema = Yup.object().shape({
   subDivName: Yup.string().required("Nom du arrondissement Obligatoire"),
@@ -20,6 +21,11 @@ const validationSchema = Yup.object().shape({
 });
 
 const UpdateSubDivision = (props) => {
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
   const [state, setState] = useForm({ subDivName: "", subDivCode: "" });
   const client = useApolloClient();
 
@@ -55,6 +61,11 @@ const UpdateSubDivision = (props) => {
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
+          setNotify({
+            isOpen: true,
+            message: "Nouvelle Ville créée avec success",
+            type: "success",
+          });
           resetForm(true);
           setSubmitting(false);
         }, 200);
@@ -81,6 +92,8 @@ const UpdateSubDivision = (props) => {
                 required
                 disabled={isSubmitting}
               />
+              <Notification notify={notify} setNotify={setNotify} />
+
               <ButtonStyled>
                 <StyledButton type="submit">
                   Valid{isSubmitting ? "ation en cours" : "er"}

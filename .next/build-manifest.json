@@ -24,10 +24,15 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/show/lists/allregions": [
+    "/creates/newCES": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/show/lists/allregions.js"
+      "static/chunks/pages/creates/newCES.js"
+    ],
+    "/show/lists/allTowns": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/show/lists/allTowns.js"
     ]
   },
   "ampFirstPages": []

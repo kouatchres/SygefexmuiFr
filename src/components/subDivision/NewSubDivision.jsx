@@ -17,6 +17,7 @@ import { useMutation, useApolloClient, useQuery } from "@apollo/react-hooks";
 import {
   getDivisionsOfARegionQuery,
   getAllRegionsQuery,
+  getAllSubDivisionsQuery,
 } from "../queries&Mutations&Functions/Queries";
 import Notification from "../utils/Notification";
 
@@ -68,11 +69,11 @@ const NewSubDivision = () => {
   const [divisions, setDivisions] = useState([]);
   const [regionID, setRegionID] = useState("");
 
-    const [notify, setNotify] = useState({
-      isOpen: false,
-      message: "",
-      type: "",
-    });
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
   const initialValues = {
     subDivName: "",
     subDivCode: "",
@@ -125,11 +126,22 @@ const NewSubDivision = () => {
     divisions.map((item) => ({ value: item.id, label: item.divName }));
 
   console.dir(getDivOptions);
+
+  const updateCache = (cache, { res }) => {
+    // Fetch the subDivs from the cache
+    const existingSubDivs = cache.readQuery({
+      query: getAllSubDivisionsQuery,
+    });
+    // Add the new subDivs to the cache
+    const insertedSubDiv = res.insert_todos.returning[0];
+    cache.writeQuery({
+      query: getAllSubDivisionsQuery,
+      data: { subDivision: [insertedSubDiv, ...existingSubDivs.subDivision] },
+    });
+  };
+
   const [createSubDivision, { loading, error }] = useMutation(
-    createSubDivisionMutation,
-    {
-      refetchQueries: ["getAllSubDivisionsQuery"],
-    }
+    createSubDivisionMutation
   );
 
   return (
@@ -143,13 +155,15 @@ const NewSubDivision = () => {
             ...values,
             division: values.division && getObjectFromID(values.division),
           },
+          refetchQueries: [{ getAllSubDivisionsQuery }],
         });
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
+          // updateCache(cache,res.data.)
           setNotify({
             isOpen: true,
-            message: "Nouvelle session crééé avec success",
+            message: "Nouvel arrondissement créé avec success",
             type: "success",
           });
           resetForm(true);

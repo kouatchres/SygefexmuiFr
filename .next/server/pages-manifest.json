@@ -2,5 +2,6 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
-  "/show/lists/allregions": "pages/show/lists/allregions.js"
+  "/show/lists/allTowns": "pages/show/lists/allTowns.js",
+  "/creates/newCES": "pages/creates/newCES.js"
 }

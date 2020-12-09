@@ -1,12 +1,58 @@
 import React, { useEffect, useState } from "react";
 import MaterialTable, { MTableToolbar } from "material-table";
 import { Paper } from "@material-ui/core";
-import { useApolloClient } from "@apollo/react-hooks";
-import { getAllRegionsDivisionsAndTownsQuery } from "../queries&Mutations&Functions/Queries";
+import { makeStyles } from "@material-ui/core/styles";
+import { useApolloClient, useMutation, useQuery } from "@apollo/react-hooks";
+import { deleteTownMutation } from "../queries&Mutations&Functions/Mutations";
 import tableIcons from "../utils/icons/tableIcons";
+import ConfirmDialog from "../utils/ConfirmDialog";
+import AddPopup from "../utils/AddPopup";
+import UpdatePopup from "../utils/UpdatePopup";
+import { getAllRegionsDivisionsAndTownsQuery } from "../queries&Mutations&Functions/Queries";
+
+import {
+  Edit as EditIcon,
+  Add as AddIcon,
+  Delete as DeleteIcon,
+} from "@material-ui/icons";
+import Notification from "../utils/Notification";
+import NewTown from "./NewTown";
+import UpdateTown from "./UpdateTown";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    marginTop: theme.spacing.unit * 3,
+    overflowX: "auto",
+  },
+  head: {
+    backgroundColor: "#fff",
+    position: "sticky",
+    top: 0,
+  },
+}));
 
 const TownList = () => {
+  const classes = useStyles();
   const client = useApolloClient();
+  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+  const [updatePopupState, setUpdatePopupState] = useState({
+    isOpen: false,
+    id: "",
+  });
+
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+  const [deleteConfirmDialog, setDeleteConfirmDialog] = useState({
+    isOpen: false,
+    id: "",
+    title: "",
+    subtitle: "",
+  });
+
   const [state, setState] = useState({
     columns: [
       {
@@ -61,17 +107,76 @@ const TownList = () => {
 
     console.log(state.data);
   }, []);
+  const handleAddPopupClose = () => {
+    setIsAddPopupOpen(false);
+  };
 
+  const handleUpdatePopupClose = () => {
+    setUpdatePopupState((prev) => ({
+      ...prev,
+      isOpen: false,
+    }));
+  };
+  const handleDeleteConfirmDialog = () => {
+    setDeleteConfirmDialog((prev) => ({
+      ...prev,
+      isOpen: false,
+    }));
+  };
+  const [deleteTown, { loading }] = useMutation(deleteTownMutation, {
+    variables: { id: deleteConfirmDialog.id },
+    // update: updateCache(),
+  });
+
+  const actions = [
+    {
+      icon: () => <AddIcon />,
+      tooltip: "Ajouter Nouvelle Ville",
+      isFreeAction: true,
+      onClick: () => {
+        setIsAddPopupOpen(true);
+      },
+    },
+    {
+      icon: () => <EditIcon />,
+      tooltip: "Modifier Ville",
+      onClick: (event, rowData) => {
+        setUpdatePopupState({ isOpen: true, id: rowData.id });
+        // console.log(rowData.id);
+      },
+    },
+    {
+      icon: () => <DeleteIcon />,
+      tooltip: "Supprimer Ville",
+      onClick: (event, rowData) =>
+        setDeleteConfirmDialog({
+          id: rowData.id,
+          isOpen: true,
+          title: "Etes-vous sur de suprimer cette inofrmation",
+          subtitle:
+            "Une fois supprimées, les informations seront perdues a jamais, Seules les regions sans departement pourront etre suprimees",
+          onConfirm: () => {
+            rowData.id && deleteTown(rowData.id);
+            setNotify({
+              isOpen: true,
+              message: "Ville Supprimée avec success",
+              type: "error",
+            });
+          },
+        }),
+    },
+  ];
   console.dir(state.data);
   return (
-    <Paper style={{ marginTop: "2rem" }}>
+    <Paper className={classes.root}>
       <div>
         <MaterialTable
+          className={classes.head}
           components={{
             Toolbar: (props) => (
               <div
                 style={{
-                  backgroundColor: "#01579b",
+                  backgroundColor: "#4a8ba8",
                   borderTopRightRadius: "0.5rem",
                   borderTopLeftRadius: "0.5rem",
                   color: "#fff",
@@ -102,60 +207,38 @@ const TownList = () => {
               color: "#fff",
               paddingTop: "0.5rem",
               paddingBottom: "0.5rem",
-              backgroundColor: "#01579b",
+              backgroundColor: "#abb",
               maxHeight: "0.5rem !important",
             },
             rowStyle: {
               color: "#000",
             },
           }}
-          editable={{
-            onRowAdd: (newData) =>
-              new Promise((resolve) => {
-                setTimeout(() => {
-                  resolve();
-                  setState((prevState) => {
-                    const data = [...prevState.data];
-                    data.push(newData);
-                    return {
-                      ...prevState,
-                      data,
-                    };
-                  });
-                }, 400);
-              }),
-            onRowUpdate: (newData, oldData) =>
-              new Promise((resolve) => {
-                setTimeout(() => {
-                  resolve();
-                  if (oldData) {
-                    setState((prevState) => {
-                      const data = [...prevState.data];
-                      data[data.indexOf(oldData)] = newData;
-                      return {
-                        ...prevState,
-                        data,
-                      };
-                    });
-                  }
-                }, 400);
-              }),
-            onRowDelete: (oldData) =>
-              new Promise((resolve) => {
-                setTimeout(() => {
-                  resolve();
-                  setState((prevState) => {
-                    const data = [...prevState.data];
-                    data.splice(data.indexOf(oldData), 1);
-                    return {
-                      ...prevState,
-                      data,
-                    };
-                  });
-                }, 400);
-              }),
-          }}
+          actions={actions}
         />
+        <AddPopup
+          title="Nouvelle Ville"
+          isOpen={isAddPopupOpen}
+          onClose={handleAddPopupClose}
+        >
+          <NewTown />
+        </AddPopup>
+        <ConfirmDialog
+          title={deleteConfirmDialog.title}
+          subtitle={deleteConfirmDialog.subtitle}
+          isOpen={deleteConfirmDialog.isOpen}
+          onClose={handleDeleteConfirmDialog}
+          onConfirm={deleteConfirmDialog.onConfirm}
+        />
+        <Notification notify={notify} setNotify={setNotify} />
+
+        <UpdatePopup
+          // title={updatePopupState.id}
+          isOpen={updatePopupState.isOpen}
+          onClose={handleUpdatePopupClose}
+        >
+          <UpdateTown id={updatePopupState.id} />
+        </UpdatePopup>
       </div>
     </Paper>
   );

@@ -146,11 +146,7 @@ const SygefexTheme = createMuiTheme({
         backgroundColor: "#abb",
       },
     },
-    MuiTableToolbar: {
-      root: {
-        backgroundColor: "#4a8ba8",
-      },
-    },
+
     MuiFormControl: {
       root: {
         color: "#044562",
@@ -251,7 +247,8 @@ const SygefexTheme = createMuiTheme({
     },
     MuiSvgIcon: {
       root: {
-        width: "4rem",
+        width: "2rem",
+        fontSize: "1rem",
       },
     },
 
@@ -303,7 +300,18 @@ const SygefexTheme = createMuiTheme({
         backgroundColor: "#4a8ba8",
       },
     },
-
+    MTableToolbar: {
+      actions: {
+        color: "#000",
+        fontSize: "2rem",
+        backgroundColor: "#fff",
+        borderRadius: "0.3rem",
+      },
+      title: {
+        width: "5rem",
+        overflow: "none",
+      },
+    },
     MuiGrid: {
       root: {
         display: "grid",

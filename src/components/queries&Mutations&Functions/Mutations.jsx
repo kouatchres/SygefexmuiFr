@@ -363,9 +363,6 @@ const createSubDivisionMutation = gql`
       id
       subDivName
       subDivCode
-      division {
-        divName
-      }
     }
   }
 `;
@@ -909,6 +906,22 @@ const deleteCenterMutation = gql`
   }
 `;
 
+const deleteSubDivisionMutation = gql`
+  mutation deleteSubDivisionMutation($id: ID!) {
+    deleteSubDivision(id: $id) {
+      id
+    }
+  }
+`;
+
+const deleteTownMutation = gql`
+  mutation deleteTownMutation($id: ID!) {
+    deleteTown(id: $id) {
+      id
+    }
+  }
+`;
+
 export {
   createCandidateMutation,
   createNewSubjectMutation,
@@ -959,5 +972,7 @@ export {
   signoutMutation,
   enterMarksMutation,
   deleteReportMutation,
+  deleteTownMutation,
+  deleteSubDivisionMutation,
   requestResetMutation,
 };

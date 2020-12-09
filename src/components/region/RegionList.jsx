@@ -168,7 +168,7 @@ const RegionList = () => {
           subtitle:
             "Une fois supprimées, les informations seront perdues a jamais, Seules les regions sans departement pourront etre suprimees",
           onConfirm: () => {
-          rowData.id &&  deleteRegion(rowData.id);
+            rowData.id && deleteRegion(rowData.id);
             setNotify({
               isOpen: true,
               message: "Region Supprimee avec success",
