@@ -176,10 +176,10 @@ const TownList = () => {
             Toolbar: (props) => (
               <div
                 style={{
-                  backgroundColor: "#4a8ba8",
+                  backgroundColor: "#829079",
                   borderTopRightRadius: "0.5rem",
                   borderTopLeftRadius: "0.5rem",
-                  color: "#fff",
+                  color: "#ede6b9",
                 }}
               >
                 <MTableToolbar
@@ -193,7 +193,7 @@ const TownList = () => {
             ),
           }}
           icons={tableIcons}
-          title="Users List"
+          title="Liste des villes... ,..............                                      "
           columns={state.columns}
           data={state.data}
           options={{
@@ -204,10 +204,11 @@ const TownList = () => {
             emptyRowsWhenPaging: false, //to make page size fix in case of less data rows
             pageSizeOptions: [25, 50, 75, 100, 150], // rows selection options
             headerStyle: {
-              color: "#fff",
               paddingTop: "0.5rem",
               paddingBottom: "0.5rem",
-              backgroundColor: "#abb",
+              // backgroundColor: "#abb",
+              color: "#ede6b9",
+              backgroundColor: "#b9925e",
               maxHeight: "0.5rem !important",
             },
             rowStyle: {

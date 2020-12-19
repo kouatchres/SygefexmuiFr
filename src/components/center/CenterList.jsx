@@ -57,24 +57,42 @@ const CenterList = () => {
     columns: [
       {
         field: "regName",
-        title: "Nom Region",
+        title: "Region",
+options: {
+            width: 30,
+            headerNoWrap: true,
+        } ,
+
       },
-      {
-        field: "regCode",
-        title: "Code Region",
-        grouping: false,
-      },
-      { field: "divName", title: "Nom Dept" },
-      { field: "divCode", title: "Code Dept", grouping: false },
-      { field: "townName", title: "Nom Centre" },
-      { field: "townCode", title: "Code Centre", grouping: false },
-      { field: "centerName", title: "Nom Centre" },
-      { field: "centerCode", title: "Code Centre", grouping: false },
+     
+      { field: "divName", title: "Dept",
+    options: {
+            width: 30,
+            headerNoWrap: true,
+        } ,
+    },
+      { field: "townName", title: "Ville" ,
+    options: {
+            width: 30,
+            headerNoWrap: true,
+        } ,
+    },
+      { field: "centerName", title: "Centre",
+      options: {
+            width: 400,
+            headerNoWrap: true,
+        } ,
+    },
+      
       {
         field: "centerNumber",
-        title: "No Centre",
-        grouping: false,
+        title: "No",
+        // grouping: false,
         type: "numeric",
+        options: {
+            width: 30,
+            headerNoWrap: true,
+        } ,
       },
     ],
     data: [],
@@ -176,7 +194,7 @@ const CenterList = () => {
   ];
   console.dir(state.data);
   return (
-    <Paper className={classes.root}>
+    // <Paper className={classes.root}>
       <div>
         <MaterialTable
           className={classes.head}
@@ -184,10 +202,10 @@ const CenterList = () => {
             Toolbar: (props) => (
               <div
                 style={{
-                  backgroundColor: "#4a8ba8",
+                  backgroundColor: "#829079",
                   borderTopRightRadius: "0.5rem",
                   borderTopLeftRadius: "0.5rem",
-                  color: "#fff",
+                  color: "#ede6b9",
                 }}
               >
                 <MTableToolbar
@@ -201,7 +219,7 @@ const CenterList = () => {
             ),
           }}
           icons={tableIcons}
-          title="Users List"
+          title="Liste des Centres..................                            "
           columns={state.columns}
           data={state.data}
           options={{
@@ -212,10 +230,11 @@ const CenterList = () => {
             emptyRowsWhenPaging: false, //to make page size fix in case of less data rows
             pageSizeOptions: [25, 50, 75, 100, 150], // rows selection options
             headerStyle: {
-              color: "#fff",
               paddingTop: "0.5rem",
               paddingBottom: "0.5rem",
-              backgroundColor: "#abb",
+              // backgroundColor: "#abb",
+              color: "#ede6b9",
+              backgroundColor: "#b9925e",
               maxHeight: "0.5rem !important",
             },
             rowStyle: {
@@ -225,7 +244,7 @@ const CenterList = () => {
           actions={actions}
         />
         <AddPopup
-          title="Nouvelle Centre"
+          title="Nouveau Centre"
           isOpen={isAddPopupOpen}
           onClose={handleAddPopupClose}
         >
@@ -248,7 +267,7 @@ const CenterList = () => {
           <UpdateCenter id={updatePopupState.id} />
         </UpdatePopup>
       </div>
-    </Paper>
+    // </Paper>
   );
 };
 export default CenterList;

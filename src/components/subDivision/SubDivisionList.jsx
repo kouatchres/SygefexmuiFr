@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "auto",
   },
   head: {
-    backgroundColor: "#fff",
+    // backgroundColor: "#fff",
     position: "sticky",
     top: 0,
   },
@@ -56,15 +56,15 @@ const SubDivisionList = () => {
     columns: [
       {
         field: "regName",
-        title: "Region Name",
+        title: "Nom region",
       },
       {
         field: "regCode",
-        title: "Region Code",
+        title: "Code region",
         grouping: false,
       },
-      { field: "divName", title: "Division Name" },
-      { field: "divCode", title: "Division Code", grouping: false },
+      { field: "divName", title: "Nom depart" },
+      { field: "divCode", title: "Code Depart", grouping: false },
       { field: "subDivName", title: "Nom Arrond" },
       { field: "subDivCode", title: "Code Arrond", grouping: false },
     ],
@@ -164,7 +164,7 @@ const SubDivisionList = () => {
   ];
   console.dir(state.data);
   return (
-    <Paper className={classes.root}>
+    // <Paper className={classes.root}>
       <div>
         <MaterialTable
           className={classes.head}
@@ -172,24 +172,18 @@ const SubDivisionList = () => {
             Toolbar: (props) => (
               <div
                 style={{
-                  backgroundColor: "#4a8ba8",
+                  backgroundColor: "#829079",
                   borderTopRightRadius: "0.5rem",
                   borderTopLeftRadius: "0.5rem",
-                  color: "#fff",
-                }}
+                  color: "#ede6b9",
+                                 }}
               >
-                <MTableToolbar
-                  style={{
-                    // textColor: "#000",
-                    textColor: "#fff",
-                  }}
-                  {...props}
-                />
+                <MTableToolbar {...props} />
               </div>
             ),
           }}
           icons={tableIcons}
-          title="Users List"
+          title="Liste des arrondissements...                          "
           columns={state.columns}
           data={state.data}
           options={{
@@ -200,10 +194,11 @@ const SubDivisionList = () => {
             emptyRowsWhenPaging: false, //to make page size fix in case of less data rows
             pageSizeOptions: [25, 50, 75, 100, 150], // rows selection options
             headerStyle: {
-              color: "#fff",
+              color: "#ede6b9",
+              // color: "#ff",
               paddingTop: "0.5rem",
               paddingBottom: "0.5rem",
-              backgroundColor: "#abb",
+              backgroundColor: "#b9925e",
               maxHeight: "0.5rem !important",
             },
             rowStyle: {
@@ -236,7 +231,7 @@ const SubDivisionList = () => {
           <UpdateSubDiv id={updatePopupState.id} />
         </UpdatePopup>
       </div>
-    </Paper>
+    // </Paper>
   );
 };
 export default SubDivisionList;

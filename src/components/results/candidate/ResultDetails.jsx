@@ -1,49 +1,47 @@
 import React from "react";
-// import PropTypes from 'prop-types';
-import styled from "styled-components";
 import { roundFloatNumber } from "../../queries&Mutations&Functions/Functions";
+import { Grid, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
-const SubjectRow = styled.div`
-  display: grid;
-  grid-template-columns: 4fr 1fr 1fr 1fr;
-  grid-gap: 0.2rem;
-  background-color: ${(props) => props.theme.lightGrey};
-  align-items: left;
-  justify-items: left;
-  border-bottom: 0.1rem solid black;
-  padding-left: 1.1rem;
-  font-size: 1.3rem;
-  font-weight: bold;
-`;
-
-const CellBlock = styled.div`
-  align-content: left;
-  text-align: left;
-`;
+const useStyles = makeStyles({
+  containerStyled: {
+    display: "grid",
+    // marginTop:"0.2rem",
+    gridTemplateColumns: "4fr 0.3fr 1.5fr 1.5fr",
+    alignItems: "left",
+    justifyItems: "left",
+    borderBottom: "0.1rem solid #000",
+  },
+});
 
 const ResultDetails = ({ score }) => {
-  // static propTypes = {
-  // 	data: PropTypes.object.isRequired
-  // };
-
+  const classes = useStyles();
   const { subjectAve, coeff, subjectSpecialty } = { ...score };
-  const { subject, specialty } = { ...subjectSpecialty };
+  const { subject } = { ...subjectSpecialty };
 
   return (
-    <SubjectRow>
-      <CellBlock>
-        <span>{subject.subjectName}</span>
-      </CellBlock>
-      <CellBlock>
-        <span>{coeff}</span>
-      </CellBlock>
-      <CellBlock>
-        <span>{subjectAve}</span>
-      </CellBlock>
-      <CellBlock>
-        <span>{roundFloatNumber(coeff * subjectAve, 4)}</span>
-      </CellBlock>
-    </SubjectRow>
+    <Grid container className={classes.containerStyled}>
+      <Grid item style={{ marginLeft: "0.3rem" }}>
+        <Typography variant="body2">
+          <span>{subject.subjectName}</span>
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="body2">
+          <span>{coeff}</span>
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="body2">
+          <span>{subjectAve}</span>
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="body2">
+          <span>{roundFloatNumber(coeff * subjectAve, 3)}</span>
+        </Typography>
+      </Grid>
+    </Grid>
   );
 };
 export default ResultDetails;

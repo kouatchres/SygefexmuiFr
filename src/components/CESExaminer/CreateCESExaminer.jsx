@@ -1,68 +1,125 @@
-import React from "react";
-import { useMutation, useQuery } from "@apollo/react-hooks";
-import { MinimStyledPage } from "../styles/StyledPage";
+import React, { useState, useEffect } from "react";
 import Error from "../ErrorMessage.js";
-import Router from "next/router";
-import { Formik, Form } from "formik";
-import {
-  SygexInput,
-  SygefexSelect,
-  StyledForm,
-  ButtonStyled,
-  StyledButton,
-} from "../utils/FormInputs";
-import styled from "styled-components";
 import * as Yup from "yup";
-import useForm from "../utils/useForm";
-import {removeTypename} from "../queries&Mutations&Functions/Functions";
+import { TextField } from "material-ui-formik-components/TextField";
+import { Select } from "material-ui-formik-components/Select";
+import { ErrorMessage, Formik, Form, Field } from "formik";
+import {
+  Grid,
+  Typography,
+  Paper,
+  Button,
+  LinearProgress,
+  CircularProgress,
+} from "@material-ui/core";
+import Notification from "../utils/Notification";
+
+import { makeStyles } from "@material-ui/core/styles";
+import { useApolloClient, useMutation } from "@apollo/react-hooks";
 import { createCenterExamSessionExaminerMutation } from "../queries&Mutations&Functions/Mutations";
 import {
- getSingleCenterExamSessionBySecretCodeQuery,
+  getExamSessionQuery,
+  getAllExamsQuery,
+  getAllSessionsQuery,
+  getSingleCenterExamSessionQuery,
+  getSingleCenterQuery,
   getAllPhasesQuery,
-getSingleCenterFromCenterSecretCodeQuery,
   getAllRanksOfAnExamPhaseQuery,
 } from "../queries&Mutations&Functions/Queries";
 
-const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-width: 13rem;
-  margin: 0 1rem;
-  padding-bottom: 0;
-  margin-bottom: 0;
-`;
-const AllControls = styled.div`
-  display: flex;
-  flex-direction: column;
-  /* min-width: 17rem; */
-`;
+import {
+  removeTypename,
+  getSelectedObject,
+} from "../queries&Mutations&Functions/Functions";
+import useForm from "../utils/useForm";
+
+const useStyles = makeStyles({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+
+    // fontSize: 100,
+  },
+
+  divStyled: {
+    display: "grid",
+    placeItems: "center",
+    top: "2rem",
+    height: "90vh",
+  },
+  pageStyled: {
+    display: "grid",
+    placeItems: "center",
+    padding: "1rem",
+    maxWidth: "80%",
+    borderRadius:"0.8rem",
+    borderBottom: "0.4rem solid #c89666",
+    borderTop: "0.4rem solid #829079",
+  },
+
+  titleStyled: {
+    display: "grid",
+    placeItems: "center",
+  },
+
+  centerAll: {
+    display: "grid",
+    placeItems: "center",
+    // minWidth: "30vw",
+    minWidth: "40%",
+    // maxWidth: "100vw",
+  },
+});
 
 const validationSchema = Yup.object().shape({
-  CESCode: Yup
-      .string()
-      .required("Code secret du centre Obligatoire"),
-  phaseRank: Yup.string().required("Choix du poste exige"),
-  examinerCode: Yup.string().required("Code secret examinateur Obligatoire"),
-  });
+  // examID: Yup.string().required("Choissir l'examen"),
+  // sessionID: Yup.string().required("Choissir la session"),
+  // // centerName: Yup.string().required("Libellé Centre Obligatoire"),
+  // centerNumber: Yup.string().required("Numéro de centre Obligatoire"),
+});
 
 const CreateCESExaminer = () => {
-  const initialValues = {
-    phaseRank: "",
-    examinerCode: "",
-    CESCode: "",
-  };
-  const [state, setState, handleReactSelectChange] = useForm({
-    CESCode: "",
-    phaseID: "",
+  const classes = useStyles();
+  const client = useApolloClient();
+
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
   });
-
-  const handleChange = (e) => {
-    const { name, value, type } = e.target;
-    const val = type === "number" ? parseInt(value) : value;
-    setState({ [name]: val });
+  const initialValues = {
+    // centerNumber: "",
+    // examID: "",
+    // sessionID: ",
   };
-
-
+  const [state, setState, handleSelectChange, handleInputChange] = useForm({
+    centerNumber: "",
+    examID: "",
+    phaseID: "",
+    sessionID: "",
+    exams: [],
+    ranks: [],
+    phases: [],
+    sessions: [],
+    phaseRanks: [],
+    centerByNumber: "",
+    examSessions: "",
+    centerExamSessions: "",
+  });
+  const {
+    centerExamSessions,
+    centerNumber,
+    examID,
+    phaseID,
+    sessionID,
+    exams,
+    phases,
+    ranks,
+    phaseRanks,
+    examSessions,
+    sessions,
+    centerByNumber,
+  } = state;
 
   const makeExaminerObject = (profCodeValue) => {
     const storedProf = {
@@ -70,92 +127,185 @@ const CreateCESExaminer = () => {
     };
     return storedProf;
   };
- 
 
-  const { data: dataCenter, loading: loadingCenter, errorCenter } = useQuery(
-    getSingleCenterFromCenterSecretCodeQuery,
-    {
-      skip: !state.CESCode,
+  const loadExamData = async () => {
+    const { data } = await client.query({
+      query: getAllExamsQuery,
+    });
+
+    const getExams = data && data.exams;
+    console.log(getExams);
+    const refinedExams = getExams && removeTypename(getExams);
+    setState((prev) => ({
+      ...prev,
+      exams: refinedExams,
+    }));
+  };
+  const removeExamName =
+    exams && exams.map(({ examName, ...others }) => others);
+
+  const getExamName = exams && {
+    ...getSelectedObject(removeExamName, examID),
+  };
+  const getExamsOptions =
+    exams && exams.map((item) => ({ value: item.id, label: item.examName }));
+
+  const loadSessionData = async () => {
+    const { data } = await client.query({
+      query: getAllSessionsQuery,
+    });
+
+    const getSessions = data && data.sessions;
+    const refinedSessions = getSessions && removeTypename(getSessions);
+    setState((prev) => ({
+      ...prev,
+      sessions: refinedSessions,
+    }));
+  };
+  console.dir(state);
+
+  const getSessionName = sessions && {
+    ...getSelectedObject(sessions, sessionID),
+  };
+
+  const getSessionsOptions =
+    sessions &&
+    sessions.map((item) => ({ value: item.id, label: item.sessionName }));
+
+  useEffect(() => {
+    loadExamData();
+    loadSessionData();
+  }, []);
+
+  console.dir(getSessionName);
+
+  const loadExamSessionData = async () => {
+    console.dir("running exam session query");
+    const { data, loading } = await client.query({
+      skip: !examID || !sessionID,
+      query: getExamSessionQuery,
       variables: {
-        CESCode: state.CESCode,
-      },  
-    }
-  );
-  
+        exam: examID && getExamName,
+        session: sessionID && getSessionName,
+      },
+    });
 
-  const getCenterBySecretCode = dataCenter && dataCenter.centerBySecretCode;
-  const newCenter = getCenterBySecretCode && removeTypename(getCenterBySecretCode);
-  console.log(newCenter);
-
-  const { data: dataCES, loading: loadingCES, errorCES } = useQuery(
-    getSingleCenterExamSessionBySecretCodeQuery,
+    console.log(data);
+    const getExamSessions = data && data.examSessions;
+    const refinedES = getExamSessions && removeTypename(getExamSessions);
+    const reducedES = refinedES && refinedES[0];
+    console.log(reducedES);
     {
-      skip: !newCenter,
-      variables: {CESCode: newCenter && newCenter,},
+      loading && <CircularProgress />;
     }
-  );
- 
+    setState((prev) => ({
+      ...prev,
+      examSessions: reducedES,
+    }));
+  };
+  console.dir(state);
 
-  console.log(dataCES);
-  const getCenterExamSessionBySecretCode =
-    dataCES && dataCES.centerExamSessionBySecretCode;
-  console.log(getCenterExamSessionBySecretCode);
-  // remove typename from the object
-  const refinedCenterExamSessionByCode =
-    getCenterExamSessionBySecretCode && removeTypename(getCenterExamSessionBySecretCode);
-  // transform the array into a single object
-  const getCES =
-    refinedCenterExamSessionByCode && refinedCenterExamSessionByCode[0];
-  console.log(getCES);
+  useEffect(() => {
+    loadExamSessionData();
+  }, [examID, sessionID]);
 
+  const loadCenterData = async () => {
+    const { data } = await client.query({
+      skip: !centerNumber,
+      query: getSingleCenterQuery,
+      variables: { centerNumber: centerNumber },
+    });
 
+    const { centerByNumber } = { ...data };
+    const newCenterByNumber = removeTypename(centerByNumber);
+    console.log(newCenterByNumber);
+    setState((state) => ({ ...state, centerByNumber: newCenterByNumber }));
+  };
 
-  const {
-    data: dataPhase,
-    loading: loadingPhase,
-    error: errorPhase,
-  } = useQuery(getAllPhasesQuery);
+  useEffect(() => {
+    loadCenterData();
+  }, [centerNumber]);
+  console.log(centerByNumber);
 
-  
-  console.log(dataPhase);
+  const loadCESData = async () => {
+    const { error, data } = await client.query({
+      query: getSingleCenterExamSessionQuery,
+      variables: {
+        examSession: examSessions && examSessions,
+        center: centerByNumber && centerByNumber,
+      },
+    });
 
-  const getPhases = dataPhase && dataPhase.phases;
-  console.log(getPhases);
-  const refinedPhase = getPhases && removeTypename(getPhases);
-  console.log(refinedPhase);
+    console.log(data);
+    const getCenterExamSessionsByCode = data && data.centerExamSessionsByCode;
+    console.log(getCenterExamSessionsByCode);
+    const refinedCenterExamSessions =
+      getCenterExamSessionsByCode &&
+      removeTypename(getCenterExamSessionsByCode);
+    setState((prev) => ({
+      ...prev,
+      centerExamSessions: refinedCenterExamSessions[0],
+    }));
+  };
+
+  useEffect(() => {
+    loadCESData();
+  }, [centerByNumber, examSessions]);
+
+  const loadPhaseData = async () => {
+    const { data } = await client.query({
+      query: getAllPhasesQuery,
+    });
+
+    const getPhases = data && data.phases;
+    console.log(getPhases);
+    const refinedPhase = getPhases && removeTypename(getPhases);
+    console.log(refinedPhase);
+
+    setState((prev) => ({ ...prev, phases: refinedPhase }));
+  };
+
+  useEffect(() => {
+    loadPhaseData();
+  }, []);
 
   const getPhaseOptions =
-    getPhases &&
-    getPhases.map((item) => ({
+    phases &&
+    phases.map((item) => ({
       ...item,
       value: item.id,
       label: item.phaseName,
     }));
 
-  const {
-    data: dataPhaseRank,
-    loading: loadingPhaseRank,
-    error: errorPhaseRank,
-  } = useQuery(getAllRanksOfAnExamPhaseQuery, {
-    variables: { id: state.phaseID },
-  });
+  const loadPhaseRankData = async () => {
+    const { data } = await client.query({
+      skip: !phaseID,
+      query: getAllRanksOfAnExamPhaseQuery,
+      variables: { id: phaseID },
+    });
+    console.log(data);
+    const getThePhase = data && data.phase;
+    const { phaseRank } = { ...getThePhase };
+    const refinedPhaseRanks = phaseRank && removeTypename(phaseRank);
+    setState((prev) => ({
+      ...prev,
+      phaseRanks: refinedPhaseRanks,
+    }));
+  };
 
- 
-  console.log(dataPhaseRank);
-  const getThePhase = dataPhaseRank && dataPhaseRank.phase;
-  const { phaseRank } = { ...getThePhase };
-  const { phase, rank } = { ...phaseRank };
-  const refinedPhaseRanks = phaseRank && removeTypename(phaseRank);
+  useEffect(() => {
+    loadPhaseRankData();
+  }, [phaseID]);
+
   const getPhaseRankOptions =
-    refinedPhaseRanks &&
-    refinedPhaseRanks.map((item) => ({
+    phaseRanks &&
+    phaseRanks.map((item) => ({
       ...item,
       value: item.id,
       label: item.rank.rankName,
     }));
-  console.log(phaseRank);
 
-  const [CreateCenterExamSessionExaminer, { loading, error }] = useMutation(
+  const [CreateCenterExamSessionExaminer, { loadingMut, error }] = useMutation(
     createCenterExamSessionExaminerMutation
   );
 
@@ -164,104 +314,159 @@ const CreateCESExaminer = () => {
       method="POST"
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={async (values,  {setSubmitting, resetForm}) => {
+      onSubmit={async (values, { setSubmitting, resetForm }) => {
         const res = await CreateCenterExamSessionExaminer({
           variables: {
             ...values,
             examiner: makeExaminerObject(values.examinerCode),
-            centerExamSession: getCES && getCES,
-            phaseRank: refinedPhaseRanks && { id: values.phaseRank.value },
+            centerExamSession: centerExamSessions,
+            phaseRank: phaseRanks && { id: values.phaseRank },
           },
         });
-        res &&
-          Router.push({
-            pathname: "/show/examinerRegReceipt",
-            query: { id: res.data.createCenterExamSessionExaminer.id },
-          });
+
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
+          setNotify({
+            isOpen: true,
+            message: "Examinateur inscript avec success",
+            type: "success",
+          });
           resetForm(true);
           setSubmitting(false);
         }, 400);
       }}
     >
-      {({ values, setFieldValue, isSubmitting }) => (
-        <MinimStyledPage>
-          <h4> Inscription d'examinateur</h4>
-          <Error error={
-            error  || 
-              errorCenter ||
-              errorCES ||
-              errorPhase ||
-              errorPhaseRank} />
-          <StyledForm
-            disabled={
-              isSubmitting ||
-              loadingCenter ||
-              loadingCES ||
-              loadingPhase ||
-              loading ||
-              loadingPhaseRank 
-            }
-            aria-busy={
-              isSubmitting ||
-              loadingCenter ||
-              loadingCES ||
-              loadingPhase ||
-              loading ||
-              loadingPhaseRank 
-            }
-          >
-            <Form>
-              <AllControls>
-                <InputGroup>
-                  <SygexInput
-                    value={getCenterBySecretCode && getCenterBySecretCode.centerSecretCode}
-                    name="centerName"
-                    type="text"
-                    label=" Nom du centre"
-                    disabled={isSubmitting}
-                  />
-                  <SygexInput
-                    onChange={handleChange}
-                    name="CESCode"
-                    type="text"
-                    value={state.CESCode || ""}
-                    label="code secret du centre"
-                    disabled={isSubmitting}
-                  />
-                  <SygefexSelect
-                    onChange={handleReactSelectChange}
-                    name="phaseID"
-                    options={getPhaseOptions}
-                    placeholder={"La phase l'Examen"}
-                    disabled={isSubmitting}
-                  />
-                  <SygefexSelect
-                    onChange={(value) => setFieldValue("phaseRank", value)}
-                    name="phaseRank"
-                    options={getPhaseRankOptions}
-                    placeholder={"Le poste"}
-                    disabled={isSubmitting}
-                  />
-                  <SygexInput
-                    name="examinerCode"
-                    type="text"
-                    label="Code de l'Examinateur"
-                    disabled={isSubmitting}
-                  />
-                </InputGroup>
-                <ButtonStyled>
-                  <StyledButton type="submit">
-                    Valid{isSubmitting ? "ation en cours" : "er"}
-                  </StyledButton>
-                </ButtonStyled>
-              </AllControls>
-            </Form>
-          </StyledForm>
-        </MinimStyledPage>
-      )}
+      {({ submitForm, isSubmitting }) => {
+        return (
+          <div className={classes.centerAll}>
+            <Paper className={classes.pageStyled} elevation={13}>
+              <Form aria-busy={isSubmitting}>
+                {isSubmitting && <LinearProgress />}
+                <Grid className={classes.centerAll} container>
+                  <Grid container className={classes.centerAll}>
+                    <Error error={error} />
+                    <Grid item>
+                      <Typography
+                        className={classes.titleStyled}
+                        color="primary"
+                        gutterBottom
+                        variant="h5"
+                        component="h6"
+                      >
+                        Examinateur s'inscrit au Centre
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid spacing={10} container>
+                    <Grid xs={12} item className={classes.centerAll}>
+                      <Field
+                        name="centerName"
+                        type="text"
+                        component={TextField}
+                        label="Nom du centre"
+                        fullWidth
+                        value={
+                          (centerByNumber && centerByNumber.centerCode) || ""
+                        }
+                        variant="outlined"
+                        disabled={isSubmitting}
+                        helpertext={<ErrorMessage name="centerName" />}
+                      />
+                      <Field
+                        name="centerNumber"
+                        type="number"
+                        component={TextField}
+                        label="Numéro du centre"
+                        fullWidth
+                        value={(centerNumber && centerNumber) || 0}
+                        onChange={handleInputChange}
+                        variant="outlined"
+                        disabled={isSubmitting}
+                        helpertext={<ErrorMessage name="centerNumber" />}
+                      />
+
+                      <Field
+                        variant="outlined"
+                        onChange={(event) => {
+                          handleSelectChange(event, "sessionID");
+                        }}
+                        name="sessionID"
+                        label="La session"
+                        component={Select}
+                        placeholder="la session"
+                        disabled={isSubmitting}
+                        helpertext={<ErrorMessage name="sessionID" />}
+                        options={getSessionsOptions}
+                        fullWidth
+                      />
+                      <Field
+                        variant="outlined"
+                        name="examID"
+                        label="Examen"
+                        component={Select}
+                        placeholder="Examen"
+                        onChange={(event) => {
+                          handleSelectChange(event, "examID");
+                        }}
+                        disabled={isSubmitting}
+                        helpertext={<ErrorMessage name="examID" />}
+                        options={getExamsOptions}
+                        fullWidth
+                      />
+                      <Field
+                        variant="outlined"
+                        name="phaseID"
+                        label="Phase de l'examen"
+                        component={Select}
+                        placeholder="Phase de l'examen"
+                        onChange={(event) => {
+                          handleSelectChange(event, "phaseID");
+                        }}
+                        disabled={isSubmitting}
+                        helpertext={<ErrorMessage name="phaseID" />}
+                        options={getPhaseOptions}
+                        fullWidth
+                      />
+
+                      <Field
+                        variant="outlined"
+                        name="phaseRank"
+                        label="Poste occupé au centre"
+                        component={Select}
+                        placeholder="Poste occupé au centre"
+                        disabled={isSubmitting}
+                        helpertext={<ErrorMessage name="phaseRank" />}
+                        options={getPhaseRankOptions}
+                        fullWidth
+                      />
+
+                      <Field
+                        variant="outlined"
+                        name="examinerCode"
+                        label="Code examinateur"
+                        component={TextField}
+                        placeholder="Code examinateur"
+                        disabled={isSubmitting}
+                        helpertext={<ErrorMessage name="examinerCode" />}
+                        fullWidth
+                      />
+                      <Notification notify={notify} setNotify={setNotify} />
+
+                      <Button disabled={isSubmitting} onClick={submitForm}>
+                        {isSubmitting && <CircularProgress />}
+                        {isSubmitting || loadingMut
+                          ? "Inscription en cours"
+                          : "S'inscrire au centre"}
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Form>
+            </Paper>
+          </div>
+        );
+      }}
     </Formik>
   );
 };

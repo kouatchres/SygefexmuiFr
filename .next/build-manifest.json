@@ -24,15 +24,15 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/creates/newCES": [
+    "/show/registeredCands": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/creates/newCES.js"
+      "static/chunks/pages/show/registeredCands.js"
     ],
-    "/show/lists/allTowns": [
+    "/show/results/centerResults/centerResultsForSeries": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/show/lists/allTowns.js"
+      "static/chunks/pages/show/results/centerResults/centerResultsForSeries.js"
     ]
   },
   "ampFirstPages": []

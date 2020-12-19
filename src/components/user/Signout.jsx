@@ -14,11 +14,11 @@ const Signout = (props) => (
         size="medium"
         variant="outlined"
         style={{
-          color: "#4a8ba8",
-          paddingLeft: "0.3rem",
-          paddingRight: "0.3rem",
+          backgroundColor: "#829079",
+           color: "#ede6b9", 
+          // paddingLeft: "0.8rem",
+          // paddingRight: "0.8rem",
           textTransform: "none",
-          backgroundColor: "#fff",
         }}
         onClick={signout}
       >

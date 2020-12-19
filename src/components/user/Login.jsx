@@ -159,7 +159,7 @@ const Login = () => {
                     <Button disabled={isSubmitting} onClick={submitForm}>
                       {(isSubmitting || loading) && <CircularProgress />}
                       {isSubmitting || loading
-                        ? "Connection en cours"
+                        ? "Connexion en cours"
                         : "se Connecter"}
                     </Button>
                   </Grid>
@@ -173,11 +173,3 @@ const Login = () => {
   );
 };
 export default Login;
-
-// <Field
-//   name="password"
-//   component={TextField}
-//   type="password"
-//   label="Mot de passe"
-//   disabled={isSubmitting || loading}
-// />

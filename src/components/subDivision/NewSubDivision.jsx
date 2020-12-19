@@ -18,6 +18,7 @@ import {
   getDivisionsOfARegionQuery,
   getAllRegionsQuery,
   getAllSubDivisionsQuery,
+  getAllRegionsDivisionsAndTownsQuery,
 } from "../queries&Mutations&Functions/Queries";
 import Notification from "../utils/Notification";
 
@@ -48,6 +49,21 @@ const useStyles = makeStyles({
     display: "grid",
     placeItems: "center",
   },
+  MTableToolbar: {
+      actions: {
+        color: "#000",
+        fontSize: "2rem",
+        backgroundColor: "#fff",
+        borderRadius: "0.3rem",
+      },
+      title: {
+        width: "40%",
+        overflow: "none",
+      },
+      searchField: {
+        maxWidth: "15rem",
+      },
+    },
 
   centerAll: {
     display: "grid",
@@ -155,7 +171,7 @@ const NewSubDivision = () => {
             ...values,
             division: values.division && getObjectFromID(values.division),
           },
-          refetchQueries: [{ getAllSubDivisionsQuery }],
+          refetchQueries: [{ query:getAllRegionsDivisionsAndTownsQuery }],
         });
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
@@ -241,7 +257,7 @@ const NewSubDivision = () => {
 
                       <Button disabled={isSubmitting} onClick={submitForm}>
                         {(isSubmitting || loading) && <CircularProgress />}
-                        Valid{isSubmitting ? "ation en cours" : "er"}
+                        {isSubmitting ? "Nouvel arrondissement en création" : "Créer Nouvel Arrondissement"}
                       </Button>
                     </Grid>
                   </Grid>

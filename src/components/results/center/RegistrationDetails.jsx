@@ -20,18 +20,11 @@ const CellBlock = styled.div`
   align-content: left;
 `;
 
-class RegistrationDetails extends Component {
-  state = {
-    modalOpen: true,
-  };
+const RegistrationDetails =({registration})=> {
 
-  static propTypes = {
-    regisInfo: PropTypes.object.isRequired,
-  };
-  openModal = (id) => {};
-  render() {
+  
     const { candRegistrationNumber, candidate, id, candExamSecretCode } = {
-      ...this.props.registration,
+      ...registration,
     };
     return (
       <>
@@ -82,6 +75,5 @@ class RegistrationDetails extends Component {
         </RegionRow>
       </>
     );
-  }
 }
 export default RegistrationDetails;

@@ -121,6 +121,7 @@ const getCandidateResultsQuery = gql`
       candRegistrationNumber
 
       candidate {
+        id
         cand1stName
         cand2ndName
         cand3rdName
@@ -129,11 +130,11 @@ const getCandidateResultsQuery = gql`
         placeOfBirth
         image
         email
+        dateOfBirth
+        gender
         user {
           id
         }
-        dateOfBirth
-        gender
       }
       centerExamSessionSpecialty {
         centerExamSession {
@@ -256,6 +257,7 @@ const getEachCandidateResultsQuery = gql`
     registration(id: $id) {
       id
       candidate {
+        id
         cand1stName
         cand2ndName
         cand3rdName
@@ -296,6 +298,7 @@ const getCandidateRegistrationInfoQuery = gql`
       createdAt
       candRegistrationNumber
       candidate {
+        id
         cand1stName
         cand2ndName
         cand3rdName
@@ -616,6 +619,60 @@ const centerExamSessionForResultsQuery = gql`
       }
     }
   }
+`;
+
+const resultsRegistrationQuery = gql`
+  query resultsRegistrationQuery($id: ID!) {
+    registration(id: $id) {
+        id
+        EPF1
+        EPF2
+        centerExamSession {
+          id
+          center {
+            id
+            centerName
+          }
+          examSession {
+            id
+            exam {
+              examName
+              id
+            }
+            session {
+              id
+              sessionName
+            }
+          }
+        }
+        candRegistrationNumber
+        candExamSecretCode
+        aptitude
+        candidate {
+          id
+          cand1stName
+          cand2ndName
+          cand3rdName
+          dateOfBirth
+          placeOfBirth
+          email
+          phoneNumb
+          user {
+            id
+          }
+          gender
+        }
+        specialty {
+          id
+          specialtyName
+          specialtyCode
+        }
+        scores {
+          id
+          subjectAve
+        }
+      }
+    }
 `;
 
 const centerExamSessionSpecialtyResultsQuery = gql`
@@ -939,6 +996,7 @@ const getAllRegionsDivisionsTownsCentersQuery = gql`
               centerName
               centerCode
               centerNumber
+              centerSecretCode
             }
           }
         }
@@ -1292,10 +1350,10 @@ const singleCandidateQuery = gql`
       phoneNumb
       birthCertNumber
       placeOfBirth
+      gender
       user {
         id
       }
-      gender
     }
   }
 `;
@@ -1511,6 +1569,7 @@ export {
   registrationIDFromSecretCodeQuery,
   getCandidateRegistrationIDsQuery,
   centerExamSessionForResultsQuery,
+  resultsRegistrationQuery,
   getCandidateIDQuery,
   getASingleCenterQuery,
   getRegisteredCandidateCountQuery,

@@ -34,6 +34,9 @@ const useStyles = makeStyles({
     marginTop: "2rem",
     padding: "1rem",
     minWidth: "30vw",
+    borderRadius: "0.8rem",
+    borderBottom: "0.4rem solid #c89666",
+    borderTop: "0.4rem solid #829079",
   },
   listStyled: {
     display: "grid",

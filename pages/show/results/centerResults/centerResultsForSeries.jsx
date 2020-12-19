@@ -1,10 +1,12 @@
 import React from "react";
-import CenterAllDetailedResultsPerSeries from "../../../../src/components/results/center/CenterAllDetailedResultsPerSeries";
-
+import CenterRegistrationDetails from "../../../../src/components/results/center/CenterRegistrationDetails";
+import { useRouter } from "next/router";
 function centerResultsForSeries({ query }) {
+  const router = useRouter();
+      const { id } = router.query;
     return (
         <div>
-            <CenterAllDetailedResultsPerSeries id={query.id} />
+            <CenterRegistrationDetails id={id} />
         </div>
     );
 }

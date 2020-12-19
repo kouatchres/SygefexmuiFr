@@ -62,6 +62,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "2rem",
     padding: "1rem",
     width: "100%",
+     borderRadius:"0.8rem",
+    borderBottom: "0.4rem solid #c89666",
+    borderTop: "0.4rem solid #829079",
     // border: "0.2rem solid #222aa5",
   },
 

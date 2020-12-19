@@ -2,6 +2,6 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
-  "/show/lists/allTowns": "pages/show/lists/allTowns.js",
-  "/creates/newCES": "pages/creates/newCES.js"
+  "/show/registeredCands": "pages/show/registeredCands.js",
+  "/show/results/centerResults/centerResultsForSeries": "pages/show/results/centerResults/centerResultsForSeries.js"
 }

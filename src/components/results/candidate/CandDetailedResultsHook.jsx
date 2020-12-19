@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useApolloClient } from "@apollo/react-hooks";
 import { MiniStyledPage } from "../../styles/StyledPage";
 import { format } from "date-fns";
 import ResultDetails from "./ResultDetails";
 import { Formik, Form } from "formik";
 import useForm from "../../utils/useForm";
-import { ButtonStyled, StyledButton, StyledForm } from "../../utils/FormInputs";
 import { getCandidateResultsQuery } from "../../queries&Mutations&Functions/Queries";
+
+import { ButtonStyled, StyledButton, StyledForm } from "../../utils/FormInputs";
 import styled from "styled-components";
 import {
   roundFloatNumber,
@@ -135,29 +136,35 @@ const AveGen = styled.div`
 `;
 
 const CandDetailedResultsHook = ({ id }) => {
-  const [state, setState] = useForm({});
+  const [state, setState] = useState({ results: {} });
   const client = useApolloClient();
 
-  const loadCandResultsData = async () => {
-    const { error, data } = await client.query({
+  const loadCenterRegistrationInfo = async () => {
+    console.log(`running the difficult query: ${id}`);
+    const { data } = await client.query({
       query: getCandidateResultsQuery,
       variables: { id },
     });
     console.log(data);
-    const { registration } = data;
-    setState({ registration });
+    const getAllCandResults = data.registration;
+    console.log(getAllCandResults);
+    // const { registration, center, examSession } = getCenterExamSession;
+    // const { exam, session } = { ...examSession };
+
+    setState((prev) => ({ ...prev, results: getAllCandResults }));
   };
+
   useEffect(() => {
-    loadCandResultsData();
+    loadCenterRegistrationInfo();
   }, []);
 
-  console.log(state.registration);
+  console.log(state.results);
   const {
     candidate,
     centerExamSessionSpecialty,
     candRegistrationNumber,
     scores,
-  } = { ...state.registration };
+  } = state.results ;
 
   const { centerExamSession, specialty } = { ...centerExamSessionSpecialty };
 
@@ -179,7 +186,7 @@ const CandDetailedResultsHook = ({ id }) => {
     dadName,
     momName,
     gender,
-  } = { ...candidate };
+  } = {...candidate} ;
 
   const initialValues = {
     candCode: "",
@@ -195,185 +202,158 @@ const CandDetailedResultsHook = ({ id }) => {
   };
   return (
     <Formik method="GET" initialValues={initialValues}>
-      {({ isSubmitting }) => {
-        return (
-          <MiniStyledPage>
-            <h4>
-              Resultat Du: {exam && examName}, Session:
-              {session && sessionName}, Pour:-
-              {candidate && cand1stName}
-              {candidate && cand2ndName}
-            </h4>
-            <StyledForm disabled={isSubmitting} aria-busy={isSubmitting}>
-              <Form>
-                <StyledContainer>
-                  <SchoolInfoBlock>
-                    <SchoolInfo>
-                      <span>
-                        <strong> Centre D'Examen: </strong>
-                        <hr />
-                      </span>
-                      <span>{center && centerName}</span>
-                    </SchoolInfo>
-                    <SchoolInfo2>
-                      <span>
-                        <strong> Examen: </strong> {exam && examName}
-                      </span>
-                      <span>
-                        <strong> Session: </strong>
-                        {session && sessionName}
-                      </span>
-                    </SchoolInfo2>
-                    <SchoolInfo>
-                      <span>
-                        <strong> Numero d'Inscription: </strong>
-                        {candRegistrationNumber}
-                      </span>
-                      <span>
-                        <strong> Specialization: </strong>
-                        <hr />
-                      </span>
-                      <span>{specialty && specialtyName}</span>
-                    </SchoolInfo>
-                  </SchoolInfoBlock>
-                  <CandInfo>
-                    <CandPic>
-                      <img
-                        src={candidate && image}
-                        alt={candidate && cand1stName}
-                      />
-                    </CandPic>
-                    <FirstInfo>
-                      <p>
-                        <span>
-                          <strong> Nom: </strong>
-                          {candidate && cand1stName}
-                        </span>
-                      </p>
-
-                      <p>
-                        <span>
-                          <strong> Prenom: </strong>
-                          {candidate && cand2ndName}
-                        </span>
-                      </p>
-
-                      <p>
-                        <span>
-                          <strong> Autres Noms: </strong>
-                          {candidate && cand3rdName}
-                        </span>
-                      </p>
-                      <p>
-                        <span>
-                          <strong>Naissance: </strong>
-                        </span>
-                      </p>
+      {({ isSubmitting }) => (
+        
+        <MiniStyledPage>
+          <h4>
+            Resultat Du: {exam && examName}, Session:
+            {session && sessionName}, Pour:-
+            {candidate && cand1stName}
+            {candidate && cand2ndName}
+          </h4>
+          <StyledForm disabled={isSubmitting} aria-busy={isSubmitting}>
+            <Form>
+              <StyledContainer>
+                <SchoolInfoBlock>
+                  <SchoolInfo>
+                    <span>
+                      <strong> Centre D'Examen: </strong>
                       <hr />
-                      <p>
-                        <span>
-                          <strong> Date: </strong>
-                          {format(candidate && dateOfBirth, "d MMMM, YYYY ")}
-                        </span>
-                      </p>
-                      <p>
-                        <span>
-                          <strong> Lieu: </strong>
-                          {candidate && placeOfBirth}
-                        </span>
-                      </p>
-
-                      <p>
-                        <span>
-                          <strong> Sexe: </strong>
-                          {candidate && gender}
-                        </span>
-                      </p>
-                      <p>
-                        <span>
-                          <strong> Email: </strong>
-                        </span>
-                      </p>
-                      <p>
-                        <span>{candidate && email}</span>
-                      </p>
-
-                      <p>
-                        <span>
-                          <strong> Noms des parents: </strong>
-                        </span>
-                      </p>
+                    </span>
+                    <span>{center && centerName}</span>
+                  </SchoolInfo>
+                  <SchoolInfo2>
+                    <span>
+                      <strong> Examen: </strong> {exam && examName}
+                    </span>
+                    <span>
+                      <strong> Session: </strong>
+                      {session && sessionName}
+                    </span>
+                  </SchoolInfo2>
+                  <SchoolInfo>
+                    <span>
+                      <strong> Numero d'Inscription: </strong>
+                      {candRegistrationNumber}
+                    </span>
+                    <span>
+                      <strong> Specialization: </strong>
                       <hr />
-                      <p>
-                        <span>
-                          <strong>Père: </strong>
-                        </span>
-                      </p>
-                      <p>
-                        <span>{candidate && dadName}</span>
-                      </p>
-                      <p>
-                        <span>
-                          <strong>Mère: </strong>
-                        </span>
-                      </p>
-                      <p>
-                        <span>{candidate && momName}</span>
-                      </p>
-                    </FirstInfo>
-                  </CandInfo>
-                  <SubjectTitles>
-                    <TitleItem>Matiere</TitleItem>
-                    <TitleItem>Coeff</TitleItem>
-                    <TitleItem>Moyenne</TitleItem>
-                    <TitlesItem>Total</TitlesItem>
-                  </SubjectTitles>
-
-                  {scores &&
-                    scores.map((item) => (
-                      <ResultDetails key={item.id} score={item} />
-                    ))}
-                  <AveTotals>
-                    <AveGen>
+                    </span>
+                    <span>{specialty && specialtyName}</span>
+                  </SchoolInfo>
+                </SchoolInfoBlock>
+                <CandInfo>
+                  <CandPic>
+                    <img
+                      // src={candidate && image}
+                      alt={candidate && cand1stName}
+                    />
+                  </CandPic>
+                  <FirstInfo>
+        
                       <span>
-                        <strong>Moyenne:</strong>
+                        <strong> Nom: </strong>
+                        {candidate && cand1stName}
+                      </span>
+        
+                      <span>
+                        <strong> Prenom: </strong>
+                        {candidate && cand2ndName}
+                      </span>
+        
+                      <span>
+                        <strong> Autres Noms: </strong>
+                        {candidate && cand3rdName}
                       </span>
                       <span>
-                        <strong>
-                          {scores && roundFloatNumber(calcCandAve(scores), 4)}
-                        </strong>
+                        <strong>Naissance: </strong>
                       </span>
-                    </AveGen>
-
-                    <AveGen>
+                    <hr />
                       <span>
-                        <strong>Coefficients:</strong>
+                        <strong> Date: </strong>
+                        {format(candidate && dateOfBirth, "d MMMM, YYYY ")}
                       </span>
                       <span>
-                        <strong>
-                          {scores &&
-                            roundFloatNumber(calcCandTotalCoeff(scores), 4)}
-                        </strong>
+                        <strong> Lieu: </strong>
+                        {candidate && placeOfBirth}
                       </span>
-                    </AveGen>
-                    <AveGen>
+        
                       <span>
-                        <strong>Total Matieres:</strong>
+                        <strong> Sexe: </strong>
+                        {candidate && gender}
                       </span>
                       <span>
-                        <strong>
-                          {scores &&
-                            roundFloatNumber(calcCandTotalScore(scores), 4)}
-                        </strong>
+                        <strong> Email: </strong>
                       </span>
-                    </AveGen>
-                  </AveTotals>
-                </StyledContainer>
-              </Form>
-            </StyledForm>
-          </MiniStyledPage>
-        );
-      }}
+                      <span>{candidate && email}</span>
+        
+                      <span>
+                        <strong> Noms des parents: </strong>
+                      </span>
+                    <hr />
+                      <span>
+                        <strong>Père: </strong>
+                      </span>
+                      <span>{candidate && dadName}</span>
+                      <span>
+                        <strong>Mère: </strong>
+                      </span>
+                      <span>{candidate && momName}</span>
+                  </FirstInfo>
+                </CandInfo>
+                <SubjectTitles>
+                  <TitleItem>Matiere</TitleItem>
+                  <TitleItem>Coeff</TitleItem>
+                  <TitleItem>Moyenne</TitleItem>
+                  <TitlesItem>Total</TitlesItem>
+                </SubjectTitles>
+        
+                {scores &&
+                  scores.map((item) => (
+                    <ResultDetails key={item.id} score={item} />
+                  ))}
+                <AveTotals>
+                  <AveGen>
+                    <span>
+                      <strong>Moyenne:</strong>
+                    </span>
+                    <span>
+                      <strong>
+                        {scores && roundFloatNumber(calcCandAve(scores), 4)}
+                      </strong>
+                    </span>
+                  </AveGen>
+        
+                  <AveGen>
+                    <span>
+                      <strong>Coefficients:</strong>
+                    </span>
+                    <span>
+                      <strong>
+                        {scores &&
+                          roundFloatNumber(calcCandTotalCoeff(scores), 4)}
+                      </strong>
+                    </span>
+                  </AveGen>
+                  <AveGen>
+                    <span>
+                      <strong>Total Matieres:</strong>
+                    </span>
+                    <span>
+                      <strong>
+                        {scores &&
+                          roundFloatNumber(calcCandTotalScore(scores), 4)}
+                      </strong>
+                    </span>
+                  </AveGen>
+                </AveTotals>
+              </StyledContainer>
+            </Form>
+          </StyledForm>
+         </MiniStyledPage>
+        )
+      }
     </Formik>
   );
 };

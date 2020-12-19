@@ -6,8 +6,8 @@ const SygefexTheme = createMuiTheme({
   palette: {
     primary: {
       // main: "#2c5f2d",
-      // main: "#00bb66",
-      main: "#044562",
+      main: "#829079",
+      // main: "#044562",
       light: "#f00",
       // main: "#0780b7",
     },
@@ -19,9 +19,9 @@ const SygefexTheme = createMuiTheme({
       main: red.A200,
     },
     background: {
-      default: "#dce3e3",
-      // default: "#e3f4fb",
-      // default: "#f1f1ef",
+      // default: "#e7e8d1",
+      // default: "#cbce91ff",
+      default: "#ede6b9",
     },
   },
 
@@ -122,16 +122,15 @@ const SygefexTheme = createMuiTheme({
       root: {
         // borderBottom: "0.113rem solid #fff",
         "&:nth-child(2n)": {
-          background: "#bcc4",
-          // background: "#faf0ff",
+          backgroundColor: "#e6f4dd",
         },
         // "&:nth-child(2n+1)": {
         //   background: "#e4ebf8",
         // },
 
         "&:hover": {
-          // backgroundColor: "#abb",
-          backgroundColor: "#4523",
+          backgroundColor: "#829079",
+          color: "#ede6b9",
         },
       },
     },
@@ -140,10 +139,10 @@ const SygefexTheme = createMuiTheme({
         position: "sticky",
         top: 0,
         // zIndex: 1,
-        paddingTop: "1rem",
-        paddingBottom: "1rem",
-        fontSize: "1.2rem",
-        backgroundColor: "#abb",
+        // paddingTop: "1rem",
+        // paddingBottom: "1rem",
+        // fontSize: "1.2rem",
+        // backgroundColor: "#abb",
       },
     },
 
@@ -183,7 +182,8 @@ const SygefexTheme = createMuiTheme({
 
     MuiPickersToolbar: {
       toolbar: {
-        backgroundColor: "#4a8ba8",
+        backgroundColor: "#829079",
+        color: "#ede6b9",
       },
     },
 
@@ -232,7 +232,9 @@ const SygefexTheme = createMuiTheme({
     MuiPaper: {
       root: {
         // minHeight: "100vh",
-        // backgroundColor: "#edca82",
+        borderTop: "0.3rem solid #829079",
+        borderBottom: "0.3rem solid #b9925e",
+        borderRadius: "0.5rem",
       },
     },
     MuiInputBase: {
@@ -249,6 +251,21 @@ const SygefexTheme = createMuiTheme({
       root: {
         width: "2rem",
         fontSize: "1rem",
+      },
+    },
+    MTableToolbar: {
+      actions: {
+        color: "#000",
+        fontSize: "2rem",
+        backgroundColor: "#fff",
+        borderRadius: "0.3rem",
+      },
+      title: {
+        width: "40%",
+        overflow: "none",
+      },
+      searchField: {
+        maxWidth: "15rem",
       },
     },
 
@@ -292,26 +309,30 @@ const SygefexTheme = createMuiTheme({
         paddingTop: "1rem",
         paddingBottom: "1rem",
         fontSize: "1.2rem",
-        backgroundColor: "#abb1",
+        // backgroundColor: "#abb1",
       },
     },
     MuiTableToolbar: {
       root: {
-        backgroundColor: "#4a8ba8",
+        // backgroundColor: "#4a8ba8",
       },
     },
-    MTableToolbar: {
-      actions: {
-        color: "#000",
-        fontSize: "2rem",
-        backgroundColor: "#fff",
-        borderRadius: "0.3rem",
-      },
-      title: {
-        width: "5rem",
-        overflow: "none",
-      },
-    },
+    // MTableToolbar: {
+    //   actions: {
+    //     color: "#000",
+    //     fontSize: "2rem",
+    //     backgroundColor: "#fff",
+    //     borderRadius: "0.3rem",
+    //   },
+    //   title: {
+    //     width: "40%",
+    //     overflow: "none",
+    //   },
+    //   searchField: {
+    //     // width: "50%",
+    //     maxWidth: "50%",
+    //   },
+    // },
     MuiGrid: {
       root: {
         display: "grid",

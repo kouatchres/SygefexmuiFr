@@ -1,14 +1,15 @@
+
+
+
 import React from "react";
-import CreateNewReportHook from "../../src/components/report/CreateNewReportHook";
+import CreateReport from "../../src/components/report/CreateReport";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
 const newReport = () => {
   return (
-    <div>
       <GatedSignin>
-        <CreateNewReportHook />
+        <CreateReport />
       </GatedSignin>
-    </div>
   );
 };
 export default newReport;

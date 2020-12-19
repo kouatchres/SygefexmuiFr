@@ -1,12 +1,12 @@
 import React from "react";
 import CreateCESExaminer from "../../src/components/CESExaminer/CreateCESExaminer";
 // import div from '../../src/components/styles/div';
-
-const newCESExaminer = props => {
+import GatedSignin from "../../src/components/user/GatedSignin";
+const newCESExaminer = (props) => {
   return (
-    <div>
+    <GatedSignin>
       <CreateCESExaminer />
-    </div>
+    </GatedSignin>
   );
 };
 export default newCESExaminer;

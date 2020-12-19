@@ -1,108 +1,91 @@
-import React, { useState, useEffect } from "react";
-import { useMutation, useApolloClient } from "@apollo/react-hooks";
-import { MiniStyledPage } from "../styles/StyledPage";
-import Error from "../ErrorMessage.js";
-import { Formik, Form } from "formik";
-import useForm from "../utils/useForm";
-import format from "date-fns";
-import Router from "next/router";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import FRadioGroup from "../muiComponents/controls/SygefexMuiRadioGroup";
 import * as Yup from "yup";
+import Notification from "../utils/Notification";
 import { updateCandidateMutation } from "../queries&Mutations&Functions/Mutations";
-import {
-  SygexInput,
-  StyledForm,
-  ButtonStyled,
-  StyledButton,
-} from "../utils/FormInputs";
 import { singleCandidateQuery } from "../queries&Mutations&Functions/Queries";
 
-import { FormikDatepicker, FormikRadio } from "@dccs/react-formik-mui";
+import { TextField } from "material-ui-formik-components/TextField";
+import { ErrorMessage, Formik, Form, Field } from "formik";
 import {
-  FormLabel,
-  RadioGroup,
+  Grid,
+  Typography,
+  Paper,
+  Button,
+  LinearProgress,
+  CircularProgress,
 } from "@material-ui/core";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { makeStyles } from "@material-ui/core/styles";
+import { useMutation, useApolloClient } from "@apollo/react-hooks";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
 
-const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 1rem;
-  min-width: 12rem;
-  .RadioSet {
-    display: flex;
-    flex-direction: row;
-  }
-`;
+const useStyles = makeStyles({
+  divStyled: {
+    display: "grid",
+    placeItems: "center",
+    top: "2rem",
+    // height: "90vh",
+  },
+  pageStyled: {
+    display: "grid",
+    placeItems: "center",
+    marginTop: "2rem",
+    padding: "1rem",
+    minWidth: "70%",
+    borderRadius: "0.8rem",
+    borderBottom: "0.4rem solid #c89666",
+    borderTop: "0.4rem solid #829079",
+  },
 
-const RadioButtons = styled.div`
-  display: flex;
-  padding: 0 0.5rem;
-  label {
-    font-size: 1.3rem;
-  }
+  titleStyled: {
+    display: "grid",
+    placeItems: "center",
+  },
+  MuiFormControl: {
+    root: {
+      margin: "0rem",
+    },
+  },
 
-  flex-direction: row;
-  align-items: center;
-  .RadioSet {
-    FormikRadio {
-      font-size: 1.5rem;
-    }
-    padding: 0 1rem;
+  picStyled: {
+    paddingLeft: "1rem",
+    height: "15rem",
+    width: "12rem",
+    display: "grid",
+    placeItems: "center",
+  },
 
-    display: flex;
-    flex-direction: row;
-    label {
-      font-size: 1.3rem;
-    }
-  }
-`;
+  centerAll: {
+    display: "grid",
+    placeItems: "center",
+    minWidth: "40%",
+  },
+});
 
-const TwoGroups = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  /* grid-gap: 0.09rem; */
-`;
-
-const AllControls = styled.div`
-  margin: 1rem 0;
-  display: flex;
-  flex-direction: column;
-  min-width: 15rem;
-`;
-
-const PicFrame = styled.div`
-  display: flex;
-  flex-direction: column;
-  img {
-    margin: 1rem auto;
-    margin-top: 1rem;
-    height: 18rem;
-    width: 15rem;
-    border-radius: 0.5rem;
-    background-size: contain;
-    background-position: center;
-  }
-`;
+const validationSchema = Yup.object().shape({
+  cand1stName: Yup.string().required("Nom obligatoire"),
+  cand2ndName: Yup.string().required("Prénom obligatoire"),
+  cand3rdName: Yup.string(),
+  momName: Yup.string().required("Noms de la mere obligatoire"),
+  dadName: Yup.string().required("Noms du pere obligatoire"),
+  placeOfBirth: Yup.string().required("Lieu de naissance obligatoire"),
+  birthCertNumber: Yup.string().required(
+    "Numéro de l'acte de naissance obligatoire"
+  ),
+  phoneNumb: Yup.number().required("Numéro de portable obligatoire"),
+  gender: Yup.string().required("Choix du sexe obligatoire"),
+  email: Yup.string().email("Email invalide").required("Email obligatoire"),
+});
 
 const NewUpdateCandidate = ({ id }) => {
+  const classes = useStyles();
   const client = useApolloClient();
-  const [state, setState] = useForm({
-    cand1stName: "",
-    cand2ndName: "",
-    cand3rdName: "",
-    momName: "",
-    dadName: "",
-    email: "",
-    image: "",
-    phoneNumb: "",
-    placeOfBirth: "",
-    dateOfBirth: "",
-    birthCertNumber: "",
-    gender: "",
-  });
-  const [photo, setPhoto] = useState({ image: "" });
+  const [candidateInfo, setCandidateInfo] = useState([]);
+
   const uploadFile = async (e) => {
     const files = e.target.files;
     const data = new FormData();
@@ -117,58 +100,28 @@ const NewUpdateCandidate = ({ id }) => {
     );
     const file = await res.json();
     console.log(file);
-    setPhoto({ image: file.secure_url });
-  };
-
-  const getObjectFromID = (suppliedID) => {
-    const theObject = { id: `${suppliedID}` };
-    return theObject;
+    setCandidateInfo((prev) => ({ ...prev, image: file.secure_url }));
   };
 
   const loadCandidateData = async () => {
-    const { error, data } = await client.query({
+    const { data } = await client.query({
       query: singleCandidateQuery,
       variables: { id },
     });
-    const candData = { ...data.candidate };
-
-    const {
-      cand1stName,
-      cand2ndName,
-      cand3rdName,
-      momName,
-      dadName,
-      email,
-      image,
-      gender,
-      phoneNumb,
-      dateOfBirth,
-      placeOfBirth,
-      birthCertNumber,
-    } = candData;
-    setState({
-      cand1stName: cand1stName,
-      cand2ndName: cand2ndName,
-      cand3rdName: cand3rdName,
-      momName: momName,
-      dadName: dadName,
-      email: email,
-      image: image,
-      phoneNumb: phoneNumb,
-      placeOfBirth: placeOfBirth,
-      dateOfBirth: dateOfBirth,
-      birthCertNumber: birthCertNumber,
-      gender: gender,
-    });
-    console.log(candData);
+    const getCandInfo = data.candidate;
+    setCandidateInfo(getCandInfo);
   };
 
   useEffect(() => {
     loadCandidateData();
   }, []);
 
-  const getImage = photo.image;
-  console.log({ getImage });
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
   const initialValues = {
     cand1stName: "",
     cand2ndName: "",
@@ -177,188 +130,236 @@ const NewUpdateCandidate = ({ id }) => {
     dadName: "",
     email: "",
     image: "",
-    gender: "",
     phoneNumb: "",
     placeOfBirth: "",
-    dateOfBirth: "",
     birthCertNumber: "",
     gender: "",
   };
 
-  const validationSchema = Yup.object().shape({
-    cand1stName: Yup.string().required("Nom obligatoire"),
-    cand2ndName: Yup.string().required("Prénom obligatoire"),
-    cand3rdName: Yup.string(),
-    momName: Yup.string().required("Noms de la mere obligatoire"),
-    dadName: Yup.string().required("Noms du pere obligatoire"),
-    placeOfBirth: Yup.string().required("Lieu de naissance obligatoire"),
-    birthCertNumber: Yup.string().required(
-      "Numéro de l'acte de naissance obligatoire"
-    ),
-    phoneNumb: Yup.number().required("Numéro de portable obligatoire"),
+  const handleDateChange = (name, value) => {
+    setCandidateInfo((prev) => ({ ...prev, [name]: value }));
+  };
 
-    gender: Yup.string().required("Choix du sexe obligatoire"),
-    dateOfBirth: Yup.date()
-      .min(new Date("01-01-1900"))
-      .max(new Date())
-      .required("Date de naissance obligatoire"),
-    email: Yup.string().email("Email invalide").required("Email obligatoire"),
-  });
-
-  // const Create
-  const [updateCandidate, { errorMut, loadingMut }] = useMutation(
+  const [updateCandidate, { loadingMut }] = useMutation(
     updateCandidateMutation
   );
+
+  console.dir(candidateInfo.gender);
   return (
     <Formik
       method="POST"
-      initialValues={state || initialValues}
+      initialValues={candidateInfo || initialValues}
       enableReinitialize={true}
       validationSchema={validationSchema}
       onSubmit={async (values, { resetForm, setSubmitting }) => {
         const res = await updateCandidate({
           variables: {
             ...values,
-            image: getImage,
             id,
           },
         });
-        Router.push({
-          pathname: "/show/singleCand",
-          query: { id },
-        });
+
         setTimeout(() => {
+          setNotify({
+            isOpen: true,
+            message: "Modification info candidat réuissie",
+            type: "success",
+          });
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
-          resetForm(true);
+          resetForm();
           setSubmitting(false);
         }, 200);
       }}
     >
-      {({ values, setFieldValue, isSubmitting }) => (
-        <MiniStyledPage>
-          <h4>Correction Info Candidat</h4>
-          <Error error={errorMut} />
-          <StyledForm
-            disabled={loadingMut || isSubmitting}
-            aria-busy={loadingMut || isSubmitting}
-          >
-            <Form>
-              <AllControls>
-                <TwoGroups>
-                  <InputGroup>
-                    <SygexInput
-                      disabled={isSubmitting}
+      {({ submitForm, isSubmitting }) => (
+        <div className={classes.centerAll}>
+          <Paper className={classes.pageStyled} elevation={13}>
+            <Form aria-busy={isSubmitting}>
+              {(isSubmitting || loadingMut) && <LinearProgress />}
+              <Grid className={classes.centerAll} container>
+                <Grid container className={classes.centerAll}>
+                  <Grid item>
+                    <Typography
+                      className={classes.titleStyled}
+                      color="primary"
+                      gutterBottom
+                      variant="h5"
+                      component="h6"
+                    >
+                      Modification Info Candidat
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid container spacing={4}>
+                  <Grid item className={classes.centerAll} xs={12} sm={6}>
+                    <Field
+                      helpertext={<ErrorMessage name="file" />}
+                      component={TextField}
+                      variant="outlined"
+                      label="Choisir ta photo"
                       name="file"
                       type="file"
                       onChange={uploadFile}
+                      disabled={isSubmitting}
                     />
 
-                    <SygexInput
-                      id="cand1stName"
+                    <Field
+                      helpertext={<ErrorMessage name="cand1stName" />}
+                      component={TextField}
+                      variant="outlined"
                       name="cand1stName"
                       type="text"
                       label="Nom"
                       disabled={isSubmitting}
                     />
-                    <SygexInput
-                      id="cand2ndName"
+                    <Field
+                      helpertext={<ErrorMessage name="cand2ndName" />}
+                      component={TextField}
+                      variant="outlined"
                       name="cand2ndName"
                       type="text"
                       label="Prénom"
                       disabled={isSubmitting}
                     />
-                    <SygexInput
+                    <Field
+                      helpertext={<ErrorMessage name="cand3rdName" />}
+                      component={TextField}
+                      variant="outlined"
                       name="cand3rdName"
-                      id="cand3rdName"
                       type="text"
                       label="Autres Noms"
                       disabled={isSubmitting}
                     />
-                    <SygexInput
+                    <Field
+                      helpertext={<ErrorMessage name="placeOfBirth" />}
+                      component={TextField}
+                      variant="outlined"
                       name="placeOfBirth"
-                      id="placeOfBirth"
                       type="text"
                       label="Lieu de Naissance"
                       disabled={isSubmitting}
                     />
-                    <SygexInput
+                    <Field
+                      helpertext={<ErrorMessage name="dadName" />}
+                      component={TextField}
+                      variant="outlined"
                       name="dadName"
-                      id="dadName"
                       type="text"
                       label="Noms du pere"
                       disabled={isSubmitting}
                     />
-                    <SygexInput
+                    <Field
+                      helpertext={<ErrorMessage name="momName" />}
+                      component={TextField}
+                      variant="outlined"
                       name="momName"
-                      id="momName"
                       type="text"
                       label="Noms de la mere"
                       disabled={isSubmitting}
                     />
 
-                    <SygexInput
+                    <Field
+                      helpertext={<ErrorMessage name="birthCertNumber" />}
+                      component={TextField}
+                      variant="outlined"
                       name="birthCertNumber"
-                      id="birthCertNumber"
                       type="text"
-                      label="Numéro l'Acte de Naissance"
+                      label="Numéro acte de Naissance"
                       disabled={isSubmitting}
                     />
-                    <SygexInput
+                    <Field
+                      helpertext={<ErrorMessage name="phoneNumb" />}
+                      component={TextField}
+                      variant="outlined"
                       name="phoneNumb"
-                      id="phoneNumb"
                       type="number"
                       label="Numéro de portable"
                       disabled={isSubmitting}
                     />
-                  </InputGroup>
-                  <InputGroup>
-                    <MuiPickersUtilsProvider utils={MomentUtils}>
-                      <FormikDatepicker
-                        name="dateOfBirth"
-                        label="Brith Date"
-                        format="DD MMMM YYYY"
-                      ></FormikDatepicker>
-                    </MuiPickersUtilsProvider>
-                    <SygexInput
+                  </Grid>
+
+                  <Grid item className={classes.centerAll} xs={12} sm={6}>
+                    <Field
+                      helpertext={<ErrorMessage name="email" />}
+                      component={TextField}
+                      variant="outlined"
                       name="email"
-                      id="email"
                       type="email"
                       label="Email"
                       disabled={isSubmitting}
                     />
-                    <RadioButtons>
-                      <FormLabel>Sexe</FormLabel>
-                      <RadioGroup name="Sexe" className="RadioSet">
-                        <FormikRadio
-                          label="Female"
-                          name="gender"
-                          value="Femele"
-                        />
-                        <FormikRadio label="Male" name="gender" value="Male" />
-                      </RadioGroup>
-                    </RadioButtons>
-                    <PicFrame>
-                      <img
-                        src={getImage ? getImage : state.image}
-                        alt={state.cand1stName}
+                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                      <KeyboardDatePicker
+                        helpertext={<ErrorMessage name="dateOfBirth" />}
+                        variant="inline"
+                        inputVariant="outlined"
+                        autoOk
+                        margin="normal"
+                        id="dateOfBirth"
+                        name="dateOfBirth"
+                        label="Birth Date"
+                        format="DD MMMM YYYY"
+                        value={candidateInfo.dateOfBirth}
+                        openTo="year"
+                        disableFuture
+                        onChange={(event) =>
+                          handleDateChange("dateOfBirth", event._d)
+                        }
                       />
-                    </PicFrame>
-                  </InputGroup>
-                </TwoGroups>
-                <ButtonStyled>
-                  <StyledButton type="submit" disabled={isSubmitting}>
-                    Valid{isSubmitting ? "ation en cours" : "er"}
-                  </StyledButton>
-                </ButtonStyled>
-              </AllControls>
+                    </MuiPickersUtilsProvider>
+
+                    <Field
+                      helpertext={<ErrorMessage name="gender" />}
+                      required
+                      name="gender"
+                      id="gender"
+                      value={candidateInfo.gender}
+                      component={FRadioGroup}
+                      variant="outlined"
+                      label="Sexe"
+                      options={[
+                        { value: "M", label: "Male" },
+                        { value: "F", label: "Femele" },
+                      ]}
+                      groupProps={{ row: true }}
+                    />
+
+                    <div>
+                      {!candidateInfo.image ? (
+                        <CircularProgress />
+                      ) : (
+                        <img
+                          style={{
+                            height: "15rem",
+                            width: "15rem",
+                            display: "grid",
+                            backgroundSize: "contain",
+                            backgroundPosition: "center",
+                            placeItems: "center",
+                            borderRadius: "0.5rem",
+                          }}
+                          src={candidateInfo.image}
+                          alt="Upload image"
+                        />
+                      )}
+                    </div>
+                    <Notification notify={notify} setNotify={setNotify} />
+
+                    <Button disabled={isSubmitting} onClick={submitForm}>
+                      {(isSubmitting || loadingMut) && <CircularProgress />}
+                      {isSubmitting
+                        ? "Modification en cours"
+                        : "Confirme modification"}
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
             </Form>
-          </StyledForm>
-        </MiniStyledPage>
+          </Paper>
+        </div>
       )}
     </Formik>
   );
 };
 export default NewUpdateCandidate;
-
-//

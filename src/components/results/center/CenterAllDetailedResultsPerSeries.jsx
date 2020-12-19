@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import Form from "../../styles/Form";
 import { BiggestStyledPage } from "../../styles/StyledPage";
-import { centerExamSessionSeriesResultsQuery } from "../../queries&Mutations&Functions/Queries";
+import { centerExamSessionForResultsQuery } from "../../queries&Mutations&Functions/Queries";
 import RegistrationDetails from './RegistrationDetails'
 import Error from "../../ErrorMessage";
 import styled from "styled-components";
@@ -50,12 +50,12 @@ justify-items: center;
 align-items: center;
 `;
 
-class CenterAllDetailedResultsPerSeries extends Component {
+const CenterAllDetailedResultsPerSeries =(props)=> {
     // static propTypes = { id: PropTypes.string.isRequired };
-    render() {
 
         return (
-            <Query query={centerExamSessionSeriesResultsQuery} variables={{ id: this.props.id }}>
+            <Query query={centerExamSessionForResultsQuery} variables={{ id: 
+                props.id }}>
                 {({ data, error, loading }) => {
                     const { centerExamSessionSeries } = { ...data }
                     const { series, registration, centerExamSession } = { ...centerExamSessionSeries }
@@ -143,7 +143,6 @@ class CenterAllDetailedResultsPerSeries extends Component {
             </Query>
 
         );
-    }
 }
 
 export default CenterAllDetailedResultsPerSeries;
