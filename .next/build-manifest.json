@@ -24,15 +24,15 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/show/registeredCands": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/show/registeredCands.js"
-    ],
     "/show/results/centerResults/centerResultsForSeries": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
       "static/chunks/pages/show/results/centerResults/centerResultsForSeries.js"
+    ],
+    "/show/singleCand": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/show/singleCand.js"
     ]
   },
   "ampFirstPages": []

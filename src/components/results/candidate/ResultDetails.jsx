@@ -3,16 +3,14 @@ import { roundFloatNumber } from "../../queries&Mutations&Functions/Functions";
 import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme)=>({theme,
   containerStyled: {
-    display: "grid",
-    // marginTop:"0.2rem",
-    gridTemplateColumns: "4fr 0.3fr 1.5fr 1.5fr",
+   
     alignItems: "left",
     justifyItems: "left",
     borderBottom: "0.1rem solid #000",
   },
-});
+}));
 
 const ResultDetails = ({ score }) => {
   const classes = useStyles();
@@ -21,22 +19,23 @@ const ResultDetails = ({ score }) => {
 
   return (
     <Grid container className={classes.containerStyled}>
-      <Grid item style={{ marginLeft: "0.3rem" }}>
-        <Typography variant="body2">
+      <Grid item  xs={12} sm={6}>
+        <Typography  variant="body2">
           <span>{subject.subjectName}</span>
         </Typography>
       </Grid>
-      <Grid item>
-        <Typography variant="body2">
-          <span>{coeff}</span>
-        </Typography>
-      </Grid>
-      <Grid item>
+      <Grid item   xs={12} sm={3}>
         <Typography variant="body2">
           <span>{subjectAve}</span>
         </Typography>
       </Grid>
-      <Grid item>
+      <Grid item   xs={12} sm={1}>
+        <Typography variant="body2">
+          <span>{coeff}</span>
+        </Typography>
+      </Grid>
+      
+      <Grid item   xs={12} sm={2}>
         <Typography variant="body2">
           <span>{roundFloatNumber(coeff * subjectAve, 3)}</span>
         </Typography>
