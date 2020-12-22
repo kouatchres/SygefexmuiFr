@@ -93,29 +93,29 @@ const NewRegionMui = () => {
   );
   // 675 059 039
   return (
-    <Formik
-      method="POST"
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={async (values, { setSubmitting, resetForm }) => {
-        const res = await createRegion({
-          variables: { ...values },
-        });
-        
-        setTimeout(() => {
-          console.log(JSON.stringify(values, null, 2));
-          console.log(res);
-          setNotify({
-            isOpen: true,
-            message: "Nouvelle Région crééé avec success",
-            type: "success",
+      <Formik
+        method="POST"
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={async (values, { setSubmitting, resetForm }) => {
+          const res = await createRegion({
+            variables: { ...values },
           });
-          resetForm(true);
-          setSubmitting(false);
-        }, 200);
-      }}
-    >
-      {({ submitForm, isSubmitting }) => {
+          
+          setTimeout(() => {
+            console.log(JSON.stringify(values, null, 2));
+            console.log(res);
+            setNotify({
+              isOpen: true,
+              message: "Nouvelle Région crééé avec success",
+              type: "success",
+            });
+            resetForm(true);
+            setSubmitting(false);
+          }, 200);
+        }}
+      >
+        {({ submitForm, isSubmitting }) => {
         return (
           <div className={classes.centerAll}>
             <Paper className={classes.pageStyled} elevation={3}>

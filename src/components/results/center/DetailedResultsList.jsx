@@ -65,12 +65,17 @@ const DetailedResults = ({ id }) => {
                 borderTopRightRadius: "0.5rem",
                 borderTopLeftRadius: "0.5rem",
                 color: "#fff",
+                   MuiSvgIcon: {
+      root: {
+        width: "2rem",
+        fontSize: "1rem",
+      },
+    },
               }}
             >
               <MTableToolbar
                 style={{
-                  // textColor: "#000",
-                  textColor: "#fff",
+                  // textColor: "#fff",
                 }}
                 {...props}
               />
@@ -78,7 +83,7 @@ const DetailedResults = ({ id }) => {
           ),
         }}
         icons={tableIcons}
-        title="Resultats des Candidats"
+        title="Resultats des Candidats>>>>>>>>>>>>>??????????                "
         columns={state.columns}
         data={state.data}
         options={{
@@ -94,7 +99,7 @@ const DetailedResults = ({ id }) => {
             maxHeight: "0.5rem !important",
           },
           rowStyle: {
-            color: "#000",
+            // color: "#000",
           },
         }}
         editable={{

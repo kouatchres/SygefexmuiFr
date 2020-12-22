@@ -52,7 +52,8 @@ const useStyles = makeStyles({
     placeItems: "center",
     padding: "1rem",
     maxWidth: "80%",
-    borderRadius:"0.8rem",
+    minWidth: "20rem",
+    borderRadius: "0.8rem",
     borderBottom: "0.4rem solid #c89666",
     borderTop: "0.4rem solid #829079",
   },
@@ -195,9 +196,7 @@ const CreateCESExaminer = () => {
     const refinedES = getExamSessions && removeTypename(getExamSessions);
     const reducedES = refinedES && refinedES[0];
     console.log(reducedES);
-    {
-      loading && <CircularProgress />;
-    }
+
     setState((prev) => ({
       ...prev,
       examSessions: reducedES,
@@ -206,6 +205,10 @@ const CreateCESExaminer = () => {
   console.dir(state);
 
   useEffect(() => {
+    setState((prev) => ({
+      ...prev,
+      examSessions: "",
+    }));
     loadExamSessionData();
   }, [examID, sessionID]);
 
@@ -223,6 +226,10 @@ const CreateCESExaminer = () => {
   };
 
   useEffect(() => {
+    setState((prev) => ({
+      ...prev,
+      centerByNumber: "",
+    }));
     loadCenterData();
   }, [centerNumber]);
   console.log(centerByNumber);
@@ -249,6 +256,10 @@ const CreateCESExaminer = () => {
   };
 
   useEffect(() => {
+    setState((prev) => ({
+      ...prev,
+      centerExamSessions: "",
+    }));
     loadCESData();
   }, [centerByNumber, examSessions]);
 

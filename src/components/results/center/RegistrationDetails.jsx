@@ -72,6 +72,7 @@ const RegistrationDetails =({registration})=> {
               <a target="_blank">Resultats </a>
             </Link>
           </CellBlock>
+          
         </RegionRow>
       </>
     );

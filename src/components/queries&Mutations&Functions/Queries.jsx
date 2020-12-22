@@ -137,6 +137,7 @@ const getCandidateResultsQuery = gql`
         }
       }
       centerExamSessionSpecialty {
+        id
         centerExamSession {
           id
           examSession {
@@ -182,6 +183,7 @@ const getExaminerRegistrationQuery = gql`
     centerExamSessionExaminer(id: $id) {
       id
       examiner {
+        id
         examiner1stName
         examiner2ndName
         examinerOtherNames
@@ -271,9 +273,11 @@ const getEachCandidateResultsQuery = gql`
         gender
       }
       exam {
+        id
         examName
       }
       session {
+        id
         sessionName
       }
       specialty {
@@ -281,6 +285,7 @@ const getEachCandidateResultsQuery = gql`
         specialtyName
       }
       center {
+        id
         centerName
       }
     }
@@ -317,6 +322,7 @@ const getCandidateRegistrationInfoQuery = gql`
           specialtyName
           specialtyCode
           subjectSpecialty {
+            id
             coeff
             subject {
               id
@@ -326,6 +332,7 @@ const getCandidateRegistrationInfoQuery = gql`
           }
         }
         centerExamSession {
+          id
           center {
             id
             centerName
@@ -408,9 +415,12 @@ const getAllCandidateRegistrationIDsQuery = gql`
             specialtyName
           }
           centerExamSession {
+            id
             center {
               id
               centerName
+              centerCode
+              centerNumber
             }
             examSession {
               id
@@ -483,6 +493,7 @@ const getRegistrationIDFromRegNumberQuery = gql`
               specialtyName
             }
             centerExamSession {
+              id
               center {
                 id
                 centerName
@@ -506,7 +517,10 @@ const getRegistrationIDFromRegNumberQuery = gql`
             coeff
             subjectSpecialty {
               id
-              subjectName
+              subject{
+                id
+                subjectName
+              }
             }
           }
         }

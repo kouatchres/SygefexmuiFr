@@ -269,7 +269,7 @@ const CreateAttendance = () => {
   const getCandOptions =
     registration &&
     registration.map((item) => (
-        {item.item.candidate.cand1stName.concat(
+        {candidate.cand1stName.concat(
           item.candidate.cand2ndName,
           item.candRegistrationNumber
         )}

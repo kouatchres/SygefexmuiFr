@@ -1,11 +1,11 @@
 import React from "react";
 import CandidateResultByCandCode from "../../../src/components/score/candidate/CandidateResultByCandCode";
-
+import GatedSignIn from "../../../src/components/user/GatedSignin";
 function candCodeResults({ query }) {
     return (
-        <div>
+          <GatedSignIn>
             <CandidateResultByCandCode id={query.id} />
-        </div>
+           </GatedSignIn>
     );
 }
 export default candCodeResults;

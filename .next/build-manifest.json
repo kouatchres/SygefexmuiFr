@@ -24,15 +24,30 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/show/results/centerResults/centerResultsForSeries": [
+    "/creates/newCESS": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/show/results/centerResults/centerResultsForSeries.js"
+      "static/chunks/pages/creates/newCESS.js"
     ],
-    "/show/singleCand": [
+    "/creates/newGroupCand": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/show/singleCand.js"
+      "static/chunks/pages/creates/newGroupCand.js"
+    ],
+    "/show/genCenterResults": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/show/genCenterResults.js"
+    ],
+    "/show/lists/allCenters": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/show/lists/allCenters.js"
+    ],
+    "/show/results/centerResults": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/show/results/centerResults.js"
     ]
   },
   "ampFirstPages": []

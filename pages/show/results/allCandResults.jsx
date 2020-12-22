@@ -1,11 +1,18 @@
 import React from "react";
-import CandidateResultByRegisID from "../../../src/components/score/candidate/CandidateResultByRegisID";
+import AccumulatedCandResults from "../../../src/components/score/candidate/AccumulatedCandResults";
+import {useRouter} from  "next/router"
+import GatedSignin from "../../../src/components/user/GatedSignin";
 
-function allCandResults({ query }) {
+function allCandResults() {
+
+const router = useRouter()
+const {id}= router.query
+
     return (
-        <div>
-            <CandidateResultByRegisID id={query.id} />
-        </div>
+        <GatedSignin>
+            <AccumulatedCandResults id={id} />
+       </GatedSignin>
+
     );
 }
 export default allCandResults;

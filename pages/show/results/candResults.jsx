@@ -1,11 +1,15 @@
 import React from "react";
-import CandDetailedResultsHook from "../../../src/components/results/candidate/CandDetailedResultsHook";
+import Transcript from "../../../src/components/results/candidate/Transcript";
+import GatedSignIn from "../../../src/components/user/GatedSignin";
+import { useRouter } from "next/router";
 
-function candResults({ query }) {
+const candResults = () => {
+  const router = useRouter();
+  const { id } = router.query;
   return (
-    <div>
-      <CandDetailedResultsHook id={query.id} />
-    </div>
+    <GatedSignIn>
+      <Transcript id={id} />
+    </GatedSignIn>
   );
-}
+};
 export default candResults;

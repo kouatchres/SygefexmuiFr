@@ -251,6 +251,8 @@ const SygefexTheme = createMuiTheme({
       root: {
         width: "2rem",
         fontSize: "1rem",
+        backgroundColor:"#ede6b9",
+        borderRadius:"0.2rem",
       },
     },
     MTableToolbar: {

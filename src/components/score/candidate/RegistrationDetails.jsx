@@ -1,27 +1,26 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 import Link from "next/link";
+import { Grid, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import UpdatePopup from "../../utils/UpdatePopup";
+import Transcript from "../../results/candidate/Transcript";
 
-const RegionRow = styled.div`
-  display: grid;
-  grid-template-columns: 4fr 1fr 1fr 1fr;
-  grid-gap: 15px;
-  background-color: ${(props) => props.theme.lightGrey};
-  align-items: left;
-  justify-items: left;
-  border-bottom: 0.05rem solid black;
-  border-bottom-right-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
-  padding-left: 0.3rem;
-`;
-
-const CellBlock = styled.div`
-  align-content: left;
-  text-align: left;
-  font-size: 1.5rem;
-`;
+const useStyles = makeStyles((theme) => ({
+  theme,
+  containerStyled: {
+    alignItems: "left",
+    justifyItems: "left",
+    borderBottom: "0.1rem solid #000",
+  },
+}));
 
 const RegistrationDetails = (registrationInfo) => {
+  const classes = useStyles();
+  const [updatePopupState, setUpdatePopupState] = useState({
+    isOpen: false,
+    id: "",
+  });
+
   const { centerExamSessionSpecialty, id } = {
     ...registrationInfo.registrationInfo,
   };
@@ -30,31 +29,66 @@ const RegistrationDetails = (registrationInfo) => {
   const { exam, session } = { ...examSession };
   const { sessionName } = { ...session };
   const { examName } = { ...exam };
-  const { centerName } = { ...center };
+  const { centerNumber, centerCode } = { ...center };
   console.log(registrationInfo.registrationInfo);
   console.log(id);
+
+  const callUpdatePopup = (event) => {
+    setUpdatePopupState((prev) => ({ ...prev, isOpen: true }));
+  };
+
+  const handleUpdatePopupClose = () => {
+    setUpdatePopupState((prev) => ({
+      ...prev,
+      isOpen: false,
+    }));
+  };
+
+  console.log(updatePopupState);
   return (
-    <RegionRow>
-      <CellBlock>
-        <span>{centerName}</span>
-      </CellBlock>
-      <CellBlock>
-        <span>{sessionName}</span>
-      </CellBlock>
-      <CellBlock>
-        <span>{examName}</span>
-      </CellBlock>
-      <CellBlock>
-        <Link
-          href={{
-            pathname: "/show/results/candResults",
-            query: { id },
-          }}
+    <Grid container className={classes.containerStyled}>
+      <Grid item xs={12} sm={2}>
+        <Typography variant="body2">
+          <span>{centerNumber}</span>
+        </Typography>
+      </Grid>
+      <Grid item xs={12} sm={4}>
+        <Typography variant="body2">
+          <span>{centerCode}</span>
+        </Typography>
+      </Grid>
+      <Grid item xs={6} sm={2}>
+        <Typography variant="body2">
+          <span>{sessionName}</span>
+        </Typography>
+      </Grid>
+      <Grid item xs={6} sm={2}>
+        <Typography variant="body2">
+          <span>{examName}</span>
+        </Typography>
+      </Grid>
+
+      <Grid item xs={12} sm={2}>
+        <Typography variant="body2">
+          <span>
+            <Link
+              href={{
+                pathname: "/show/results/candResults",
+                query: { id },
+              }}
+            >
+              <a onClick={callUpdatePopup}>Resultats </a>
+            </Link>
+          </span>
+        </Typography>
+        <UpdatePopup
+          isOpen={updatePopupState.isOpen}
+          onClose={handleUpdatePopupClose}
         >
-          <a target="_blank">Resultats </a>
-        </Link>
-      </CellBlock>
-    </RegionRow>
+          <Transcript id={id} />
+        </UpdatePopup>
+      </Grid>
+    </Grid>
   );
 };
 
