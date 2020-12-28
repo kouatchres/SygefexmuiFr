@@ -14,17 +14,16 @@ const useStyles = makeStyles((theme)=>({theme,
 
 const ResultDetails = ({ score }) => {
   const classes = useStyles();
-  const { subjectAve, coeff, subjectSpecialty } = { ...score };
-  const { subject } = { ...subjectSpecialty };
+  const { subjectAve, coeff, subjectName } = { ...score };
 
   return (
     <Grid container className={classes.containerStyled}>
-      <Grid item  xs={12} sm={6}>
+      <Grid item  xs={12} sm={7}>
         <Typography  variant="body2">
-          <span>{subject.subjectName}</span>
+          <span>{subjectName}</span>
         </Typography>
       </Grid>
-      <Grid item   xs={12} sm={3}>
+      <Grid item   xs={12} sm={2}>
         <Typography variant="body2">
           <span>{subjectAve}</span>
         </Typography>

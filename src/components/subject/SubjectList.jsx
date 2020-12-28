@@ -1,12 +1,13 @@
-import React, { forwardRef, useEffect, useState } from "react";
-import MaterialTable from "material-table";
-import { Paper } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useApolloClient } from "@apollo/react-hooks";
-import { getAllSubjectsWithEducTypesQuery } from "../queries&Mutations&Functions/Queries";
+import { useApolloClient, useMutation } from "@apollo/react-hooks";
+import { getAllEducationTypesAndSubjectsQuery } from "../queries&Mutations&Functions/Queries";
 import tableIcons from "../utils/icons/tableIcons";
 import AddPopup from "../utils/AddPopup";
 import UpdatePopup from "../utils/UpdatePopup";
+import ConfirmDialog from "../utils/ConfirmDialog";
+import MaterialTable, { MTableToolbar } from "material-table";
+import { deleteSubjectMutation } from "../queries&Mutations&Functions/Mutations";
 
 import {
   Edit as EditIcon,
@@ -14,7 +15,7 @@ import {
   Delete as DeleteIcon,
 } from "@material-ui/icons";
 
-import CreateNewSubjectHook from "./CreateNewSubjectHook";
+import CreateSubject from "./CreateSubject";
 import UpdateSubject from "./UpdateSubject";
 
 const useStyles = makeStyles({
@@ -50,13 +51,19 @@ const useStyles = makeStyles({
   },
 });
 
-const RegionList = () => {
+const SubjectList = () => {
   const classes = useStyles();
   const client = useApolloClient();
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [updatePopupState, setUpdatePopupState] = useState({
     isOpen: false,
     id: "",
+  });
+  const [deleteConfirmDialog, setDeleteConfirmDialog] = useState({
+    isOpen: false,
+    id: "",
+    title: "",
+    subtitle: "",
   });
 
   const [state, setState] = useState({
@@ -69,24 +76,43 @@ const RegionList = () => {
         field: "subjectCode",
         title: "Code matière",
       },
-      { field: "id", title: "ID" },
+      {
+        field: "subjectType",
+        title: "Type matière",
+      },
+      {
+        field: "subjectGroup",
+        title: "Groupe matière",
+      },
+      {
+        field: "educationTypeName",
+        title: "Libelle matière",
+      },
     ],
     data: [],
   });
 
-  const loadCandScoreData = async () => {
+  
+  const loadSubjEducTypes = async () => {
     const { error, data } = await client.query({
-      query: getAllSubjectsWithEducTypesQuery,
+      query: getAllEducationTypesAndSubjectsQuery,
     });
+    const { educationTypes } = { ...data };
     console.log(data);
-    const { subjects } = { ...data };
-    const { subjectSpecialty } = { ...subjects };
+    // const getEducTypes = educationTypes.map((item) => {
+    //   const subjInfos =item.subject.map((subject) => ({
+    //     educationTypeName:educType.educationTypeName,
+    //  educationTypeCode:educType.educationTypeCode,
+    //     ...subject,
+    //   }));
+    //   return subjInfos;
+    // });
 
-    setState((prev) => ({ ...prev, data: subjects }));
+    // setState((prev) => ({ ...prev, data: getEducTypes.flat(1) }));
   };
 
   useEffect(() => {
-    loadCandScoreData();
+    loadSubjEducTypes();
   }, []);
 
   const handleAddPopupClose = (event) => {
@@ -100,8 +126,19 @@ const RegionList = () => {
     }));
   };
 
+  const handleDeleteConfirmDialog = () => {
+    setDeleteConfirmDialog((prev) => ({
+      ...prev,
+      isOpen: false,
+    }));
+  };
+
   console.dir(state.data);
 
+  const [deleteSubject, { loading }] = useMutation(deleteSubjectMutation, {
+    variables: { id: deleteConfirmDialog.id },
+    // update: updateCache(),
+  });
   const actions = [
     {
       icon: () => <AddIcon />,
@@ -122,14 +159,44 @@ const RegionList = () => {
     {
       icon: () => <DeleteIcon />,
       tooltip: "Supprimer matière",
-      onClick: (event, rowData) => confirm("You want to delete " + rowData.id),
+      onClick: (event, rowData) =>
+        setDeleteConfirmDialog({
+          id: rowData.id,
+          isOpen: true,
+          title: "Etes-vous sur de suprimer cette inofrmation",
+          subtitle:
+            "Une fois supprimées, les informations seront perdues a jamais",
+          onConfirm: () => {
+            rowData.id && deleteSubject(rowData.id);
+            setNotify({
+              isOpen: true,
+              message: "Arrondissement Supprimé avec success",
+              type: "error",
+            });
+          },
+        }),
     },
   ];
 
   console.dir(state.data);
   return (
-    <Paper style={{ marginTop: "2rem" }}>
+    <div style={{ marginTop: "2rem" }}>
       <MaterialTable
+        className={classes.head}
+        components={{
+          Toolbar: (props) => (
+            <div
+              style={{
+                backgroundColor: "#829079",
+                borderTopRightRadius: "0.5rem",
+                borderTopLeftRadius: "0.5rem",
+                color: "#ede6b9",
+              }}
+            >
+              <MTableToolbar {...props} />
+            </div>
+          ),
+        }}
         icons={tableIcons}
         title="Liste de matières"
         columns={state.columns}
@@ -138,14 +205,40 @@ const RegionList = () => {
         stickyHeader
         style={{ position: "sticky", top: 0 }}
         icons={tableIcons}
+        options={{
+          actionsColumnIndex: -1,
+          grouping: true,
+          paging: true,
+          pageSize: 50, // make initial page size
+          emptyRowsWhenPaging: false, //to make page size fix in case of less data rows
+          pageSizeOptions: [25, 50, 75, 100, 150], // rows selection options
+          headerStyle: {
+            color: "#ede6b9",
+            // color: "#ff",
+            paddingTop: "0.5rem",
+            paddingBottom: "0.5rem",
+            backgroundColor: "#b9925e",
+            maxHeight: "0.5rem !important",
+          },
+          rowStyle: {
+            color: "#000",
+          },
+        }}
       />
       <AddPopup
         title="Nouvelle matière"
         isOpen={isAddPopupOpen}
         onClose={handleAddPopupClose}
       >
-        <CreateNewSubjectHook />
+        <CreateSubject />
       </AddPopup>
+      <ConfirmDialog
+        title={deleteConfirmDialog.title}
+        subtitle={deleteConfirmDialog.subtitle}
+        isOpen={deleteConfirmDialog.isOpen}
+        onClose={handleDeleteConfirmDialog}
+        onConfirm={deleteConfirmDialog.onConfirm}
+      />
       <UpdatePopup
         title={updatePopupState.id}
         isOpen={updatePopupState.isOpen}
@@ -153,7 +246,7 @@ const RegionList = () => {
       >
         <UpdateSubject id={updatePopupState.id} />
       </UpdatePopup>
-    </Paper>
+    </div>
   );
 };
-export default RegionList;
+export default SubjectList;

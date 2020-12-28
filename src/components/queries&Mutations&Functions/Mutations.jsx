@@ -741,18 +741,15 @@ const enterMarksMutation = gql`
   mutation enterMarksMutation(
     $subjectSpecialty: SubjectSpecialtyWhereUniqueInput!
     $subjectAve: Float!
-    $subjectName: String!
     $candExamSecretCode: String!
   ) {
     enterMarks(
       subjectSpecialty: $subjectSpecialty
       subjectAve: $subjectAve
-      subjectName: $subjectName
       candExamSecretCode: $candExamSecretCode
     ) {
       subjectAve
       coeff
-      subjectName
       id
       subjectSpecialty {
         id
@@ -914,6 +911,22 @@ const deleteSubDivisionMutation = gql`
   }
 `;
 
+const deleteDivisionMutation = gql`
+  mutation deleteDivisionMutation($id: ID!) {
+    deleteDivision(id: $id) {
+      id
+    }
+  }
+`;
+
+const deleteSubjectMutation = gql`
+  mutation deleteSubjectMutation($id: ID!) {
+    deleteSubject(id: $id) {
+      id
+    }
+  }
+`;
+
 const deleteTownMutation = gql`
   mutation deleteTownMutation($id: ID!) {
     deleteTown(id: $id) {
@@ -967,12 +980,14 @@ export {
   loginUserMutation,
   updateSignUpMutation,
   signupUserMutation,
+  deleteSubjectMutation,
   deleteRegionMutation,
   deleteCenterMutation,
   signoutMutation,
   enterMarksMutation,
   deleteReportMutation,
   deleteTownMutation,
+  deleteDivisionMutation,
   deleteSubDivisionMutation,
   requestResetMutation,
 };

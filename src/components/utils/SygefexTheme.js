@@ -107,7 +107,7 @@ const SygefexTheme = createMuiTheme({
     },
     MuiButton: {
       root: {
-        textTransform: "capitalize",
+        textTransform: "none",
         marginTop: "0.5rem",
         marginBottom: "0.5rem",
         fontSize: "1.1rem",
@@ -251,8 +251,8 @@ const SygefexTheme = createMuiTheme({
       root: {
         width: "2rem",
         fontSize: "1rem",
-        backgroundColor:"#ede6b9",
-        borderRadius:"0.2rem",
+        // backgroundColor:"#ede6b9",
+        // borderRadius:"0.2rem",
       },
     },
     MTableToolbar: {

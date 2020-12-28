@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import MaterialTable, { MTableToolbar } from "material-table";
-import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useApolloClient, useMutation, useQuery } from "@apollo/react-hooks";
 import { deleteTownMutation } from "../queries&Mutations&Functions/Mutations";
@@ -168,8 +167,7 @@ const TownList = () => {
   ];
   console.dir(state.data);
   return (
-    <Paper className={classes.root}>
-      <div>
+      <div   className={classes.root}>
         <MaterialTable
           className={classes.head}
           components={{
@@ -241,7 +239,6 @@ const TownList = () => {
           <UpdateTown id={updatePopupState.id} />
         </UpdatePopup>
       </div>
-    </Paper>
   );
 };
 export default TownList;

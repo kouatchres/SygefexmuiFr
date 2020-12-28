@@ -44,6 +44,23 @@ const getAllEducationTypesQuery = gql`
   }
 `;
 
+const getAllEducationTypesAndSubjectsQuery = gql`
+  query getAllEducationTypesAndSubjectsQuery {
+    educationTypes(orderBy: educationTypeName_ASC) {
+      id
+      educationTypeName
+      educationTypeCode
+      subject(orderBy: subjectName_ASC){
+        id
+        # subjectName
+        # subjectCode
+        # subjectType
+        # subjectGroup
+      }
+    }
+  }
+`;
+
 const getAllRegionsQuery = gql`
   query getAllRegionsQuery {
     regions(orderBy: regName_ASC) {
@@ -161,10 +178,9 @@ const getCandidateResultsQuery = gql`
           specialtyName
         }
       }
-      scores(orderBy: subjectName_ASC) {
+      scores{
         id
         subjectAve
-        subjectName
         coeff
         subjectSpecialty {
           id
@@ -839,6 +855,25 @@ const getAllSpecialtiesOfACenterExamSessionQuery = gql`
   }
 `;
 
+const getRegistrationOfCESSQuery = gql`
+  query getRegistrationOfCESSQuery($id: ID!, $CES: String) {
+    centerExamSessionSpecialty(id: $id, CES: $CES) {
+        id
+        registration {
+          candRegistrationNumber
+          id
+          candidate {
+            id
+            cand1stName
+            cand2ndName
+            cand3rdName
+          }
+        }
+        
+    }
+  }
+`;
+
 const getAllSpecialtiesQuery = gql`
   query getAllSpecialtiesQuery {
     specialties(orderBy: specialtyName_ASC) {
@@ -886,10 +921,12 @@ const getAllSubjectSpecialtiesOfASpecialtyQuery = gql`
       subjectSpecialty {
         id
         subject {
-          id
-          subjectName
-          subjectCode
-        }
+        id
+        subjectName
+        subjectCode
+        subjectType
+        subjectGroup
+      }
       }
     }
   }
@@ -1549,6 +1586,7 @@ export {
   getTownsOfASubDivisionQuery,
   getCentersOfATownQuery,
   getAllEducationTypesQuery,
+  getAllEducationTypesAndSubjectsQuery,
   getAllRanksQuery,
   getAllCandidatesQuery,
   getAllCentersQuery,
@@ -1621,6 +1659,7 @@ export {
   getRegisteredCandidatesPerSpecialty,
   getAllSubjectGroupsQuery,
   getAllRanksOfAnExamPhaseQuery,
+  getRegistrationOfCESSQuery,
   currentUserQuery,
   singlePhaseQuery,
   getSingleCenterByCodeQuery,

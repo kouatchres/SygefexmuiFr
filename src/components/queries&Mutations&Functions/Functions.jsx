@@ -65,6 +65,18 @@ const getSpecialtyID = (dataSource, CESSID) => {
     return specialty;
   }
 };
+
+const getAllRegisteredCandidatesPerSpecialty = (dataSource, CESSID) => {
+  // 1 copy the data source
+  if (dataSource) {
+    const tempObjects = [...dataSource];
+    // get the object
+    const selectedObject = tempObjects.find((item) => item.id === CESSID);
+    const { specialty } = { ...selectedObject };
+     console.log(specialty)
+    return specialty;
+  }
+};
 // function to model a number with leading zeroes
 Number.prototype.pad = function (size) {
   var s = String(this);
@@ -135,19 +147,6 @@ const uploadFile = async (e) => {
   setState({ image: file.secure_url });
 };
 
-// const updateCacheForDelete = (cache, { data }, queryToUpdate) => {
-//   // manually update the cache so that the data are all the same
-//   // 1. read the cache for the data we want
-//   const { regions, deleteRegion } = data
-//   const data = cache.readQuery({ query: queryToUpdate });
-//   // selects all the other regions leaving out the deleted one
-//   regions = regions.filter(region => region.id !== deleteRegion.id);
-//   //  3. write the new data back to the cache
-//   console.log("getting payload");
-//   console.log(payload);
-//   cache.writeQuery({ query: queryToUpdate, data });
-// };
-
 const updateCache = (cache, payload) => {
   // manually update the cache so that the data are all the same
   // 1. read the cache for the data we want
@@ -161,8 +160,47 @@ const updateCache = (cache, payload) => {
   console.log(payload);
   cache.writeQuery({ query: getAllRegionsQuery, data });
 };
+
+
+const compareValues=(key, order = 'asc') =>{
+  return function innerSort(a, b) {
+    if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) return 0;
+    const comparison = a[key].localeCompare(b[key]);
+
+    return (
+      (order === 'desc') ? (comparison * -1) : comparison
+    );
+  };
+}
+
+// const compareValues=(key, order = 'asc') =>{
+//   return function innerSort(a, b) {
+//     if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+//       // property doesn't exist on either object
+//       return 0;
+//     }
+
+//     const varA = (typeof a[key] === 'string')
+//       ? a[key].toUpperCase() : a[key];
+//     const varB = (typeof b[key] === 'string')
+//       ? b[key].toUpperCase() : b[key];
+
+//     let comparison = 0;
+//     if (varA > varB) {
+//       comparison = 1;
+//     } else if (varA < varB) {
+//       comparison = -1;
+//     }
+//     return (
+//       (order === 'desc') ? (comparison * -1) : comparison
+//     );
+//   };
+// };
+
+
 export {
   candExamSessionCode,
+  compareValues,
   roundFloatNumber,
   calcCandTotalScore,
   calcCandTotalCoeff,
@@ -175,4 +213,5 @@ export {
   uploadFile,
   getSpecialtyID,
   centerExamSessionObjectFromCode,
+  getAllRegisteredCandidatesPerSpecialty,
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import Error from "../ErrorMessage.js";
 import { ErrorMessage, Formik, Form, Field } from "formik";
 import { TextField } from "material-ui-formik-components/TextField";
@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
 import { useMutation } from "@apollo/react-hooks";
 import { createNewRankMutation } from "../queries&Mutations&Functions/Mutations";
+import Notification from "../utils/Notification";
 
 const useStyles = makeStyles({
   root: {
@@ -76,6 +77,15 @@ const Login = () => {
     rankCode: "",
   };
 
+
+
+  
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
   const [createRank, { loading, error }] = useMutation(createNewRankMutation, {
     refetchQueries: ["currentUserQuery"],
   });
@@ -92,6 +102,12 @@ const Login = () => {
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
+
+          setNotify({
+            isOpen: true,
+            message: "Nouvelle Phase crééé avec success",
+            type: "success",
+          });
           resetForm(true);
           setSubmitting(false);
         }, 200);
@@ -139,11 +155,12 @@ const Login = () => {
                       disabled={isSubmitting || loading}
                       helpertext={<ErrorMessage name="rankCode" />}
                     />
+                <Notification notify={notify} setNotify={setNotify} />
 
                     <Button disabled={isSubmitting} onClick={submitForm}>
                       {(isSubmitting || loading) && <CircularProgress />}
                       {isSubmitting || loading
-                        ? "Créattion en cours"
+                        ? "Création en cours"
                         : "crée poste"}
                     </Button>
                   </Grid>

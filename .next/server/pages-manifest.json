@@ -1,10 +1,5 @@
 {
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-  "/_error": "pages/_error.js",
-  "/creates/newCESS": "pages/creates/newCESS.js",
-  "/creates/newGroupCand": "pages/creates/newGroupCand.js",
-  "/show/genCenterResults": "pages/show/genCenterResults.js",
-  "/show/results/centerResults": "pages/show/results/centerResults.js",
-  "/show/lists/allCenters": "pages/show/lists/allCenters.js"
+  "/_error": "pages/_error.js"
 }

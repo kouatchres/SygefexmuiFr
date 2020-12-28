@@ -1,14 +1,12 @@
 import React from "react";
-import NewRegPhaseRank from "../../src/components/phaseRank/NewRegPhaseRank";
+import RegPhaseRank from "../../src/components/phaseRank/RegPhaseRank";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
 const newPhaseRank = () => {
   return (
-    <div>
       <GatedSignin>
-        <NewRegPhaseRank />
+        <RegPhaseRank />
       </GatedSignin>
-    </div>
   );
 };
 export default newPhaseRank;

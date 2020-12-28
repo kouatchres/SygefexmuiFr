@@ -23,31 +23,6 @@
       "static/chunks/main.js",
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
-    ],
-    "/creates/newCESS": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/creates/newCESS.js"
-    ],
-    "/creates/newGroupCand": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/creates/newGroupCand.js"
-    ],
-    "/show/genCenterResults": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/show/genCenterResults.js"
-    ],
-    "/show/lists/allCenters": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/show/lists/allCenters.js"
-    ],
-    "/show/results/centerResults": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/show/results/centerResults.js"
     ]
   },
   "ampFirstPages": []

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import MaterialTable from "material-table";
+import MaterialTable ,{ MTableToolbar } from "material-table";
 import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useApolloClient, useMutation } from "@apollo/react-hooks";
@@ -154,7 +154,6 @@ const RegionList = () => {
       tooltip: "Modifier Région",
       onClick: (event, rowData) => {
         setUpdatePopupState({ isOpen: true, id: rowData.id });
-        // console.log(rowData.id);
       },
     },
     {
@@ -164,17 +163,16 @@ const RegionList = () => {
         setDeleteConfirmDialog({
           id: rowData.id,
           isOpen: true,
-          title: "Etes-vous sur de suprimer cette inofrmation",
+          title: "Etes-vous sur de suprimer cette région?",
           subtitle:
-            "Une fois supprimées, les informations seront perdues a jamais, Seules les regions sans departement pourront etre suprimees",
+            "Une fois supprimées, les informations seront perdues a jamais, Seules les régions sans département pourront etre suprimées",
           onConfirm: () => {
             rowData.id && deleteRegion(rowData.id);
             setNotify({
               isOpen: true,
-              message: "Region Supprimee avec success",
+              message: "Région Supprimée avec success",
               type: "error",
             });
-            console.log("just after the delete process");
           },
         }),
     },
@@ -183,6 +181,26 @@ const RegionList = () => {
   return (
     <Paper style={{ marginTop: "2rem" }}>
       <MaterialTable
+      components={{
+            Toolbar: (props) => (
+              <div
+                style={{
+                  backgroundColor: "#829079",
+                  borderTopRightRadius: "0.5rem",
+                  borderTopLeftRadius: "0.5rem",
+                  color: "#ede6b9",
+                }}
+              >
+                <MTableToolbar
+                  style={{
+                    // textColor: "#000",
+                    textColor: "#fff",
+                  }}
+                  {...props}
+                />
+              </div>
+            ),
+          }}
         icons={tableIcons}
         title="Liste de Régions"
         columns={state.columns}
@@ -191,6 +209,26 @@ const RegionList = () => {
         stickyHeader
         style={{ position: "sticky", top: 0 }}
         icons={tableIcons}
+
+         options={{
+          actionsColumnIndex: -1,
+          grouping: true,
+          paging: true,
+          pageSize: 50, // make initial page size
+          emptyRowsWhenPaging: false, //to make page size fix in case of less data rows
+          pageSizeOptions: [25, 50, 75, 100, 150], // rows selection options
+          headerStyle: {
+            color: "#ede6b9",
+            // color: "#ff",
+            paddingTop: "0.5rem",
+            paddingBottom: "0.5rem",
+            backgroundColor: "#b9925e",
+            maxHeight: "0.5rem !important",
+          },
+          rowStyle: {
+            color: "#000",
+          },
+        }}
       />
       <AddPopup
         title="Nouvelle Région"

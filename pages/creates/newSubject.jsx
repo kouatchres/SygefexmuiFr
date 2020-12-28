@@ -1,12 +1,12 @@
 import React from "react";
-import CreateNewSubjectHook from "../../src/components/subject/CreateNewSubjectHook";
+import CreateSubject from "../../src/components/subject/CreateSubject";
 import GatedSignin from "../../src/components/user/GatedSignin";
 
 const newSubject = () => {
   return (
     <div>
       <GatedSignin>
-        <CreateNewSubjectHook />
+        <CreateSubject />
       </GatedSignin>
     </div>
   );

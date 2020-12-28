@@ -1,48 +1,113 @@
-import React, { useEffect } from "react";
+import { makeStyles } from "@material-ui/core/Styles";
+import React, { useState, useEffect } from "react";
 import { useMutation, useApolloClient } from "@apollo/react-hooks";
-import { MinimStyledPage } from "../styles/StyledPage";
-import Error from "../ErrorMessage.js";
-import { Formik, Form } from "formik";
-import useForm from "../utils/useForm";
 import * as Yup from "yup";
-import { useRouter } from "next/router";
-
-import { updateDivisionMutation } from "../queries&Mutations&Functions/Mutations";
-import { singleDivisionQuery } from "../queries&Mutations&Functions/Queries";
+import useForm from "../utils/useForm";
 import {
-  StyledForm,
-  SygexInput,
-  StyledButton,
-  ButtonStyled,
-} from "../utils/FormInputs";
+  Grid,
+  Typography,
+  Paper,
+  Button,
+  LinearProgress,
+  CircularProgress,
+} from "@material-ui/core";
+import { ErrorMessage, Formik, Form, Field } from "formik";
+import {
+  singleDivisionQuery,
+} from "../queries&Mutations&Functions/Queries";
+import { updateDivisionMutation } from "../queries&Mutations&Functions/Mutations";
+import { TextField } from "material-ui-formik-components/TextField";
+
+import Notification from "../utils/Notification";
+
+const useStyles = makeStyles({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    // fontSize: 100,
+  },
+  divStyled: {
+    display: "grid",
+    placeItems: "center",
+    top: "2rem",
+    height: "90vh",
+  },
+  pageStyled: {
+    display: "grid",
+    placeItems: "center",
+    marginTop: "2rem",
+    padding: "1rem",
+    minWidth: "30vw",
+  },
+  listStyled: {
+    display: "grid",
+    placeItems: "center",
+    listStyleType: "none",
+    margin: 0,
+    padding: 0,
+    paddingTop: "0.1rem",
+  },
+  titleStyled: {
+    display: "grid",
+    placeItems: "center",
+  },
+
+  allControls: {
+    display: "grid",
+    placeItems: "center",
+    paddingTop: "0.2rem",
+    border: "0.05rem solid #1254ac",
+    // width: "20vw",
+    borderRadius: "0.5rem",
+    // marginTop: "2rem",
+  },
+  centerAll: {
+    display: "grid",
+    placeItems: "center",
+    minWidth: "30vw",
+  },
+});
 
 const validationSchema = Yup.object().shape({
-  divName: Yup.string().required("Nom du département Obligatoire"),
-  divCode: Yup.string().required("Code du département Obligatoire"),
+  divName: Yup.string().required("Nom département Obligatoire"),
+  divCode: Yup.string().required("Code département Obligatoire"),
 });
-const UpdateDivision = (id) => {
-  const [state, setState] = useForm({});
+const UpdateRegion = ({ id }) => {
+  const classes = useStyles();
+  const [state, setState] = useForm({ divCode: "", divName: "" });
   const client = useApolloClient();
-  // console.log(id);
 
-  const loadDivisionData = async () => {
-    const { data, error } = await client.query({
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+  console.log(id);
+
+  const loadSubDivData = async () => {
+    const { data, loading } = await client.query({
       query: singleDivisionQuery,
       variables: { id },
+      // pollInterval: 500,
     });
     console.log(data);
-    setState(data.division);
+    const { divName, divCode } = { ...data.division };
+    setState({
+      divName: divName,
+      divCode: divCode,
+    });
   };
 
-  useEffect(() => {
-    console.log({ id });
-    loadDivisionData();
-  }, []);
   const initialValues = {
     divName: "",
     divCode: "",
   };
+
+  useEffect(() => {
+    loadSubDivData();
+  }, []);
   console.log(state);
+
   const [updateDivision] = useMutation(updateDivisionMutation, {
     variables: { id },
   });
@@ -59,44 +124,73 @@ const UpdateDivision = (id) => {
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           console.log(res);
+          setNotify({
+            isOpen: true,
+            message: "département modifié avec success",
+            type: "success",
+          });
           resetForm(true);
           setSubmitting(false);
         }, 200);
       }}
-      method="POST"
     >
-      {({ values, isSubmitting }) => (
-        <MinimStyledPage>
-          <h4>Correction info département</h4>
-          <StyledForm disabled={isSubmitting} aria-busy={isSubmitting}>
-            <Form>
-              <SygexInput
-                type="text"
-                id="divName"
-                name="divName"
-                placeholder="Nom du Département"
-                disabled={isSubmitting}
-                required
-              />
-              <SygexInput
-                type="text"
-                id="divCode"
-                name="divCode"
-                placeholder="Code du Département"
-                disabled={isSubmitting}
-                required
-              />
-              <ButtonStyled>
-                <StyledButton type="submit">
-                  Valid{isSubmitting ? "ation en cours" : "er"}
-                </StyledButton>
-              </ButtonStyled>
-            </Form>
-          </StyledForm>
-        </MinimStyledPage>
-      )}
+      {({ submitForm, isSubmitting }) => {
+        return (
+          <div className={classes.centerAll}>
+            <Paper className={classes.pageStyled} elevation={3}>
+              <Form aria-busy={isSubmitting}>
+                {isSubmitting && <LinearProgress />}
+                <Grid className={classes.centerAll} container>
+                  <Grid container className={classes.centerAll}>
+                    <Grid item>
+                      <Typography
+                        className={classes.titleStyled}
+                        color="primary"
+                        gutterBottom
+                        variant="h5"
+                        component="h6"
+                      >
+                        Modifier département
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid item className={classes.centerAll}>
+                    <Field
+                      name="divName"
+                      component={TextField}
+                      type="text"
+                      fullWidth
+                      label="Libellé département"
+                      variant="outlined"
+                      disabled={isSubmitting}
+                      helpertext={<ErrorMessage name="divName" />}
+                    />
+                    <Field
+                      name="divCode"
+                      component={TextField}
+                      type="text"
+                      fullWidth
+                      label="Code département"
+                      variant="outlined"
+                      disabled={isSubmitting}
+                      helpertext={<ErrorMessage name="divCode" />}
+                    />
+                    <Notification notify={notify} setNotify={setNotify} />
+
+                    <Button disabled={isSubmitting} onClick={submitForm}>
+                      {isSubmitting && <CircularProgress />}
+                      {isSubmitting
+                        ? "Modification en cours"
+                        : "Modifier département"}
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Form>
+            </Paper>
+          </div>
+        );
+      }}
     </Formik>
   );
 };
-
-export default UpdateDivision;
+export default UpdateRegion;
